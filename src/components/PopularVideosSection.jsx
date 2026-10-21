@@ -59,66 +59,66 @@ function PopularVideosSection() {
     if (!section) return undefined;
 
     let context;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
+    let frame = 0;
+    let hasScrolled = window.scrollY > 0;
+    let removeScrollListener;
+    context = gsap.context(() => {
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      if (reduceMotion) return;
 
-        observer.disconnect();
-        const reduceMotion = window.matchMedia(
-          "(prefers-reduced-motion: reduce)",
-        ).matches;
+      const heading = section.querySelector(".popular-videos__heading");
+      const cards = section.querySelectorAll(".popular-video-card");
 
-        context = gsap.context(() => {
-          const entrance = gsap.timeline();
+      gsap.set(heading, { x: -8, autoAlpha: 0.96 });
+      gsap.set(cards, { y: 10, scale: 0.96, rotateY: 5, filter: "blur(1px)" });
 
-          if (reduceMotion) {
-            entrance.fromTo(
-              [".popular-videos__heading", ".popular-video-card"],
-              { autoAlpha: 0 },
-              { autoAlpha: 1, duration: 0.2, stagger: 0.02 },
-            );
-            return;
-          }
+      const entrance = gsap.timeline({ paused: true });
+      entrance
+        .to(heading, {
+          autoAlpha: 1,
+          x: 0,
+          duration: 0.85,
+          ease: "power3.out",
+        })
+        .to(cards, {
+          scale: 1,
+          y: 0,
+          rotateY: 0,
+          filter: "blur(0px)",
+          duration: 0.85,
+          stagger: 0.12,
+          ease: "back.out(1.25)",
+        }, "-=0.2");
 
-          entrance
-            .fromTo(
-              ".popular-videos__heading",
-              { autoAlpha: 0, clipPath: "inset(0 100% 0 0)" },
-              {
-                autoAlpha: 1,
-                clipPath: "inset(0 0% 0 0)",
-                duration: 0.65,
-                ease: "power3.out",
-              },
-            )
-            .fromTo(
-              ".popular-video-card",
-              {
-                autoAlpha: 0,
-                scale: 0.88,
-                rotateY: 12,
-                filter: "blur(8px)",
-              },
-              {
-                autoAlpha: 1,
-                scale: 1,
-                rotateY: 0,
-                filter: "blur(0px)",
-                duration: 0.7,
-                stagger: 0.09,
-                ease: "back.out(1.25)",
-              },
-              "-=0.2",
-            );
-        }, section);
-      },
-      { threshold: 0.12 },
-    );
+      const updateAnimation = () => {
+        frame = 0;
+        if (!hasScrolled) return;
 
-    observer.observe(section);
+        const bounds = section.getBoundingClientRect();
+        const inView = bounds.top < window.innerHeight * 0.86 &&
+          bounds.bottom > window.innerHeight * 0.14;
+        if (inView) entrance.play();
+        else entrance.reverse();
+      };
+
+      const onScroll = () => {
+        hasScrolled = true;
+        if (!frame) frame = window.requestAnimationFrame(updateAnimation);
+      };
+
+      removeScrollListener = () => {
+        window.removeEventListener("scroll", onScroll);
+        if (frame) window.cancelAnimationFrame(frame);
+      };
+
+      window.addEventListener("scroll", onScroll, { passive: true });
+      if (hasScrolled) updateAnimation();
+    }, section);
 
     return () => {
-      observer.disconnect();
+      removeScrollListener?.();
       context?.revert();
     };
   }, []);
