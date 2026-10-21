@@ -27,76 +27,81 @@ function QuickLinksCarousel() {
     if (!section) return undefined;
 
     let context;
-    let frame = 0;
-    let hasScrolled = window.scrollY > 0;
-    let removeScrollListener;
-    context = gsap.context(() => {
-      const reduceMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
-      if (reduceMotion) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
 
-      const surface = section.querySelector(".quick-links__surface");
-      const links = section.querySelectorAll(".quick-link");
-      const icons = section.querySelectorAll(".quick-link__icon");
+        observer.disconnect();
+        const reduceMotion = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
 
-      gsap.set(surface, { scale: 0.99, filter: "blur(1px)" });
-      gsap.set(links, { y: 8, rotateX: 6, scale: 0.98, filter: "blur(1px)" });
-      gsap.set(icons, { rotate: -8, scale: 0.9 });
+        context = gsap.context(() => {
+          const entrance = gsap.timeline();
 
-      const entrance = gsap.timeline({ paused: true });
-      entrance
-        .to(surface, {
-          scale: 1,
-          filter: "blur(0px)",
-          duration: 0.9,
-          ease: "power3.out",
-        })
-        .to(links, {
-          y: 0,
-          rotateX: 0,
-          scale: 1,
-          filter: "blur(0px)",
-          duration: 0.8,
-          stagger: 0.1,
-          ease: "back.out(1.35)",
-        }, "-=0.3");
+          if (reduceMotion) {
+            entrance.fromTo(
+              [".quick-links__surface", ".quick-link"],
+              { autoAlpha: 0 },
+              { autoAlpha: 1, duration: 0.2, stagger: 0.02 },
+            );
+            return;
+          }
 
-      entrance.to(icons, {
-        rotate: 0,
-        scale: 1,
-        duration: 0.8,
-        stagger: 0.1,
-        ease: "elastic.out(1, 0.6)",
-      }, "-=0.55");
+          entrance
+            .fromTo(
+              ".quick-links__surface",
+              { autoAlpha: 0, scale: 0.96, filter: "blur(12px)" },
+              {
+                autoAlpha: 1,
+                scale: 1,
+                filter: "blur(0px)",
+                duration: 0.75,
+                ease: "power3.out",
+              },
+            )
+            .fromTo(
+              ".quick-link",
+              {
+                autoAlpha: 0,
+                y: 16,
+                rotateX: 18,
+                scale: 0.88,
+                filter: "blur(7px)",
+              },
+              {
+                autoAlpha: 1,
+                y: 0,
+                rotateX: 0,
+                scale: 1,
+                filter: "blur(0px)",
+                duration: 0.62,
+                stagger: 0.075,
+                ease: "back.out(1.5)",
+              },
+              "-=0.36",
+            )
+            .fromTo(
+              ".quick-link__icon",
+              { rotate: -12, scale: 0.72 },
+              {
+                rotate: 0,
+                scale: 1,
+                duration: 0.62,
+                stagger: 0.075,
+                ease: "elastic.out(1, 0.55)",
+              },
+              "-=0.48",
+            );
+        }, section);
+      },
+      { threshold: 0.12 },
+    );
 
-      const updateAnimation = () => {
-        frame = 0;
-        if (!hasScrolled) return;
-
-        const bounds = section.getBoundingClientRect();
-        const inView = bounds.top < window.innerHeight * 0.86 &&
-          bounds.bottom > window.innerHeight * 0.14;
-        if (inView) entrance.play();
-        else entrance.reverse();
-      };
-
-      const onScroll = () => {
-        hasScrolled = true;
-        if (!frame) frame = window.requestAnimationFrame(updateAnimation);
-      };
-
-      removeScrollListener = () => {
-        window.removeEventListener("scroll", onScroll);
-        if (frame) window.cancelAnimationFrame(frame);
-      };
-
-      window.addEventListener("scroll", onScroll, { passive: true });
-      if (hasScrolled) updateAnimation();
-    }, section);
+    observer.observe(section);
 
     return () => {
-      removeScrollListener?.();
+      observer.disconnect();
       context?.revert();
     };
   }, []);
