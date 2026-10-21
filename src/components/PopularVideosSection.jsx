@@ -60,9 +60,11 @@ function PopularVideosSection() {
   };
 
   useEffect(() => {
-    const media = gsap.matchMedia(sectionRef);
+    const context = gsap.context(() => {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        return;
+      }
 
-    media.add("(prefers-reduced-motion: no-preference)", () => {
       gsap
         .timeline({
           scrollTrigger: {
@@ -102,7 +104,15 @@ function PopularVideosSection() {
         );
     });
 
-    return () => media.revert();
+    const refreshScrollTriggers = () => ScrollTrigger.refresh();
+    const refreshFrame = window.requestAnimationFrame(refreshScrollTriggers);
+    window.addEventListener("load", refreshScrollTriggers, { once: true });
+
+    return () => {
+      window.cancelAnimationFrame(refreshFrame);
+      window.removeEventListener("load", refreshScrollTriggers);
+      context.revert();
+    };
   }, []);
 
   useEffect(() => {
