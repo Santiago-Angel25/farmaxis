@@ -1,0 +1,280 @@
+.navbar {
+  width: 100%;
+  color: #171717;
+  background: #fff;
+}
+
+.navbar button {
+  cursor: pointer;
+}
+
+.navbar-main {
+  min-height: 76px;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 12px clamp(20px, 4vw, 48px);
+  border-bottom: 1px solid #e4e4e4;
+}
+
+.brand {
+  width: 120px;
+  flex: 0 0 120px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.brand-name {
+  display: block;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 20px;
+  letter-spacing: -0.8px;
+}
+
+.brand-name > span {
+  font-size: 30px;
+  line-height: 24px;
+}
+
+.brand-subtitle {
+  display: block;
+  margin-left: 17px;
+  color: #666;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.search-container {
+  width: min(500px, 42vw);
+  height: 42px;
+  display: flex;
+  align-items: center;
+  border: 1px solid #dedede;
+  border-radius: 12px;
+  background: #f7f7f7;
+}
+
+.search-container:focus-within {
+  border-color: #888;
+  box-shadow: 0 0 0 2px rgb(0 0 0 / 8%);
+}
+
+.search-container input {
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  padding: 0 14px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-size: 13px;
+}
+
+.search-container input::placeholder {
+  color: #777;
+}
+
+.search-button {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  display: grid;
+  place-items: center;
+  margin-right: 6px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #111;
+  color: #fff;
+}
+
+.search-button svg {
+  width: 17px;
+  height: 17px;
+}
+
+
+
+.login-button,
+.navbar-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+}
+
+.login-button {
+  gap: 5px;
+  padding: 8px 0;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.login-button svg {
+  width: 19px;
+  height: 19px;
+}
+
+.navbar-icon {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  padding: 0;
+}
+
+.navbar-icon svg {
+  width: 23px;
+  height: 23px;
+}
+
+.cart-counter {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  width: 16px;
+  height: 16px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #111;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.navbar-options,
+.navbar-categories {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.navbar-options::-webkit-scrollbar,
+.navbar-categories::-webkit-scrollbar {
+  display: none;
+}
+
+.navbar-options {
+  min-height: 38px;
+  justify-content: center;
+  gap: clamp(18px, 4vw, 48px);
+  padding: 4px 20px;
+  background: #dedede;
+}
+
+.navbar-options button,
+.navbar-categories button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  gap: 5px;
+  padding: 6px 2px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  white-space: nowrap;
+}
+
+.navbar-options button {
+  font-size: 12px;
+}
+
+.navbar-options svg {
+  width: 15px;
+  height: 15px;
+}
+
+.navbar-categories {
+  min-height: 38px;
+  justify-content: space-around;
+  gap: 22px;
+  padding: 4px clamp(20px, 3vw, 36px);
+  background: #f0f0f0;
+}
+
+.navbar-categories button {
+  font-size: 11px;
+}
+
+.navbar-options button:hover,
+.navbar-categories button:hover,
+.login-button:hover,
+.navbar-icon:hover {
+  opacity: 0.65;
+}
+
+.navbar button:focus-visible {
+  outline: 2px solid #225ea8;
+  outline-offset: 3px;
+}
+
+@media (max-width: 760px) {
+  .navbar-main {
+    min-height: 66px;
+    gap: 12px;
+    padding: 10px 16px;
+  }
+
+  .brand {
+    width: 100px;
+    flex-basis: 100px;
+  }
+
+  .search-container {
+    width: auto;
+    flex: 1;
+  }
+
+  .api-button,
+  .login-button span,
+  .navbar-icon:not(.cart-button) {
+    display: none;
+  }
+
+  .navbar-options {
+    justify-content: flex-start;
+    gap: 24px;
+    padding-inline: 16px;
+  }
+
+  .navbar-categories {
+    justify-content: flex-start;
+    gap: 24px;
+    padding-inline: 16px;
+  }
+}
+
+@media (max-width: 420px) {
+  .navbar-main {
+    gap: 8px;
+    padding-inline: 12px;
+  }
+
+  .brand {
+    width: 88px;
+    flex-basis: 88px;
+  }
+
+  .brand-name {
+    font-size: 18px;
+  }
+
+  .brand-name > span {
+    font-size: 26px;
+  }
+
+  .brand-subtitle {
+    margin-left: 15px;
+    font-size: 10px;
+  }
+
+  .search-container input {
+    padding-inline: 8px;
+    font-size: 12px;
+  }
+}

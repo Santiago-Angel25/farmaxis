@@ -1,0 +1,51 @@
+import CHICADORMIDA from "../assets/CHICADORMIDA06JUN.jpg";
+import imagenBaner from "../assets/imagenBaner.jpg";
+import neutrogena from "../assets/neutrogena.jgp.webp";
+import promocion2 from "../assets/promocion2.jpg";
+import promocion3 from "../assets/promocion3.jpg";
+import proteina from "../assets/proteina.jpg";
+const POPULAR_VIDEOS = [
+  {
+    id: "neutrogena-hydro-boost",
+    title: "Hidratación para tu piel",
+    product: "Neutrogena Hydro Boost",
+    poster: neutrogena,
+    videoSrc: "",
+  },
+  {
+    id: "nosotras-buenas-noches",
+    title: "Descubre una noche más cómoda",
+    product: "Nosotras Buenas Noches",
+    poster: CHICADORMIDA,
+    videoSrc: "",
+  },
+  {
+    id: "pediasure-night",
+    title: "Conoce PediaSure Night",
+    product: "PediaSure Night",
+    poster: promocion2,
+    videoSrc: "",
+  },
+  {
+    id: "fitnutri-proteina",
+    title: "Una rutina para sentirte bien",
+    product: "Productos FitNutri",
+    poster: proteina,
+    videoSrc: "",
+  },
+  {
+    id: "apoteka-promocion",
+    title: "Promociones para cuidarte",
+    product: "Productos Apoteka Direct",
+    poster: imagenBaner,
+    videoSrc: "",
+  },
+  {
+    id: "nosotras-proteccion",
+    title: "Conoce la protección Nosotras",
+    product: "Nosotras Extra Protección",
+    poster: promocion3,
+    videoSrc: "",
+  },
+];
+export default POPULAR_VIDEOS;

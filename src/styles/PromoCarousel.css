@@ -1,0 +1,55 @@
+.promo-carousel__viewport,
+.promo-carousel__slider,
+.promo-carousel__slide {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.promo-carousel__slide {
+  display: flex;
+  flex: 0 0 100%;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  box-shadow: none;
+}
+
+.promo-carousel__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.promo-carousel__arrow {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  padding: 0;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background-color: #fff;
+  color: #171717;
+}
+
+.promo-carousel__arrow--previous {
+  left: 12px;
+}
+
+.promo-carousel__arrow--next {
+  right: 12px;
+}
+
+

@@ -1,0 +1,125 @@
+.quick-links {
+  width: 100%;
+  max-width: 1600px;
+  margin: 12px auto 40px;
+  padding-inline: clamp(32px, 12vw, 160px);
+}
+
+.quick-links__surface {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr) 38px;
+  align-items: center;
+  min-height: 150px;
+  padding: 12px 8px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 8px 26px rgb(20 40 75 / 5%);
+  transform-origin: center;
+}
+
+.quick-links__arrow {
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
+  color: #a9afb7;
+}
+
+.quick-links__viewport {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  perspective: 700px;
+}
+
+.quick-links__viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.quick-link {
+  display: flex;
+  flex: 1 0 112px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 120px;
+  padding: 8px 6px;
+  border: 0;
+  border-radius: 16px;
+  background: transparent;
+  color: #151b2b;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 180ms ease, transform 180ms ease;
+}
+
+.quick-link:hover {
+  transform: translateY(-3px);
+  background-color: #f5f8fc;
+}
+
+.quick-link:focus-visible {
+  outline: 2px solid #1473c9;
+  outline-offset: 2px;
+}
+
+.quick-link__icon {
+  display: grid;
+  width: 64px;
+  height: 64px;
+  place-items: center;
+  color: #1473c9;
+  transform-origin: center bottom;
+}
+
+.quick-link__icon svg {
+  width: 56px;
+  height: 56px;
+  stroke-width: 1.45;
+}
+
+.quick-link__label {
+  max-width: 100%;
+  font-size: 14px;
+  line-height: 1.25;
+}
+
+@media (max-width: 700px) {
+  .quick-links {
+    margin-top: 10px;
+    padding-inline: 16px;
+  }
+
+  .quick-links__surface {
+    grid-template-columns: 32px minmax(0, 1fr) 32px;
+    min-height: 132px;
+    padding-inline: 4px;
+  }
+
+  .quick-link {
+    flex-basis: 100px;
+    min-height: 108px;
+  }
+
+  .quick-link__icon,
+  .quick-link__icon svg {
+    width: 48px;
+    height: 48px;
+  }
+
+  .quick-link__label {
+    font-size: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quick-link {
+    transition: none;
+  }
+}
