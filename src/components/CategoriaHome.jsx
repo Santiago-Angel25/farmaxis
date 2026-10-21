@@ -5,13 +5,8 @@ import {
   ArrowRightRegular,
 } from "@fluentui/react-icons";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "../styles/CategoriaHome.css";
 import categoriaHome from "../data/categoriaHome";
-
-gsap.registerPlugin(ScrollTrigger);
-
-
 
 function QuickLinksCarousel() {
   const sectionRef = useRef(null);
@@ -28,74 +23,86 @@ function QuickLinksCarousel() {
   };
 
   useEffect(() => {
-    const context = gsap.context(() => {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        return;
-      }
+    const section = sectionRef.current;
+    if (!section) return undefined;
 
-      const entrance = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 88%",
-          once: true,
-        },
-      });
+    let context;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
 
-      entrance
-        .fromTo(
-          ".quick-links__surface",
-          { autoAlpha: 0, scale: 0.96, filter: "blur(12px)" },
-          {
-            autoAlpha: 1,
-            scale: 1,
-            filter: "blur(0px)",
-            duration: 0.75,
-            ease: "power3.out",
-          },
-        )
-        .fromTo(
-          ".quick-link",
-          {
-            autoAlpha: 0,
-            y: 16,
-            rotateX: 18,
-            scale: 0.88,
-            filter: "blur(7px)",
-          },
-          {
-            autoAlpha: 1,
-            y: 0,
-            rotateX: 0,
-            scale: 1,
-            filter: "blur(0px)",
-            duration: 0.62,
-            stagger: 0.075,
-            ease: "back.out(1.5)",
-          },
-          "-=0.36",
-        )
-        .fromTo(
-          ".quick-link__icon",
-          { rotate: -12, scale: 0.72 },
-          {
-            rotate: 0,
-            scale: 1,
-            duration: 0.62,
-            stagger: 0.075,
-            ease: "elastic.out(1, 0.55)",
-          },
-          "-=0.48",
-        );
-    });
+        observer.disconnect();
+        const reduceMotion = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
 
-    const refreshScrollTriggers = () => ScrollTrigger.refresh();
-    const refreshFrame = window.requestAnimationFrame(refreshScrollTriggers);
-    window.addEventListener("load", refreshScrollTriggers, { once: true });
+        context = gsap.context(() => {
+          const entrance = gsap.timeline();
+
+          if (reduceMotion) {
+            entrance.fromTo(
+              [".quick-links__surface", ".quick-link"],
+              { autoAlpha: 0 },
+              { autoAlpha: 1, duration: 0.2, stagger: 0.02 },
+            );
+            return;
+          }
+
+          entrance
+            .fromTo(
+              ".quick-links__surface",
+              { autoAlpha: 0, scale: 0.96, filter: "blur(12px)" },
+              {
+                autoAlpha: 1,
+                scale: 1,
+                filter: "blur(0px)",
+                duration: 0.75,
+                ease: "power3.out",
+              },
+            )
+            .fromTo(
+              ".quick-link",
+              {
+                autoAlpha: 0,
+                y: 16,
+                rotateX: 18,
+                scale: 0.88,
+                filter: "blur(7px)",
+              },
+              {
+                autoAlpha: 1,
+                y: 0,
+                rotateX: 0,
+                scale: 1,
+                filter: "blur(0px)",
+                duration: 0.62,
+                stagger: 0.075,
+                ease: "back.out(1.5)",
+              },
+              "-=0.36",
+            )
+            .fromTo(
+              ".quick-link__icon",
+              { rotate: -12, scale: 0.72 },
+              {
+                rotate: 0,
+                scale: 1,
+                duration: 0.62,
+                stagger: 0.075,
+                ease: "elastic.out(1, 0.55)",
+              },
+              "-=0.48",
+            );
+        }, section);
+      },
+      { threshold: 0.12 },
+    );
+
+    observer.observe(section);
 
     return () => {
-      window.cancelAnimationFrame(refreshFrame);
-      window.removeEventListener("load", refreshScrollTriggers);
-      context.revert();
+      observer.disconnect();
+      context?.revert();
     };
   }, []);
 

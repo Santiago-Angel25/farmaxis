@@ -15,13 +15,8 @@ import {
   ShoppingBagAddRegular,
 } from "@fluentui/react-icons";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import POPULAR_VIDEOS from "../data/POPULAR_VIDEOS,js";
 import "../styles/PopularVideosSection.css";
-
-gsap.registerPlugin(ScrollTrigger);
-
-
 
 function PopularVideosSection() {
   const sectionRef = useRef(null);
@@ -60,58 +55,71 @@ function PopularVideosSection() {
   };
 
   useEffect(() => {
-    const context = gsap.context(() => {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        return;
-      }
+    const section = sectionRef.current;
+    if (!section) return undefined;
 
-      gsap
-        .timeline({
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 85%",
-            once: true,
-          },
-        })
-        .fromTo(
-          ".popular-videos__heading",
-          { autoAlpha: 0, clipPath: "inset(0 100% 0 0)" },
-          {
-            autoAlpha: 1,
-            clipPath: "inset(0 0% 0 0)",
-            duration: 0.65,
-            ease: "power3.out",
-          },
-        )
-        .fromTo(
-          ".popular-video-card",
-          {
-            autoAlpha: 0,
-            scale: 0.88,
-            rotateY: 12,
-            filter: "blur(8px)",
-          },
-          {
-            autoAlpha: 1,
-            scale: 1,
-            rotateY: 0,
-            filter: "blur(0px)",
-            duration: 0.7,
-            stagger: 0.09,
-            ease: "back.out(1.25)",
-          },
-          "-=0.2",
-        );
-    });
+    let context;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
 
-    const refreshScrollTriggers = () => ScrollTrigger.refresh();
-    const refreshFrame = window.requestAnimationFrame(refreshScrollTriggers);
-    window.addEventListener("load", refreshScrollTriggers, { once: true });
+        observer.disconnect();
+        const reduceMotion = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
+
+        context = gsap.context(() => {
+          const entrance = gsap.timeline();
+
+          if (reduceMotion) {
+            entrance.fromTo(
+              [".popular-videos__heading", ".popular-video-card"],
+              { autoAlpha: 0 },
+              { autoAlpha: 1, duration: 0.2, stagger: 0.02 },
+            );
+            return;
+          }
+
+          entrance
+            .fromTo(
+              ".popular-videos__heading",
+              { autoAlpha: 0, clipPath: "inset(0 100% 0 0)" },
+              {
+                autoAlpha: 1,
+                clipPath: "inset(0 0% 0 0)",
+                duration: 0.65,
+                ease: "power3.out",
+              },
+            )
+            .fromTo(
+              ".popular-video-card",
+              {
+                autoAlpha: 0,
+                scale: 0.88,
+                rotateY: 12,
+                filter: "blur(8px)",
+              },
+              {
+                autoAlpha: 1,
+                scale: 1,
+                rotateY: 0,
+                filter: "blur(0px)",
+                duration: 0.7,
+                stagger: 0.09,
+                ease: "back.out(1.25)",
+              },
+              "-=0.2",
+            );
+        }, section);
+      },
+      { threshold: 0.12 },
+    );
+
+    observer.observe(section);
 
     return () => {
-      window.cancelAnimationFrame(refreshFrame);
-      window.removeEventListener("load", refreshScrollTriggers);
-      context.revert();
+      observer.disconnect();
+      context?.revert();
     };
   }, []);
 
