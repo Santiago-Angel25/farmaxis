@@ -1,23 +1,38 @@
 import {
-  
   BookOpenRegular,
-  GlassesRegular,
+  Cart24Regular,
   HeartPulseRegular,
   HeartRegular,
-  LocationRegular,
   SparkleRegular,
   StarRegular,
   TagPercentRegular,
 } from "@fluentui/react-icons";
+
 const categoriaHome = [
-  { label: "Folleto", icon: BookOpenRegular },
-  { label: "Mundo Ofertas", icon: TagPercentRegular },
-  { label: "Farmatodo Prime", icon: StarRegular },
-  { label: "Ofertas Prime", icon: TagPercentRegular },
-  { label: "Donaciones", icon: HeartRegular },
-  { label: "Ubica tu tienda", icon: LocationRegular },
-  { label: "Nuevos Productos", icon: SparkleRegular },
-  { label: "Cuidamos tu salud", icon: HeartPulseRegular },
-  { label: "Óptica", icon: GlassesRegular },
+  { label: "Promociones", icon: TagPercentRegular, target: "promociones" },
+  { label: "Lo más popular", icon: SparkleRegular, target: "lo-mas-popular" },
+  {
+    label: "Productos destacados",
+    icon: StarRegular,
+    target: "productos-destacados",
+  },
+  {
+    label: "Bebidas y alimentos",
+    icon: BookOpenRegular,
+    target: "bebidas-y-alimentos",
+  },
+  {
+    label: "Cuidado personal",
+    icon: SparkleRegular,
+    target: "cuidado-personal",
+  },
+  {
+    label: "Salud y medicamentos",
+    icon: HeartPulseRegular,
+    target: "salud-y-medicamentos",
+  },
+  { label: "Lista de deseos", icon: HeartRegular, panel: "wishlist" },
+  { label: "Carrito", icon: Cart24Regular, panel: "cart" },
 ];
+
 export default categoriaHome;

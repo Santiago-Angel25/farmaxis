@@ -35,22 +35,26 @@ function App() {
       )}
 
       <ProductSection
+        id="productos-destacados"
         title="Productos destacados"
         subtitle="Selección para ti"
         products={featuredApiProducts}
         showDiscount
       />
       <ProductSection
+        id="bebidas-y-alimentos"
         title="Bebidas y alimentos"
         subtitle="Encuentra lo que necesitas"
         products={foodProducts}
       />
       <ProductSection
+        id="cuidado-personal"
         title="Cuidado personal"
         subtitle="Belleza y cuidado de la piel"
         products={personalCareProducts}
       />
       <ProductSection
+        id="salud-y-medicamentos"
         title="Salud y medicamentos"
         subtitle="Productos de demostración del catálogo local"
         products={featuredProducts}
@@ -63,6 +67,8 @@ function App() {
 }
 
 export default App;
+
+
 
 
 

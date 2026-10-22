@@ -27,6 +27,7 @@ function PromoSection() {
   return (
     <section
       ref={promoSectionRef}
+      id="promociones"
       className="promo-section"
       aria-label="Sección de promociones"
     >
@@ -54,3 +55,5 @@ function PromoSection() {
 }
 
 export default PromoSection;
+
+

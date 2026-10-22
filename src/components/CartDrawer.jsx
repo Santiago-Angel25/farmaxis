@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@fluentui/react-components";
 import {
   AddRegular,
+  Delete24Regular,
   DismissRegular,
   SubtractRegular,
 } from "@fluentui/react-icons";
@@ -134,37 +135,42 @@ function CartDrawer() {
                           className="store-quantity"
                           aria-label={"Cantidad: " + quantity}
                         >
-                          <button
-                            type="button"
-                            aria-label={"Quitar una unidad de " + product.name}
+                          <Button
+                            className="store-quantity__delete"
+                            appearance="subtle"
+                            shape="circular"
+                            icon={
+                              quantity === 1 ? (
+                                <Delete24Regular />
+                              ) : (
+                                <SubtractRegular />
+                              )
+                            }
+                            aria-label={
+                              quantity === 1
+                                ? "Quitar " + product.name + " del carrito"
+                                : "Disminuir cantidad de " + product.name
+                            }
                             onClick={() =>
                               quantity === 1
                                 ? animateRemove(product.id)
                                 : updateCartQuantity(product.id, quantity - 1)
                             }
-                          >
-                            <SubtractRegular />
-                          </button>
-                          <span className="store-quantity__value" key={quantity}>
+                          />
+                          <span className="store-quantity__value" key={quantity} aria-live="polite">
                             {quantity}
                           </span>
-                          <button
-                            type="button"
+                          <Button
+                            className="store-quantity__add"
+                            appearance="primary"
+                            shape="circular"
+                            icon={<AddRegular />}
                             aria-label={"Agregar una unidad de " + product.name}
                             onClick={() =>
                               updateCartQuantity(product.id, quantity + 1)
                             }
-                          >
-                            <AddRegular />
-                          </button>
+                          />
                         </div>
-                        <button
-                          className="store-drawer-item__remove"
-                          type="button"
-                          onClick={() => animateRemove(product.id)}
-                        >
-                          Eliminar
-                        </button>
                       </div>
                       <span className="store-drawer-item__price" key={quantity}>
                         {formatPrice(product.price * quantity)}
@@ -239,3 +245,5 @@ function CartDrawer() {
 }
 
 export default CartDrawer;
+
+

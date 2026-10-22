@@ -1,10 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Button } from "@fluentui/react-components";
 import {
   AddRegular,
   ArrowLeftRegular,
   ArrowRightRegular,
-  CheckmarkRegular,
+  Cart24Regular,
+  Delete24Regular,
+  SubtractRegular,
   HeartFilled,
   HeartRegular,
 } from "@fluentui/react-icons";
@@ -19,14 +21,24 @@ const formatPrice = (price) =>
     maximumFractionDigits: 0,
   }).format(price);
 
-function ProductSection({ title, subtitle, products, onViewAll, showDiscount = false }) {
+function ProductSection({
+  id,
+  title,
+  subtitle,
+  products,
+  onViewAll,
+  showDiscount = false,
+}) {
   const sectionRef = useRef(null);
   const trackRef = useRef(null);
-  const addFeedbackTimeout = useRef(null);
-  const [addedProductId, setAddedProductId] = useState(null);
-  const { favorites, addToCart, toggleFavorite } = useStore();
-
-  useEffect(() => () => window.clearTimeout(addFeedbackTimeout.current), []);
+  const {
+    favorites,
+    cartItems,
+    addToCart,
+    updateCartQuantity,
+    removeFromCart,
+    toggleFavorite,
+  } = useStore();
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -48,11 +60,7 @@ function ProductSection({ title, subtitle, products, onViewAll, showDiscount = f
 
         timeline.fromTo(
           ".product-section__header",
-          {
-            autoAlpha: 0,
-            y: 22,
-            filter: "blur(7px)",
-          },
+          { autoAlpha: 0, y: 22, filter: "blur(7px)" },
           {
             autoAlpha: 1,
             y: 0,
@@ -61,7 +69,6 @@ function ProductSection({ title, subtitle, products, onViewAll, showDiscount = f
             ease: "power3.out",
           },
         );
-
         timeline.fromTo(
           ".product-section__carousel > button",
           { autoAlpha: 0, scale: 0.78 },
@@ -74,7 +81,6 @@ function ProductSection({ title, subtitle, products, onViewAll, showDiscount = f
           },
           "-=0.3",
         );
-
         timeline.fromTo(
           ".product-card",
           {
@@ -97,7 +103,6 @@ function ProductSection({ title, subtitle, products, onViewAll, showDiscount = f
           },
           "-=0.28",
         );
-
         timeline.fromTo(
           ".product-card__visual img",
           { scale: 1.07 },
@@ -130,7 +135,6 @@ function ProductSection({ title, subtitle, products, onViewAll, showDiscount = f
       },
       { threshold: 0.18 },
     );
-
     observer.observe(section);
 
     return () => {
@@ -140,28 +144,40 @@ function ProductSection({ title, subtitle, products, onViewAll, showDiscount = f
     };
   }, []);
 
-  const handleAddToCart = (product) => {
-    addToCart(product);
-    setAddedProductId(product.id);
-    window.clearTimeout(addFeedbackTimeout.current);
-    addFeedbackTimeout.current = window.setTimeout(
-      () => setAddedProductId(null),
-      1500,
+  const handleRemoveFromCard = (productId, event) => {
+    const quantityControl = event.currentTarget.closest(
+      ".product-card__quantity",
     );
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (!quantityControl || reduceMotion) {
+      removeFromCart(productId);
+      return;
+    }
+
+    gsap.to(quantityControl, {
+      autoAlpha: 0,
+      scale: 0.86,
+      duration: 0.2,
+      ease: "power2.in",
+      onComplete: () => removeFromCart(productId),
+    });
   };
 
   const scrollTrack = (direction) => {
     const track = trackRef.current;
-    if (track) {
-      track.scrollBy({
-        left: direction * track.clientWidth,
-        behavior: "smooth",
-      });
-    }
+    if (!track) return;
+    track.scrollBy({
+      left: direction * track.clientWidth,
+      behavior: "smooth",
+    });
   };
 
   return (
     <section
+      id={id}
       ref={sectionRef}
       className="product-section"
       aria-label={title}
@@ -187,13 +203,15 @@ function ProductSection({ title, subtitle, products, onViewAll, showDiscount = f
           appearance="subtle"
           shape="circular"
           icon={<ArrowLeftRegular />}
-          aria-label={"Productos anteriores de " + title}
+          aria-label={`Productos anteriores de ${title}`}
           onClick={() => scrollTrack(-1)}
         />
         <div className="product-section__track" ref={trackRef}>
           {products.map((product) => {
             const isFavorite = favorites.some((item) => item.id === product.id);
-            const wasAdded = addedProductId === product.id;
+            const quantity =
+              cartItems.find((item) => item.product.id === product.id)
+                ?.quantity ?? 0;
 
             return (
               <article className="product-card" key={product.id}>
@@ -218,8 +236,8 @@ function ProductSection({ title, subtitle, products, onViewAll, showDiscount = f
                     icon={isFavorite ? <HeartFilled /> : <HeartRegular />}
                     aria-label={
                       isFavorite
-                        ? "Quitar " + product.name + " de favoritos"
-                        : "Agregar " + product.name + " a favoritos"
+                        ? `Quitar ${product.name} de favoritos`
+                        : `Agregar ${product.name} a favoritos`
                     }
                     aria-pressed={isFavorite}
                     onClick={() => toggleFavorite(product)}
@@ -236,21 +254,59 @@ function ProductSection({ title, subtitle, products, onViewAll, showDiscount = f
                   <span className="product-card__availability">
                     {product.availability ?? "Consulta disponibilidad"}
                   </span>
-                  <Button
-                    className={
-                      "product-card__add" + (wasAdded ? " is-added" : "")
-                    }
-                    appearance="primary"
-                    icon={wasAdded ? <CheckmarkRegular /> : <AddRegular />}
-                    aria-label={
-                      wasAdded
-                        ? product.name + " agregado al carrito"
-                        : "Agregar " + product.name + " al carrito"
-                    }
-                    onClick={() => handleAddToCart(product)}
-                  >
-                    {wasAdded ? "Agregado al carrito" : "Agregar"}
-                  </Button>
+
+                  {quantity === 0 ? (
+                    <Button
+                      className="product-card__add"
+                      appearance="primary"
+                      icon={<Cart24Regular />}
+                      aria-label={`Agregar ${product.name} al carrito`}
+                      onClick={() => addToCart(product)}
+                    >
+                      Agregar
+                    </Button>
+                  ) : (
+                    <div
+                      className="product-card__quantity"
+                      aria-label={`Cantidad de ${product.name}: ${quantity}`}
+                    >
+                      <Button
+                        className="product-card__quantity-button product-card__quantity-button--delete"
+                        appearance="subtle"
+                        shape="circular"
+                        icon={
+                          quantity === 1 ? <Delete24Regular /> : <SubtractRegular />
+                        }
+                        aria-label={
+                          quantity === 1
+                            ? `Quitar ${product.name} del carrito`
+                            : `Disminuir cantidad de ${product.name}`
+                        }
+                        onClick={(event) =>
+                          quantity === 1
+                            ? handleRemoveFromCard(product.id, event)
+                            : updateCartQuantity(product.id, quantity - 1)
+                        }
+                      />
+                      <span
+                        className="product-card__quantity-value"
+                        key={quantity}
+                        aria-live="polite"
+                      >
+                        {quantity}
+                      </span>
+                      <Button
+                        className="product-card__quantity-button product-card__quantity-button--add"
+                        appearance="primary"
+                        shape="circular"
+                        icon={<AddRegular />}
+                        aria-label={`Agregar otra unidad de ${product.name}`}
+                        onClick={() =>
+                          updateCartQuantity(product.id, quantity + 1)
+                        }
+                      />
+                    </div>
+                  )}
                 </div>
               </article>
             );
@@ -260,7 +316,7 @@ function ProductSection({ title, subtitle, products, onViewAll, showDiscount = f
           appearance="subtle"
           shape="circular"
           icon={<ArrowRightRegular />}
-          aria-label={"Ver más productos de " + title}
+          aria-label={`Ver más productos de ${title}`}
           onClick={() => scrollTrack(1)}
         />
       </div>
@@ -269,7 +325,3 @@ function ProductSection({ title, subtitle, products, onViewAll, showDiscount = f
 }
 
 export default ProductSection;
-
-
-
-

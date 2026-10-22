@@ -130,6 +130,7 @@ function PopularVideosSection() {
   return (
     <section
       ref={sectionRef}
+      id="lo-mas-popular"
       className="popular-videos"
       aria-labelledby="popular-videos-title"
     >
@@ -276,3 +277,5 @@ function PopularVideosSection() {
 }
 
 export default PopularVideosSection;
+
+

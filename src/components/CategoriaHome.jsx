@@ -1,26 +1,12 @@
 import { useEffect, useRef } from "react";
-import { Button } from "@fluentui/react-components";
-import {
-  ArrowLeftRegular,
-  ArrowRightRegular,
-} from "@fluentui/react-icons";
 import gsap from "gsap";
+import { useStore } from "../context/StoreContext";
 import "../styles/CategoriaHome.css";
 import categoriaHome from "../data/categoriaHome";
 
 function QuickLinksCarousel() {
   const sectionRef = useRef(null);
-  const trackRef = useRef(null);
-
-  const scrollTrack = (direction) => {
-    const track = trackRef.current;
-    if (!track) return;
-
-    track.scrollBy({
-      left: direction * track.clientWidth * 0.9,
-      behavior: "smooth",
-    });
-  };
+  const { openPanel } = useStore();
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -106,6 +92,24 @@ function QuickLinksCarousel() {
     };
   }, []);
 
+  const handleQuickLink = ({ target, panel }) => {
+    if (panel) {
+      openPanel(panel);
+      return;
+    }
+
+    const destination = document.getElementById(target);
+    if (!destination) return;
+
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    destination.scrollIntoView({
+      behavior: reduceMotion ? "auto" : "smooth",
+      block: "start",
+    });
+  };
+
   return (
     <section
       ref={sectionRef}
@@ -113,34 +117,24 @@ function QuickLinksCarousel() {
       aria-label="Accesos rápidos"
     >
       <div className="quick-links__surface">
-        <Button
-          className="quick-links__arrow"
-          appearance="subtle"
-          shape="circular"
-          icon={<ArrowLeftRegular />}
-          aria-label="Ver accesos anteriores"
-          onClick={() => scrollTrack(-1)}
-        />
-
-        <div className="quick-links__viewport" ref={trackRef}>
-          {categoriaHome.map(({ label, icon: Icon }) => (
-            <button className="quick-link" key={label} type="button">
-              <span className="quick-link__icon" aria-hidden="true">
-                <Icon />
-              </span>
-              <span className="quick-link__label">{label}</span>
-            </button>
-          ))}
+        <div className="quick-links__viewport">
+          {categoriaHome.map((item) => {
+            const Icon = item.icon;
+            return (
+              <button
+                className="quick-link"
+                key={item.label}
+                type="button"
+                onClick={() => handleQuickLink(item)}
+              >
+                <span className="quick-link__icon" aria-hidden="true">
+                  <Icon />
+                </span>
+                <span className="quick-link__label">{item.label}</span>
+              </button>
+            );
+          })}
         </div>
-
-        <Button
-          className="quick-links__arrow"
-          appearance="subtle"
-          shape="circular"
-          icon={<ArrowRightRegular />}
-          aria-label="Ver más accesos"
-          onClick={() => scrollTrack(1)}
-        />
       </div>
     </section>
   );

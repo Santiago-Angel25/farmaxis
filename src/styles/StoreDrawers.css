@@ -77,3 +77,33 @@
 @keyframes store-value-pop { 0% { opacity: .65; transform: scale(.8); } 70% { transform: scale(1.12); } 100% { opacity: 1; transform: scale(1); } }
 @media (prefers-reduced-motion: reduce) { .store-drawer-backdrop, .store-drawer, .store-quantity__value, .store-drawer-item__price { animation: none; } .store-quantity button, .store-drawer-item, .store-drawer-item__remove { transition: none; } }
 
+
+.store-quantity {
+  width: 100%;
+  max-width: 320px;
+  height: 42px;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 8px;
+  border-color: #e2e5e9;
+  border-radius: 999px;
+}
+
+.store-quantity button {
+  width: 32px;
+  min-width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: #07994b;
+}
+
+.store-quantity__add {
+  background-color: #0f6cbd !important;
+  color: #fff !important;
+}
+
+.store-quantity__value {
+  min-width: 24px;
+  font-size: 16px !important;
+  font-weight: 600;
+}
