@@ -196,24 +196,15 @@ function PopularVideosSection() {
               onFocus={(event) => animateCard(event, true)}
               onBlur={(event) => animateCard(event, false)}
             >
-              {video.videoSrc ? (
-                <video
-                  className="popular-video-card__media"
-                  src={video.videoSrc}
-                  poster={video.poster}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="auto"
-                />
-              ) : (
-                <img
-                  className="popular-video-card__media"
-                  src={video.poster}
-                  alt=""
-                />
-              )}
+              <video
+                className="popular-video-card__media"
+                src={video.videoSrc}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
+              />
               <span className="popular-video-card__scrim" />
               <span className="popular-video-card__play" aria-hidden="true">
                 <PlayRegular />
@@ -254,19 +245,15 @@ function PopularVideosSection() {
         >
           {activeVideo && (
             <div className="popular-video-dialog__player">
-              {activeVideo.videoSrc ? (
-                <video
-                  ref={videoRef}
-                  src={activeVideo.videoSrc}
-                  poster={activeVideo.poster}
-                  controls
-                  autoPlay
-                  loop
-                  playsInline
-                />
-              ) : (
-                <img src={activeVideo.poster} alt={activeVideo.title} />
-              )}
+              <video
+                key={activeVideo.id}
+                ref={videoRef}
+                src={activeVideo.videoSrc}
+                controls
+                autoPlay
+                loop
+                playsInline
+              />
               <Button
                 className="popular-video-dialog__close"
                 appearance="subtle"
