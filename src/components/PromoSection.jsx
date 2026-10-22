@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import CHICADORMIDA from "../assets/CHICADORMIDA06JUN.jpg";
-import neutrogena from "../assets/neutrogena.jgp.webp";
+import headShoulders from "../assets/head&shoulders.webp";
+import profuundaNosotras from "../assets/profuundaNosotras.webp";
 import PromoCarousel from "./PromoCarousel";
 import "../styles/PromoSection.css";
 
@@ -34,17 +34,17 @@ function PromoSection() {
         <PromoCarousel />
 
         <div className="promo-side-banners" aria-label="Promociones secundarias">
-          <aside className="promo-feature promo-feature--cerave">
+          <aside className="promo-feature promo-feature--head-shoulders">
             <img
-              src={neutrogena}
-              alt="Promoción de productos Neutrogena Hydro Boost"
+              src={headShoulders}
+              alt="Promoción de productos Head & Shoulders"
             />
           </aside>
 
           <aside className="promo-feature promo-feature--nosotras">
             <img
-              src={CHICADORMIDA}
-              alt="Promoción de toallas Nosotras Extra Protección"
+              src={profuundaNosotras}
+              alt="Promoción de productos Nosotras"
             />
           </aside>
         </div>

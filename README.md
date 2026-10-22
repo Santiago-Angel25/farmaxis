@@ -16,9 +16,24 @@ Detalles:
 
 ## Comportamiento del navbar
 
-- **Barra de accesos rápidos** (fondo azul oscuro `#081E35`, el mismo del logo) con "Más categorías", Favoritos, Ofertas, Volver a comprar y Cupones. Todos centrados y con el texto en blanco.
-- **"Más categorías"**: al pasar el mouse se despliega abajo una barra **horizontal** con las 7 categorías (fondo azul más claro `#123B60`) y se esconde en cuanto el mouse sale. El chevron gira 180° mientras está abierta.
-- **Al hacer scroll** el navbar se va **desvaneciendo** progresivamente (hasta desaparecer a los ~240 px) y vuelve a mostrarse completo al subir. Cuando ya es invisible deja de interceptar los clics del contenido.
+- **Navbar fijo**: el header está anclado arriba de la ventana (`position: fixed`) y **siempre visible** (nunca se desvanece al hacer scroll). Solo aparece una sombra suave al bajar para separar del contenido. Un bloque espaciador (`.navbar__spacer`) reserva el alto del navbar en el flujo de la página.
+- **Fila principal**: el **logo a la izquierda**, el **buscador en el centro** y el grupo de acciones (Iniciar sesión, Favoritos, Carrito) **a la derecha**.
+- **Barra de accesos rápidos** (fondo azul oscuro `#081E35`, el mismo del logo) con "Más categorías", Favoritos, Ofertas, Volver a comprar y Cupones. El grupo completo queda **centrado en la franja azul** (mismo espacio a izquierda y a derecha) y con el texto en blanco. Si la ventana es muy estrecha, la franja se desplaza horizontalmente sin cortar el primer acceso.
+- **"Más categorías"**: al pasar el mouse se despliega abajo una barra **horizontal** con las 7 categorías (fondo azul más claro `#123B60`) y se esconde en cuanto el mouse sale. El chevron gira 180° mientras está abierta. La zona que mantiene abierto el desplegable es fija y la barra animada nunca intercepta el ratón, así que al pasar de "Más categorías" a otro acceso el panel se cierra una sola vez (sin parpadeos) y no roba los clics de los accesos de arriba.
+- **Cierre rápido**: al salir el mouse, el desplegable se oculta en ~0,23 s (90 ms de espera + 140 ms de animación), mucho más ágil que antes.
+- **Espacio con las promociones**: al abrirse, el desplegable empuja el contenido hacia abajo y deja un hueco en blanco de 24 px entre la barra de categorías y la sección de promociones (nunca se superponen).
+
+## Animaciones del navbar (GSAP)
+
+Todo el navbar está animado con GSAP, por zonas:
+
+- **Entrada**: al cargar, un timeline escalonado (logo → buscador → acciones → accesos rápidos → separador → botón de buscar → contador del carrito), con entrada desde arriba y un pequeño rebote (`back.out`) en los iconos y el badge.
+- **Franja blanca**: el **logo** crece un 4 % al pasar el ratón, el **buscador** se levanta 2 px y gana una sombra suave, el **botón de buscar** rebota y los **iconos de sesión/favoritos/carrito** se agrandan (el contador del carrito da un golpecito).
+- **Franja azul oscura**: los **iconos de los accesos rápidos** crecen al pasar el ratón, el **separador** se estira y el **chevron de "Más categorías"** crece y gira 180° (ya lo anima GSAP, no CSS).
+- **Desplegable**: la barra entra desde abajo y los **7 botones de categoría** aparecen uno detrás de otro (stagger) y, al pasar el ratón, cada uno crece un poco.
+- Si el sistema tiene activada la opción **"reducir movimiento"**, las animaciones de hover se desactivan.
+
+Todos los hovers usan solo **escalas** (nunca desplazamientos): una escala nunca expulsa al puntero de su elemento, así que no se producen micro-parpadeos.
 
 Los colores salen del propio logo: `#081E35` (azul marino), `#123B60` (azul claro) y `#45A9DB` (celeste de acento).
 
