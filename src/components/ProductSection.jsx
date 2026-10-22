@@ -8,6 +8,7 @@ import {
   HeartFilled,
   HeartRegular,
 } from "@fluentui/react-icons";
+import gsap from "gsap";
 import { useStore } from "../context/StoreContext";
 import "../styles/ProductSection.css";
 
@@ -19,12 +20,125 @@ const formatPrice = (price) =>
   }).format(price);
 
 function ProductSection({ title, subtitle, products, onViewAll }) {
+  const sectionRef = useRef(null);
   const trackRef = useRef(null);
   const addFeedbackTimeout = useRef(null);
   const [addedProductId, setAddedProductId] = useState(null);
   const { favorites, addToCart, toggleFavorite } = useStore();
 
   useEffect(() => () => window.clearTimeout(addFeedbackTimeout.current), []);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return undefined;
+
+    let animationContext;
+    let hasPlayed = false;
+    let observer;
+
+    const playEntrance = () => {
+      if (hasPlayed) return;
+      hasPlayed = true;
+
+      section.classList.add("is-entering");
+      animationContext = gsap.context(() => {
+        const timeline = gsap.timeline({
+          onComplete: () => section.classList.remove("is-entering"),
+        });
+
+        timeline.fromTo(
+          ".product-section__header",
+          {
+            autoAlpha: 0,
+            y: 22,
+            filter: "blur(7px)",
+          },
+          {
+            autoAlpha: 1,
+            y: 0,
+            filter: "blur(0px)",
+            duration: 0.65,
+            ease: "power3.out",
+          },
+        );
+
+        timeline.fromTo(
+          ".product-section__carousel > button",
+          { autoAlpha: 0, scale: 0.78 },
+          {
+            autoAlpha: 1,
+            scale: 1,
+            duration: 0.45,
+            stagger: 0.1,
+            ease: "back.out(1.7)",
+          },
+          "-=0.3",
+        );
+
+        timeline.fromTo(
+          ".product-card",
+          {
+            autoAlpha: 0,
+            y: 34,
+            rotateX: 7,
+            scale: 0.96,
+            filter: "blur(7px)",
+          },
+          {
+            autoAlpha: 1,
+            y: 0,
+            rotateX: 0,
+            scale: 1,
+            filter: "blur(0px)",
+            duration: 0.72,
+            stagger: 0.11,
+            ease: "power3.out",
+            clearProps: "transform,opacity,visibility,filter",
+          },
+          "-=0.28",
+        );
+
+        timeline.fromTo(
+          ".product-card__visual img",
+          { scale: 1.07 },
+          {
+            scale: 1,
+            duration: 0.85,
+            stagger: 0.08,
+            ease: "power2.out",
+            clearProps: "transform",
+          },
+          "<",
+        );
+      }, section);
+    };
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return undefined;
+    }
+
+    if (!("IntersectionObserver" in window)) {
+      playEntrance();
+      return () => animationContext?.revert();
+    }
+
+    observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        observer.disconnect();
+        playEntrance();
+      },
+      { threshold: 0.18 },
+    );
+
+    observer.observe(section);
+
+    return () => {
+      observer?.disconnect();
+      animationContext?.revert();
+      section.classList.remove("is-entering");
+    };
+  }, []);
 
   const handleAddToCart = (product) => {
     addToCart(product);
@@ -47,7 +161,11 @@ function ProductSection({ title, subtitle, products, onViewAll }) {
   };
 
   return (
-    <section className="product-section" aria-label={title}>
+    <section
+      ref={sectionRef}
+      className="product-section"
+      aria-label={title}
+    >
       <header className="product-section__header">
         <div>
           <h2>{title}</h2>

@@ -15,7 +15,14 @@ function App() {
       <PromoSection />
       <CategoriaHome />
       <PopularVideosSection />
-      <ProductSection title="Productos destacados" subtitle="Selección para ti" products={featuredProducts} />
+      <ProductSection 
+      title="Productos destacados" 
+      subtitle="Selección para ti" 
+      products={featuredProducts} />
+      <ProductSection 
+      title="Bebidas y alimentos" 
+      subtitle="Encuentra lo que necesitas" 
+      products={featuredProducts} />
       <CartDrawer />
       <WishlistDrawer />
     </StoreProvider>

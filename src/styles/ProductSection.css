@@ -80,3 +80,8 @@
 .product-card__add.is-added { background-color: #16834a !important; color: #fff !important; }
 @keyframes product-heart-pop { 0% { transform: scale(.65); } 65% { transform: scale(1.28); } 100% { transform: scale(1); } }
 @media (prefers-reduced-motion: reduce) { .product-card__favorite, .product-card__add { transition: none; } .product-card__favorite.is-favorite svg { animation: none; } }
+
+/* Evita que la transición de hover compita con la entrada de GSAP. */
+.product-section.is-entering .product-card {
+  transition: box-shadow 180ms ease;
+}
