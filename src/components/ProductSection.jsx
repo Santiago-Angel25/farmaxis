@@ -19,7 +19,7 @@ const formatPrice = (price) =>
     maximumFractionDigits: 0,
   }).format(price);
 
-function ProductSection({ title, subtitle, products, onViewAll }) {
+function ProductSection({ title, subtitle, products, onViewAll, showDiscount = false }) {
   const sectionRef = useRef(null);
   const trackRef = useRef(null);
   const addFeedbackTimeout = useRef(null);
@@ -154,7 +154,7 @@ function ProductSection({ title, subtitle, products, onViewAll }) {
     const track = trackRef.current;
     if (track) {
       track.scrollBy({
-        left: direction * track.clientWidth * 0.85,
+        left: direction * track.clientWidth,
         behavior: "smooth",
       });
     }
@@ -203,7 +203,7 @@ function ProductSection({ title, subtitle, products, onViewAll }) {
                   ) : (
                     <span>IMAGEN</span>
                   )}
-                  {product.discount && (
+                  {showDiscount && product.discount && (
                     <span className="product-card__discount">
                       -{product.discount}%
                     </span>
@@ -228,7 +228,7 @@ function ProductSection({ title, subtitle, products, onViewAll }) {
                 <div className="product-card__details">
                   <h3>{product.name}</h3>
                   <strong>{formatPrice(product.price)}</strong>
-                  {product.previousPrice && (
+                  {showDiscount && product.discount && product.previousPrice && (
                     <span className="product-card__previous-price">
                       {formatPrice(product.previousPrice)}
                     </span>
@@ -269,3 +269,7 @@ function ProductSection({ title, subtitle, products, onViewAll }) {
 }
 
 export default ProductSection;
+
+
+
+
