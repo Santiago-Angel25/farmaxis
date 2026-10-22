@@ -278,3 +278,8 @@
     font-size: 12px;
   }
 }
+
+/* El contador acompaña las actualizaciones del carrito y favoritos */
+.cart-counter { animation: navbar-counter-pop 260ms cubic-bezier(.2, .8, .2, 1.2); }
+@keyframes navbar-counter-pop { 0% { opacity: .55; transform: scale(.65); } 70% { transform: scale(1.2); } 100% { opacity: 1; transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { .cart-counter { animation: none; } }
