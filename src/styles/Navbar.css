@@ -3,11 +3,18 @@
    Todo el diseño vive en este archivo (sin estilos en el JSX)
    ============================================================ */
 
+:root {
+  /* Alturas del navbar (para el espacio que deja en la página) */
+  --navbar-alto-principal: 78px;
+  --navbar-alto-accesos: 46px;
+}
+
 .navbar {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 50;
-  width: 100%;
   color: #171717;
   background: #fff;
   box-shadow: 0 0 0 rgba(8, 30, 53, 0);
@@ -18,15 +25,18 @@
   --navbar-azul-acento: #45a9db;
 }
 
-/* Cuando el navbar se desvanece por completo deja de interceptar los clics */
-.navbar--oculto {
-  pointer-events: none;
+/* Espacio que ocupa el navbar fijo en el flujo de la página.
+   Cuando se abre el desplegable, este bloque crece (padding) y empuja el
+   contenido, dejando un hueco en blanco sobre las promociones */
+.navbar__spacer {
+  box-sizing: content-box;
+  height: calc(var(--navbar-alto-principal) + var(--navbar-alto-accesos));
 }
 
 /* ---------- Fila principal ---------- */
 
 .navbar__main {
-  min-height: 78px;
+  min-height: var(--navbar-alto-principal);
   display: flex;
   align-items: center;
   gap: clamp(14px, 2.4vw, 28px);
@@ -34,7 +44,7 @@
   border-bottom: 1px solid #e4e4e4;
 }
 
-/* ---------- Logo (izquierda) ---------- */
+/* ---------- Logo ---------- */
 
 .navbar__brand {
   flex: 0 0 auto;
@@ -89,6 +99,8 @@
 
 .navbar__search-input {
   width: min(520px, 100%);
+  /* Sombra base: GSAP la interpola al pasar el ratón por el buscador */
+  box-shadow: 0 0 0 rgba(8, 30, 53, 0);
 }
 
 .navbar__search-input input {
@@ -104,7 +116,7 @@
   min-width: 42px;
 }
 
-/* ---------- Acciones (derecha) ---------- */
+/* ---------- Acciones (inicio de sesión, favoritos y carrito) ---------- */
 
 .navbar__actions {
   flex: 0 0 auto;
@@ -159,19 +171,28 @@
 /* El contenedor solo hace de ancla para el desplegable de categorías */
 .navbar__options {
   position: relative;
-  min-height: 46px;
+  min-height: var(--navbar-alto-accesos);
   background: var(--navbar-azul-oscuro);
 }
 
 .navbar__options-track {
-  min-height: 46px;
+  min-height: var(--navbar-alto-accesos);
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: clamp(14px, 2.6vw, 38px);
-  padding: 6px clamp(16px, 4vw, 48px);
   overflow-x: auto;
   scrollbar-width: none;
+}
+
+/* Grupo de accesos rápidos: centrado en la franja azul.
+   Con márgenes automáticos el grupo se centra cuando hay sitio y,
+   si no cabe, la franja se desplaza horizontalmente sin cortar nada */
+.navbar__options-inner {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 2vw, 20px);
+  padding: 6px clamp(16px, 4vw, 48px);
+  margin: 0 auto;
 }
 
 .navbar__options-track::-webkit-scrollbar {
@@ -204,15 +225,11 @@
 
 .navbar__option-icon {
   font-size: 15px;
-  transition: transform 0.25s ease;
 }
 
+/* El chevron lo gira GSAP (no CSS) para poder animarlo sin conflictos */
 .navbar__option-icon--chevron {
   transform: rotate(0deg);
-}
-
-.navbar__option--menu.is-open .navbar__option-icon--chevron {
-  transform: rotate(180deg);
 }
 
 .navbar__divider {
@@ -229,23 +246,33 @@
 
 /* ---------- Barra horizontal de categorías (desplegable) ---------- */
 
+/* Contenedor del desplegable: es la zona que mantiene abierto el panel.
+   NUNCA se anima ni se mueve, para que el ratón no quede "atrapado"
+   debajo de la barra al pasar de un acceso a otro (provocaba el parpadeo) */
 .navbar__categories {
   position: absolute;
   top: 100%;
   left: 0;
   right: 0;
-  opacity: 0;
-  visibility: hidden;
+}
+
+/* Cerrado: no debe interceptar el ratón ni permitir clics */
+.navbar__categories--oculto {
+  pointer-events: none;
+}
+
+.navbar__categories--oculto .navbar__category {
+  pointer-events: none;
 }
 
 /* Puente invisible que une la barra de accesos con la de categorías */
 .navbar__categories::before {
   content: "";
   position: absolute;
-  top: -8px;
+  top: -6px;
   left: 0;
   right: 0;
-  height: 8px;
+  height: 6px;
 }
 
 .navbar__categories-track {
@@ -260,6 +287,17 @@
   white-space: nowrap;
   overflow-x: auto;
   scrollbar-width: none;
+
+  /* La barra animada no captura el ratón (solo sus botones), así que
+     aunque se desplace nunca roba el puntero de los accesos de arriba */
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Los botones de categoría sí son clicables */
+.navbar__categories .navbar__category {
+  pointer-events: auto;
 }
 
 .navbar__categories-track::-webkit-scrollbar {
@@ -293,8 +331,11 @@
 }
 
 @media (max-width: 860px) {
+  :root {
+    --navbar-alto-principal: 68px;
+  }
+
   .navbar__main {
-    min-height: 68px;
     gap: 10px;
     padding: 10px 16px;
   }

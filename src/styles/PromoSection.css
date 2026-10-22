@@ -7,7 +7,9 @@
 
 .promo-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+  /* La columna lateral se estrecha para que sus cajas tengan la misma
+     proporción (16:9) que los banners: así las imágenes encajan sin bandas */
+  grid-template-columns: minmax(0, 2.4fr) minmax(0, 1fr);
   grid-template-rows: auto;
   gap: 20px;
   align-items: stretch;
@@ -61,12 +63,12 @@
   transform: scale(1.04);
 }
 
-.promo-feature--cerave::before {
-  background-image: url("../assets/neutrogena.jgp.webp");
+.promo-feature--head-shoulders::before {
+  background-image: url("../assets/head&shoulders.webp");
 }
 
 .promo-feature--nosotras::before {
-  background-image: url("../assets/CHICADORMIDA06JUN.jpg");
+  background-image: url("../assets/profuundaNosotras.webp");
 }
 
 .promo-feature img {
@@ -75,7 +77,8 @@
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  /* Cubre la caja entera: sin franjas vacías ni bordes degradados */
+  object-fit: cover;
   object-position: center;
   border-radius: inherit;
 }
@@ -95,6 +98,13 @@
   }
 
   .promo-side-banners {
-    height: clamp(180px, 54vw, 324px);
+    height: auto;
+  }
+
+  /* En móvil los banners conservan su proporción para no recortar la imagen */
+  .promo-feature {
+    flex: 0 0 auto;
+    height: auto;
+    aspect-ratio: 16 / 9;
   }
 }
