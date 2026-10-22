@@ -1,30 +1,63 @@
+/* ============================================================
+   Navbar - Farmaxis
+   Todo el diseño vive en este archivo (sin estilos en el JSX)
+   ============================================================ */
+
 .navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
   width: 100%;
   color: #171717;
   background: #fff;
+  box-shadow: 0 0 0 rgba(8, 30, 53, 0);
+
+  /* Colores tomados del logo de Farmaxis */
+  --navbar-azul-oscuro: #081e35;
+  --navbar-azul-claro: #123b60;
+  --navbar-azul-acento: #45a9db;
 }
 
-.navbar button {
-  cursor: pointer;
+/* Cuando el navbar se desvanece por completo deja de interceptar los clics */
+.navbar--oculto {
+  pointer-events: none;
 }
 
-.navbar-main {
-  min-height: 76px;
+/* ---------- Fila principal ---------- */
+
+.navbar__main {
+  min-height: 78px;
   display: flex;
   align-items: center;
-  gap: 22px;
-  padding: 12px clamp(20px, 4vw, 48px);
+  gap: clamp(14px, 2.4vw, 28px);
+  padding: 12px clamp(16px, 4vw, 48px);
   border-bottom: 1px solid #e4e4e4;
 }
 
-.brand {
-  width: 120px;
-  flex: 0 0 120px;
+/* ---------- Logo (izquierda) ---------- */
+
+.navbar__brand {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
   color: inherit;
   text-decoration: none;
 }
 
-.brand-name {
+.navbar__logo {
+  display: block;
+  width: auto;
+  max-width: 175px;
+  height: 52px;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.navbar__brand-text {
+  display: block;
+}
+
+.navbar__brand-name {
   display: block;
   font-size: 21px;
   font-weight: 700;
@@ -32,12 +65,12 @@
   letter-spacing: -0.8px;
 }
 
-.brand-name > span {
+.navbar__brand-name > span {
   font-size: 30px;
   line-height: 24px;
 }
 
-.brand-subtitle {
+.navbar__brand-subtitle {
   display: block;
   margin-left: 17px;
   color: #666;
@@ -45,236 +78,250 @@
   line-height: 14px;
 }
 
-.search-container {
-  width: min(500px, 42vw);
-  height: 42px;
+/* ---------- Buscador (centro) ---------- */
+
+.navbar__search {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+}
+
+.navbar__search-input {
+  width: min(520px, 100%);
+}
+
+.navbar__search-input input {
+  font-size: 13px;
+}
+
+.navbar__search-icon {
+  color: #666;
+  font-size: 20px;
+}
+
+.navbar__search-submit {
+  min-width: 42px;
+}
+
+/* ---------- Acciones (derecha) ---------- */
+
+.navbar__actions {
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
-  border: 1px solid #dedede;
-  border-radius: 12px;
-  background: #f7f7f7;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-left: auto;
 }
 
-.search-container:focus-within {
-  border-color: #888;
-  box-shadow: 0 0 0 2px rgb(0 0 0 / 8%);
-}
-
-.search-container input {
-  width: 100%;
-  min-width: 0;
-  height: 100%;
-  padding: 0 14px;
-  border: 0;
-  outline: 0;
-  background: transparent;
-  font-size: 13px;
-}
-
-.search-container input::placeholder {
-  color: #777;
-}
-
-.search-button {
-  width: 30px;
-  height: 30px;
-  flex: 0 0 30px;
-  display: grid;
-  place-items: center;
-  margin-right: 6px;
-  padding: 0;
-  border: 0;
-  border-radius: 50%;
-  background: #111;
-  color: #fff;
-}
-
-.search-button svg {
-  width: 17px;
-  height: 17px;
-}
-
-
-
-.login-button,
-.navbar-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 0;
-  background: transparent;
-}
-
-.login-button {
-  gap: 5px;
-  padding: 8px 0;
-  font-size: 13px;
+.navbar__action {
+  color: #171717;
   white-space: nowrap;
 }
 
-.login-button svg {
-  width: 19px;
-  height: 19px;
+.navbar__action--login {
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
 }
 
-.navbar-icon {
+.navbar__action--icon {
+  min-width: 40px;
+  height: 40px;
+  border-radius: 12px;
+}
+
+.navbar__action-icon {
+  font-size: 22px;
+  transition: color 0.2s ease;
+}
+
+.navbar__action:hover .navbar__action-icon {
+  color: #1f7a3f;
+}
+
+.navbar__cart {
   position: relative;
-  width: 32px;
-  height: 32px;
-  flex: 0 0 32px;
-  padding: 0;
+  display: flex;
 }
 
-.navbar-icon svg {
-  width: 23px;
-  height: 23px;
-}
-
-.cart-counter {
+.navbar__cart-badge {
   position: absolute;
-  top: -3px;
-  right: -3px;
-  width: 16px;
-  height: 16px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: #111;
-  color: #fff;
-  font-size: 10px;
-  font-weight: 700;
+  top: 0;
+  right: 0;
+  transform: scale(1);
+  pointer-events: none;
 }
 
-.navbar-options,
-.navbar-categories {
+/* ---------- Barra de accesos rápidos ---------- */
+
+/* El contenedor solo hace de ancla para el desplegable de categorías */
+.navbar__options {
+  position: relative;
+  min-height: 46px;
+  background: var(--navbar-azul-oscuro);
+}
+
+.navbar__options-track {
+  min-height: 46px;
   display: flex;
   align-items: center;
+  justify-content: center;
+  gap: clamp(14px, 2.6vw, 38px);
+  padding: 6px clamp(16px, 4vw, 48px);
   overflow-x: auto;
   scrollbar-width: none;
 }
 
-.navbar-options::-webkit-scrollbar,
-.navbar-categories::-webkit-scrollbar {
+.navbar__options-track::-webkit-scrollbar {
   display: none;
 }
 
-.navbar-options {
-  min-height: 38px;
-  justify-content: center;
-  gap: clamp(18px, 4vw, 48px);
-  padding: 4px 20px;
-  background: #dedede;
+/* Texto blanco sobre el fondo azul (gana al estilo por defecto de Fluent) */
+.navbar__options .navbar__option,
+.navbar__categories .navbar__category {
+  color: #ffffff;
+  --colorNeutralForeground1: #ffffff;
+  --colorNeutralForeground1Hover: var(--navbar-azul-acento);
+  --colorNeutralForeground1Pressed: var(--navbar-azul-acento);
+  --colorNeutralBackground1Hover: rgba(69, 169, 219, 0.18);
+  --colorNeutralBackground1Pressed: rgba(69, 169, 219, 0.28);
 }
 
-.navbar-options button,
-.navbar-categories button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+.navbar__option {
   flex: 0 0 auto;
-  gap: 5px;
-  padding: 6px 2px;
-  border: 0;
-  background: transparent;
-  color: inherit;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
   white-space: nowrap;
 }
 
-.navbar-options button {
-  font-size: 12px;
+.navbar__option:hover {
+  color: var(--navbar-azul-acento);
 }
 
-.navbar-options svg {
-  width: 15px;
-  height: 15px;
+.navbar__option-icon {
+  font-size: 15px;
+  transition: transform 0.25s ease;
 }
 
-.navbar-categories {
-  min-height: 38px;
-  justify-content: space-around;
-  gap: 22px;
-  padding: 4px clamp(20px, 3vw, 36px);
-  background: #f0f0f0;
+.navbar__option-icon--chevron {
+  transform: rotate(0deg);
 }
 
-.navbar-categories button {
-  font-size: 11px;
+.navbar__option--menu.is-open .navbar__option-icon--chevron {
+  transform: rotate(180deg);
 }
 
-.navbar-options button:hover,
-.navbar-categories button:hover,
-.login-button:hover,
-.navbar-icon:hover {
-  opacity: 0.65;
+.navbar__divider {
+  flex: 0 0 auto;
+  height: 18px;
+  border-color: rgba(255, 255, 255, 0.35);
 }
+
+.navbar__options .navbar__divider {
+  --colorNeutralStroke1: rgba(255, 255, 255, 0.35);
+  --colorNeutralStroke2: rgba(255, 255, 255, 0.35);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+/* ---------- Barra horizontal de categorías (desplegable) ---------- */
+
+.navbar__categories {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Puente invisible que une la barra de accesos con la de categorías */
+.navbar__categories::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 0;
+  right: 0;
+  height: 8px;
+}
+
+.navbar__categories-track {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(12px, 2.4vw, 32px);
+  padding: 10px clamp(16px, 4vw, 48px);
+  background: var(--navbar-azul-claro);
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 14px 28px rgba(8, 30, 53, 0.28);
+  white-space: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.navbar__categories-track::-webkit-scrollbar {
+  display: none;
+}
+
+.navbar__category {
+  flex: 0 0 auto;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.navbar__category:hover {
+  color: var(--navbar-azul-acento);
+}
+
+/* ---------- Estados ---------- */
 
 .navbar button:focus-visible {
-  outline: 2px solid #225ea8;
-  outline-offset: 3px;
+  outline: 2px solid var(--navbar-azul-acento);
+  outline-offset: 2px;
 }
 
-@media (max-width: 760px) {
-  .navbar-main {
-    min-height: 66px;
-    gap: 12px;
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1080px) {
+  .navbar__search-input {
+    width: 100%;
+  }
+}
+
+@media (max-width: 860px) {
+  .navbar__main {
+    min-height: 68px;
+    gap: 10px;
     padding: 10px 16px;
   }
 
-  .brand {
-    width: 100px;
-    flex-basis: 100px;
+  .navbar__logo {
+    height: 42px;
+    max-width: 132px;
   }
 
-  .search-container {
-    width: auto;
-    flex: 1;
-  }
-
-  .api-button,
-  .login-button span,
-  .navbar-icon:not(.cart-button) {
+  .navbar__action--login span {
     display: none;
   }
 
-  .navbar-options {
+  .navbar__options-track,
+  .navbar__categories-track {
     justify-content: flex-start;
-    gap: 24px;
-    padding-inline: 16px;
-  }
-
-  .navbar-categories {
-    justify-content: flex-start;
-    gap: 24px;
+    gap: 20px;
     padding-inline: 16px;
   }
 }
 
-@media (max-width: 420px) {
-  .navbar-main {
-    gap: 8px;
-    padding-inline: 12px;
+@media (max-width: 560px) {
+  .navbar__brand {
+    display: none;
   }
 
-  .brand {
-    width: 88px;
-    flex-basis: 88px;
-  }
-
-  .brand-name {
-    font-size: 18px;
-  }
-
-  .brand-name > span {
-    font-size: 26px;
-  }
-
-  .brand-subtitle {
-    margin-left: 15px;
-    font-size: 10px;
-  }
-
-  .search-container input {
-    padding-inline: 8px;
+  .navbar__search-input input {
     font-size: 12px;
   }
 }
