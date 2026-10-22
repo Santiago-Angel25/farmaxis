@@ -25,14 +25,13 @@
   min-width: 0;
 }
 
-
+/* Logo */
 .footer .footer-brand-logo {
   display: flex;
   align-items: center;
   min-height: 48px;
   margin-bottom: 22px;
 }
-
 
 .footer .footer-logo-image {
   display: block;
@@ -44,7 +43,6 @@
   object-position: left center;
 }
 
-
 .footer .footer-logo {
   display: block;
   margin: 0;
@@ -54,7 +52,7 @@
   line-height: 1.2;
 }
 
-/* Descripción de Farmaxis */
+/* Descripción */
 .footer .footer-description,
 .footer .footer-brand p {
   margin: 0;
@@ -72,6 +70,7 @@
   line-height: 1.3;
 }
 
+/* Texto de contacto */
 .footer .footer-column > p {
   margin: 0;
   padding: 0;
@@ -80,17 +79,36 @@
 
 /* Enlaces de navegación */
 .footer .footer-column > a {
-  display: block;
-  margin: 0 0 3px;
+  display: inline-block;
+  width: fit-content;
+  margin: 0 0 5px;
+  padding: 2px 0;
   color: #D6E8F5;
   font-size: 13px;
   line-height: 1.35;
   text-decoration: none;
+  position: relative;
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease,
+    text-shadow 0.25s ease;
 }
 
 .footer .footer-column > a:hover {
   color: #FFFFFF;
-  text-decoration: underline;
+  text-decoration: none;
+  transform: translateX(5px);
+  text-shadow: 0 0 8px rgba(214, 232, 245, 0.2);
+}
+
+.footer .footer-column > a:active {
+  transform: translateX(2px) scale(0.98);
+}
+
+.footer .footer-column > a:focus-visible {
+  outline: 2px solid #8ED8F8;
+  outline-offset: 4px;
+  border-radius: 2px;
 }
 
 /* Redes sociales */
@@ -110,28 +128,60 @@
   font-size: 13px;
 }
 
+/* Iconos sociales */
 .footer .social-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   color: #FFFFFF;
+  transition:
+    transform 0.25s ease,
+    color 0.25s ease;
 }
 
+/* Usuarios de redes sociales */
 .footer .social-item a {
+  display: inline-block;
+  min-width: 0;
   color: #D6E8F5;
   font-size: 13px;
   line-height: 1.4;
   text-decoration: none;
   overflow-wrap: anywhere;
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease,
+    text-shadow 0.25s ease;
 }
 
+/* Resaltar el usuario sin subrayarlo */
 .footer .social-item a:hover {
   color: #FFFFFF;
-  text-decoration: underline;
+  text-decoration: none;
+  transform: translateX(5px);
+  text-shadow: 0 0 8px rgba(214, 232, 245, 0.2);
 }
 
+/* Animar el icono cuando se pasa por toda la fila */
+.footer .social-item:hover .social-icon {
+  transform: scale(1.15);
+  color: #8ED8F8;
+}
 
+/* Efecto al hacer clic */
+.footer .social-item a:active {
+  transform: translateX(2px) scale(0.98);
+}
+
+/* Accesibilidad con teclado */
+.footer .social-item a:focus-visible {
+  outline: 2px solid #8ED8F8;
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* Línea divisoria y derechos reservados */
 .footer .footer-bottom {
   border-top: 1px solid #718BA2;
   padding-top: 17px;
@@ -145,7 +195,7 @@
   display: inline-block;
 }
 
-
+/* Tablets */
 @media (max-width: 900px) {
   .footer {
     padding-right: 4%;
@@ -158,7 +208,7 @@
   }
 }
 
-
+/* Celulares */
 @media (max-width: 600px) {
   .footer {
     padding: 25px 6% 14px;
@@ -179,7 +229,7 @@
   }
 }
 
-
+/* Celulares pequeños */
 @media (max-width: 360px) {
   .footer .footer-content {
     grid-template-columns: 1fr;
@@ -189,3 +239,24 @@
     grid-column: auto;
   }
 }
+
+/* Respetar la preferencia de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+  .footer .footer-column > a,
+  .footer .social-item a,
+  .footer .social-icon {
+    transition: none;
+  }
+
+  .footer .footer-column > a:hover,
+  .footer .social-item a:hover,
+  .footer .social-item a:active,
+  .footer .social-item a:focus-visible {
+    transform: none;
+  }
+
+  .footer .social-item:hover .social-icon {
+    transform: none;
+  }
+}
+
