@@ -4,48 +4,87 @@ import neutrogena from "../assets/neutrogena.jgp.webp";
 import promocion2 from "../assets/promocion2.jpg";
 import promocion3 from "../assets/promocion3.jpg";
 import proteina from "../assets/proteina.jpg";
+import videoBondiBoost from "../assets/video_promocional_bondi_boost.mp4";
+import videoElvive from "../assets/video_promocional_elvive.mp4";
+import videoGison from "../assets/video_promocional_gison.mp4";
+import videoJabonPears from "../assets/video_promocional_jabon_pears.mp4";
+import videoLaRochePosay from "../assets/video_promocional_la_roche_posay.mp4";
+import videoLumene from "../assets/video_promocional_lumene.mp4";
+import videoNosotras from "../assets/video_promocional_nosotras.mp4";
+import videoPampers from "../assets/video_promocional_pampers.mp4";
+import videoProzisOmega3 from "../assets/video_promocional_prozis_omega3.mp4";
+import videoSupergoop from "../assets/video_promocional_supergoop.mp4";
+
 const POPULAR_VIDEOS = [
   {
-    id: "neutrogena-hydro-boost",
-    title: "Hidratación para tu piel",
-    product: "Neutrogena Hydro Boost",
+    id: "bondi-boost",
+    title: "Cuida y fortalece tu cabello",
+    product: "Bondi Boost",
     poster: neutrogena,
-    videoSrc: "",
+    videoSrc: videoBondiBoost,
   },
   {
-    id: "nosotras-buenas-noches",
-    title: "Descubre una noche más cómoda",
-    product: "Nosotras Buenas Noches",
+    id: "elvive",
+    title: "Brillo y reparación para tu cabello",
+    product: "Elvive",
     poster: CHICADORMIDA,
-    videoSrc: "",
+    videoSrc: videoElvive,
   },
   {
-    id: "pediasure-night",
-    title: "Conoce PediaSure Night",
-    product: "PediaSure Night",
+    id: "gison",
+    title: "Belleza que se siente bien",
+    product: "Gison",
     poster: promocion2,
-    videoSrc: "",
+    videoSrc: videoGison,
   },
   {
-    id: "fitnutri-proteina",
-    title: "Una rutina para sentirte bien",
-    product: "Productos FitNutri",
+    id: "jabon-pears",
+    title: "Limpieza suave para tu piel",
+    product: "Jabón Pears",
     poster: proteina,
-    videoSrc: "",
+    videoSrc: videoJabonPears,
   },
   {
-    id: "apoteka-promocion",
-    title: "Promociones para cuidarte",
-    product: "Productos Apoteka Direct",
+    id: "la-roche-posay",
+    title: "El cuidado experto de tu piel",
+    product: "La Roche-Posay",
     poster: imagenBaner,
-    videoSrc: "",
+    videoSrc: videoLaRochePosay,
   },
   {
-    id: "nosotras-proteccion",
-    title: "Conoce la protección Nosotras",
-    product: "Nosotras Extra Protección",
+    id: "lumene",
+    title: "Luminosidad natural para tu rostro",
+    product: "Lumene",
     poster: promocion3,
-    videoSrc: "",
+    videoSrc: videoLumene,
+  },
+  {
+    id: "nosotras",
+    title: "Conoce la protección Nosotras",
+    product: "Nosotras",
+    poster: CHICADORMIDA,
+    videoSrc: videoNosotras,
+  },
+  {
+    id: "pampers",
+    title: "Comodidad para cada etapa",
+    product: "Pampers",
+    poster: promocion2,
+    videoSrc: videoPampers,
+  },
+  {
+    id: "prozis-omega-3",
+    title: "Bienestar para tu rutina",
+    product: "Prozis Omega 3",
+    poster: proteina,
+    videoSrc: videoProzisOmega3,
+  },
+  {
+    id: "supergoop",
+    title: "Protección solar todos los días",
+    product: "Supergoop!",
+    poster: imagenBaner,
+    videoSrc: videoSupergoop,
   },
 ];
 export default POPULAR_VIDEOS;

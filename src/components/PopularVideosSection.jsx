@@ -2,17 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import {
   Button,
   Dialog,
-  DialogBody,
-  DialogContent,
   DialogSurface,
-  DialogTitle,
 } from "@fluentui/react-components";
 import {
   ArrowLeftRegular,
   ArrowRightRegular,
+  Cart24Regular,
   DismissRegular,
   PlayRegular,
-  ShoppingBagAddRegular,
 } from "@fluentui/react-icons";
 import gsap from "gsap";
 import POPULAR_VIDEOS from "../data/POPULAR_VIDEOS,js";
@@ -23,21 +20,26 @@ function PopularVideosSection() {
   const trackRef = useRef(null);
   const videoRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(null);
-  const [addedProduct, setAddedProduct] = useState(false);
+  const [quantity, setQuantity] = useState(0);
   const activeVideo = activeIndex === null ? null : POPULAR_VIDEOS[activeIndex];
+  const carouselVideos = [...POPULAR_VIDEOS, ...POPULAR_VIDEOS, ...POPULAR_VIDEOS];
 
   const moveTrack = (direction) => {
     const track = trackRef.current;
     if (!track) return;
 
+    const firstCard = track.querySelector(".popular-video-card");
+    const gap = Number.parseFloat(getComputedStyle(track).gap) || 0;
+    const cardStep = (firstCard?.clientWidth || track.clientWidth * 0.75) + gap;
+
     track.scrollBy({
-      left: direction * track.clientWidth * 0.75,
+      left: direction * cardStep,
       behavior: "smooth",
     });
   };
 
   const moveStory = (direction) => {
-    setAddedProduct(false);
+    setQuantity(0);
     setActiveIndex((current) =>
       (current + direction + POPULAR_VIDEOS.length) % POPULAR_VIDEOS.length,
     );
@@ -127,6 +129,35 @@ function PopularVideosSection() {
     if (activeVideo?.videoSrc) videoRef.current?.play().catch(() => {});
   }, [activeVideo]);
 
+  useEffect(() => {
+    document.body.classList.toggle("popular-video-dialog-is-open", activeIndex !== null);
+    return () => document.body.classList.remove("popular-video-dialog-is-open");
+  }, [activeIndex]);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return undefined;
+
+    const frame = requestAnimationFrame(() => {
+      track.scrollLeft = track.scrollWidth / 3;
+    });
+
+    const keepInfinite = () => {
+      const segmentWidth = track.scrollWidth / 3;
+      if (track.scrollLeft < segmentWidth * 0.25) {
+        track.scrollLeft += segmentWidth;
+      } else if (track.scrollLeft > segmentWidth * 1.75) {
+        track.scrollLeft -= segmentWidth;
+      }
+    };
+
+    track.addEventListener("scroll", keepInfinite, { passive: true });
+    return () => {
+      cancelAnimationFrame(frame);
+      track.removeEventListener("scroll", keepInfinite);
+    };
+  }, []);
+
   return (
     <section
       ref={sectionRef}
@@ -149,15 +180,17 @@ function PopularVideosSection() {
         />
 
         <div className="popular-videos__track" ref={trackRef}>
-          {POPULAR_VIDEOS.map((video, index) => (
+          {carouselVideos.map((video, index) => {
+            const videoIndex = index % POPULAR_VIDEOS.length;
+            return (
             <button
               className="popular-video-card"
-              key={video.id}
+              key={`${Math.floor(index / POPULAR_VIDEOS.length)}-${video.id}`}
               type="button"
               aria-label={`Reproducir: ${video.title}`}
               onClick={() => {
-                setAddedProduct(false);
-                setActiveIndex(index);
+                setQuantity(0);
+                setActiveIndex(videoIndex);
               }}
               onMouseEnter={(event) => animateCard(event, true)}
               onMouseLeave={(event) => animateCard(event, false)}
@@ -169,10 +202,11 @@ function PopularVideosSection() {
                   className="popular-video-card__media"
                   src={video.videoSrc}
                   poster={video.poster}
+                  autoPlay
                   muted
                   loop
                   playsInline
-                  preload="metadata"
+                  preload="auto"
                 />
               ) : (
                 <img
@@ -187,7 +221,8 @@ function PopularVideosSection() {
               </span>
               <span className="popular-video-card__caption">{video.title}</span>
             </button>
-          ))}
+            );
+          })}
         </div>
 
         <Button
@@ -207,68 +242,89 @@ function PopularVideosSection() {
         }}
         modalType="modal"
       >
-        <DialogSurface className="popular-video-dialog">
+        <DialogSurface
+          className="popular-video-dialog"
+          style={{
+            width: "auto",
+            minWidth: 0,
+            maxWidth: "none",
+            padding: 0,
+            backgroundColor: "transparent",
+            boxShadow: "none",
+          }}
+        >
           {activeVideo && (
-            <>
-              <div className="popular-video-dialog__header">
-                <DialogTitle>{activeVideo.title}</DialogTitle>
-                <Button
-                  appearance="subtle"
-                  icon={<DismissRegular />}
-                  aria-label="Cerrar video"
-                  onClick={() => setActiveIndex(null)}
+            <div className="popular-video-dialog__player">
+              {activeVideo.videoSrc ? (
+                <video
+                  ref={videoRef}
+                  src={activeVideo.videoSrc}
+                  poster={activeVideo.poster}
+                  controls
+                  autoPlay
+                  loop
+                  playsInline
                 />
-              </div>
-              <DialogBody>
-                <DialogContent>
-                  <div className="popular-video-dialog__layout">
-                    <div className="popular-video-dialog__player">
-                      {activeVideo.videoSrc ? (
-                        <video
-                          ref={videoRef}
-                          src={activeVideo.videoSrc}
-                          poster={activeVideo.poster}
-                          controls
-                          autoPlay
-                          playsInline
-                        />
-                      ) : (
-                        <img src={activeVideo.poster} alt={activeVideo.title} />
-                      )}
-                      <Button
-                        className="popular-video-dialog__story-arrow popular-video-dialog__story-arrow--previous"
-                        appearance="subtle"
-                        icon={<ArrowLeftRegular />}
-                        aria-label="Promoción anterior"
-                        onClick={() => moveStory(-1)}
-                      />
-                      <Button
-                        className="popular-video-dialog__story-arrow popular-video-dialog__story-arrow--next"
-                        appearance="subtle"
-                        icon={<ArrowRightRegular />}
-                        aria-label="Siguiente promoción"
-                        onClick={() => moveStory(1)}
-                      />
-                    </div>
-
-                    <div className="popular-video-product">
-                      <img src={activeVideo.poster} alt="" />
-                      <div className="popular-video-product__details">
-                        <strong>{activeVideo.product}</strong>
-                        <span>Producto destacado en esta promoción</span>
-                      </div>
-                      <Button
-                        appearance="primary"
-                        icon={<ShoppingBagAddRegular />}
-                        onClick={() => setAddedProduct(true)}
-                      >
-                        {addedProduct ? "Agregado" : "Agregar al carrito"}
-                      </Button>
-                    </div>
-                  </div>
-                </DialogContent>
-              </DialogBody>
-            </>
+              ) : (
+                <img src={activeVideo.poster} alt={activeVideo.title} />
+              )}
+              <Button
+                className="popular-video-dialog__close"
+                appearance="subtle"
+                icon={<DismissRegular />}
+                aria-label="Cerrar video"
+                onClick={() => setActiveIndex(null)}
+              />
+              <Button
+                className="popular-video-dialog__story-arrow popular-video-dialog__story-arrow--previous"
+                appearance="subtle"
+                icon={<ArrowLeftRegular />}
+                aria-label="Video anterior"
+                onClick={() => moveStory(-1)}
+              />
+              <Button
+                className="popular-video-dialog__story-arrow popular-video-dialog__story-arrow--next"
+                appearance="subtle"
+                icon={<ArrowRightRegular />}
+                aria-label="Siguiente video"
+                onClick={() => moveStory(1)}
+              />
+              {quantity === 0 ? (
+                <Button
+                  className="popular-video-dialog__add-cart"
+                  appearance="primary"
+                  icon={<Cart24Regular />}
+                  aria-label="Agregar al carrito"
+                  onClick={() => setQuantity(1)}
+                >
+                  Agregar al carrito
+                </Button>
+              ) : (
+                <div
+                  className="popular-video-dialog__quantity"
+                  aria-label={`${quantity} productos agregados al carrito`}
+                >
+                  <Button
+                    appearance="transparent"
+                    aria-label="Quitar una unidad"
+                    onClick={() => setQuantity((current) => current - 1)}
+                  >
+                    −
+                  </Button>
+                  <span>
+                    <strong>Agregado</strong>
+                    <b>{quantity}</b>
+                  </span>
+                  <Button
+                    appearance="transparent"
+                    aria-label="Agregar una unidad"
+                    onClick={() => setQuantity((current) => current + 1)}
+                  >
+                    +
+                  </Button>
+                </div>
+              )}
+            </div>
           )}
         </DialogSurface>
       </Dialog>
