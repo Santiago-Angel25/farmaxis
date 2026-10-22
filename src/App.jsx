@@ -9,6 +9,9 @@ import { StoreProvider } from "./context/StoreContext";
 import featuredProducts from "./data/featuredProducts";
 import useCatalogProducts from "./hooks/useCatalogProducts";
 
+import Footer from "./components/Footer";
+
+
 function App() {
   const { products, loading, error } = useCatalogProducts();
 
@@ -23,6 +26,7 @@ function App() {
   );
 
   return (
+    <>
     <StoreProvider>
       <Navbar />
       <PromoSection />
@@ -61,7 +65,11 @@ function App() {
       />
       <CartDrawer />
       <WishlistDrawer />
+    
+
+      <Footer />
     </StoreProvider>
+    </>
   );
 }
 
