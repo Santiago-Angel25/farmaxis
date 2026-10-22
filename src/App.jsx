@@ -2,6 +2,7 @@ import Navbar from "./components/Navbar";
 import PromoSection from "./components/PromoSection";
 import CategoriaHome from "./components/CategoriaHome";
 import PopularVideosSection from "./components/PopularVideosSection";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <PromoSection />
       <CategoriaHome />
       <PopularVideosSection />
+      <Footer />
     </>
   );
 }
