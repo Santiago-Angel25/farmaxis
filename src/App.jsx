@@ -47,19 +47,18 @@ function App() {
         subtitle="Encuentra lo que necesitas"
         products={foodProducts}
       />
+       <ProductSection
+        id="salud-y-medicamentos"
+        title="Salud y medicamentos"
+        subtitle="Productos de demostración del catálogo local"
+        products={featuredProducts}
+      />
       <ProductSection
         id="cuidado-personal"
         title="Cuidado personal"
         subtitle="Belleza y cuidado de la piel"
         products={personalCareProducts}
       />
-      <ProductSection
-        id="salud-y-medicamentos"
-        title="Salud y medicamentos"
-        subtitle="Productos de demostración del catálogo local"
-        products={featuredProducts}
-      />
-
       <CartDrawer />
       <WishlistDrawer />
     </StoreProvider>
