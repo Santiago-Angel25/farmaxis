@@ -1,9 +1,3 @@
-import CHICADORMIDA from "../assets/CHICADORMIDA06JUN.jpg";
-import imagenBaner from "../assets/imagenBaner.jpg";
-import neutrogena from "../assets/neutrogena.jgp.webp";
-import promocion2 from "../assets/promocion2.jpg";
-import promocion3 from "../assets/promocion3.jpg";
-import proteina from "../assets/proteina.jpg";
 import videoBondiBoost from "../assets/video_promocional_bondi_boost.mp4";
 import videoElvive from "../assets/video_promocional_elvive.mp4";
 import videoGison from "../assets/video_promocional_gison.mp4";
@@ -20,70 +14,60 @@ const POPULAR_VIDEOS = [
     id: "bondi-boost",
     title: "Cuida y fortalece tu cabello",
     product: "Bondi Boost",
-    poster: neutrogena,
     videoSrc: videoBondiBoost,
   },
   {
     id: "elvive",
     title: "Brillo y reparación para tu cabello",
     product: "Elvive",
-    poster: CHICADORMIDA,
     videoSrc: videoElvive,
   },
   {
     id: "gison",
     title: "Belleza que se siente bien",
     product: "Gison",
-    poster: promocion2,
     videoSrc: videoGison,
   },
   {
     id: "jabon-pears",
     title: "Limpieza suave para tu piel",
     product: "Jabón Pears",
-    poster: proteina,
     videoSrc: videoJabonPears,
   },
   {
     id: "la-roche-posay",
     title: "El cuidado experto de tu piel",
     product: "La Roche-Posay",
-    poster: imagenBaner,
     videoSrc: videoLaRochePosay,
   },
   {
     id: "lumene",
     title: "Luminosidad natural para tu rostro",
     product: "Lumene",
-    poster: promocion3,
     videoSrc: videoLumene,
   },
   {
     id: "nosotras",
     title: "Conoce la protección Nosotras",
     product: "Nosotras",
-    poster: CHICADORMIDA,
     videoSrc: videoNosotras,
   },
   {
     id: "pampers",
     title: "Comodidad para cada etapa",
     product: "Pampers",
-    poster: promocion2,
     videoSrc: videoPampers,
   },
   {
     id: "prozis-omega-3",
     title: "Bienestar para tu rutina",
     product: "Prozis Omega 3",
-    poster: proteina,
     videoSrc: videoProzisOmega3,
   },
   {
     id: "supergoop",
     title: "Protección solar todos los días",
     product: "Supergoop!",
-    poster: imagenBaner,
     videoSrc: videoSupergoop,
   },
 ];
