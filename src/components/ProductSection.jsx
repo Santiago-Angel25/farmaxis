@@ -28,6 +28,8 @@ function ProductSection({
   products,
   onViewAll,
   showDiscount = false,
+  layout = "carousel",
+  hideHeader = false,
 }) {
   const sectionRef = useRef(null);
   const trackRef = useRef(null);
@@ -39,6 +41,7 @@ function ProductSection({
     removeFromCart,
     toggleFavorite,
   } = useStore();
+  const productsToDisplay = products;
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -182,7 +185,7 @@ function ProductSection({
       className="product-section"
       aria-label={title}
     >
-      <header className="product-section__header">
+      {!hideHeader && <header className="product-section__header">
         <div>
           <h2>{title}</h2>
           {subtitle && <p>{subtitle}</p>}
@@ -196,9 +199,9 @@ function ProductSection({
         >
           Ver todos
         </Button>
-      </header>
+      </header>}
 
-      <div className="product-section__carousel">
+      <div className={`product-section__carousel${layout === "grid" ? " product-section__carousel--grid" : ""}`}>
         <Button
           appearance="subtle"
           shape="circular"
@@ -206,8 +209,8 @@ function ProductSection({
           aria-label={`Productos anteriores de ${title}`}
           onClick={() => scrollTrack(-1)}
         />
-        <div className="product-section__track" ref={trackRef}>
-          {products.map((product) => {
+        <div className={`product-section__track${layout === "grid" ? " product-section__track--grid" : ""}`} ref={trackRef}>
+          {productsToDisplay.map((product) => {
             const isFavorite = favorites.some((item) => item.id === product.id);
             const quantity =
               cartItems.find((item) => item.product.id === product.id)

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Badge, Button, Divider, Input, Tooltip } from "@fluentui/react-components";
 import {
   Cart24Regular,
@@ -35,6 +36,7 @@ const ACCESOS_RAPIDOS = [
 const ESPACIO_PROMOCIONES = 24;
 
 function Navbar() {
+  const navigate = useNavigate();
   const { cartCount, favorites, openPanel } = useStore();
   const headerRef = useRef(null);
   const spacerRef = useRef(null);
@@ -458,9 +460,9 @@ function Navbar() {
     <>
       <header className="navbar" ref={headerRef}>
         <div className="navbar__main">
-          <a
+          <Link
             className="navbar__brand"
-            href="/"
+            to="/"
             aria-label="Farmaxis droguerías, inicio"
             onMouseEnter={hoverLogo}
             onMouseLeave={salirLogo}
@@ -480,7 +482,7 @@ function Navbar() {
                 onError={() => setLogoError(true)}
               />
             )}
-          </a>
+          </Link>
 
           <div
             className="navbar__search"
@@ -494,7 +496,7 @@ function Navbar() {
               appearance="outline"
               aria-label="Buscar productos"
               placeholder="Buscar medicamentos, cuidado personal, higiene..."
-              contentBefore={<Search24Regular className="navbar__search-icon" />}
+              
               contentAfter={
                 <Button
                   className="navbar__search-submit"
@@ -669,6 +671,7 @@ function Navbar() {
                   key={categoria}
                   className="navbar__category"
                   appearance="subtle"
+                  onClick={() => navigate("/categories?category=" + ({ "Salud y medicamentos": "medicamentos", Belleza: "beauty", "Cuidado del bebé": "cuidado-del-bebe", "Cuidado personal": "cuidado-personal", Dermocosmética: "skin-care", "Alimentos y bebidas": "groceries", "Hogar, mascotas y otros": "otros" })[categoria])}
                   onMouseEnter={hoverCategoria}
                   onMouseLeave={salirCategoria}
                 >
@@ -686,3 +689,7 @@ function Navbar() {
 }
 
 export default Navbar;
+
+
+
+

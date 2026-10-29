@@ -1,15 +1,16 @@
 import './styles/global.css';
 import { createRoot } from 'react-dom/client';
-import {
-  FluentProvider,
-  webLightTheme
-} from '@fluentui/react-components';
+import { BrowserRouter } from 'react-router-dom';
+import { FluentProvider, webLightTheme } from '@fluentui/react-components';
 import App from './App';
+import { StoreProvider } from './context/StoreContext';
 
-createRoot(document.getElementById('root'))
-  .render(
+createRoot(document.getElementById('root')).render(
+  <BrowserRouter>
     <FluentProvider theme={webLightTheme}>
-      <App />
+      <StoreProvider>
+        <App />
+      </StoreProvider>
     </FluentProvider>
-  )
-
+  </BrowserRouter>,
+);

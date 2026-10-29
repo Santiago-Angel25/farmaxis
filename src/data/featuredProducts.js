@@ -13,6 +13,7 @@ import gelAntibacterial from "../assets/gelAntibacterial.png";
 const featuredProducts = [
   {
     id: 1,
+    category: "medicamentos",
     name: "Paracetamol 500mg",
     price: 2500,
     image: PARACETAMOL,
@@ -22,6 +23,7 @@ const featuredProducts = [
   },
   {
     id: 2,
+    category: "vitaminas",
     name: "Vitamina C",
     price: 5000,
     image: vitaminaC,
@@ -31,6 +33,7 @@ const featuredProducts = [
   },
   {
     id: 3,
+    category: "medicamentos",
     name: "aspirina 500mg",
     price: 62000,
     image: aspirinaefervescente,
@@ -40,6 +43,7 @@ const featuredProducts = [
   },
   {
     id: 4,
+    category: "medicamentos",
     name: "Ibuprofeno 400 mg",
     price: 3200,
     image: ibuprofeno,
@@ -49,6 +53,7 @@ const featuredProducts = [
   },
   {
     id: 5,
+    category: "cuidado-personal",
     name: "Shampoo Anticaspa 400ml",
     price: 12000,
     image: shampooAnticaspa,
@@ -58,6 +63,7 @@ const featuredProducts = [
   },
   {
     id: 6,
+    category: "cuidado-personal",
     name: "Crema Hidratante Facial",
     price: 18000,
     image: cremaHidratante,
@@ -67,6 +73,7 @@ const featuredProducts = [
   },
   {
     id: 7,
+    category: "cuidado-personal",
     name: "Protector Solar FPS 50+",
     price: 25000,
     image: protectorSolar,
@@ -76,6 +83,7 @@ const featuredProducts = [
   },
   {
     id: 8,
+    category: "higiene",
     name: "Alcohol Antiséptico 500ml",
     price: 4500,
     image: alcoholAntiseptico,
@@ -85,6 +93,7 @@ const featuredProducts = [
   },
   {
     id: 9,
+    category: "medicamentos",
     name: "Loratadina 10 mg",
     price: 3800,
     image: loratadina,
@@ -94,6 +103,7 @@ const featuredProducts = [
   },
   {
     id: 10,
+    category: "vitaminas",
     name: "Multivitamínico Completo",
     price: 150000,
     image: multivitaminico,
@@ -103,6 +113,7 @@ const featuredProducts = [
   },
   {
     id: 11,
+    category: "medicamentos",
     name: "Omeprazol 20 mg",
     price: 4200,
     image: omeprazol,
@@ -112,6 +123,7 @@ const featuredProducts = [
   },
   {
     id: 12,
+    category: "higiene",
     name: "Gel Antibacterial 250ml",
     price: 3500,
     image: gelAntibacterial,

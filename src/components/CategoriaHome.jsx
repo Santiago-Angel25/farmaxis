@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
 import { useStore } from "../context/StoreContext";
 import "../styles/CategoriaHome.css";
@@ -7,6 +8,7 @@ import categoriaHome from "../data/categoriaHome";
 function QuickLinksCarousel() {
   const sectionRef = useRef(null);
   const { openPanel } = useStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -92,7 +94,11 @@ function QuickLinksCarousel() {
     };
   }, []);
 
-  const handleQuickLink = ({ target, panel }) => {
+  const handleQuickLink = ({ target, panel, path }) => {
+    if (path) {
+      navigate(path);
+      return;
+    }
     if (panel) {
       openPanel(panel);
       return;
@@ -141,3 +147,4 @@ function QuickLinksCarousel() {
 }
 
 export default QuickLinksCarousel;
+

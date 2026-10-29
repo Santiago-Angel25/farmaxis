@@ -185,17 +185,13 @@ body.popular-video-dialog-is-open {
   box-shadow: 0 20px 60px rgb(0 0 0 / 45%);
 }
 
-.popular-video-dialog__player video,
-.popular-video-dialog__player img {
+.popular-video-dialog__player video {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
 
-.popular-video-dialog__player img {
-  object-fit: cover;
-}
 
 .popular-video-dialog__close {
   position: absolute;
@@ -338,8 +334,7 @@ body.popular-video-dialog-is-open {
     height: min(78vh, 650px);
   }
 
-  .popular-video-dialog__player video,
-  .popular-video-dialog__player img {
+  .popular-video-dialog__player video {
     max-height: 100%;
   }
 }

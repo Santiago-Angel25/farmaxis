@@ -14,7 +14,8 @@
     "@fluentui/react-icons": "^2.0.344",
     "gsap": "^3.15.0",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "react-router-dom": "^7.18.5"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

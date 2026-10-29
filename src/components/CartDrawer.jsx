@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@fluentui/react-components";
 import {
   AddRegular,
@@ -26,9 +27,9 @@ function CartDrawer() {
     updateCartQuantity,
     removeFromCart,
   } = useStore();
+  const navigate = useNavigate();
   const [postalCode, setPostalCode] = useState("");
   const [shippingMessage, setShippingMessage] = useState("");
-  const [checkoutMessage, setCheckoutMessage] = useState("");
   const [removingIds, setRemovingIds] = useState([]);
   const removeTimeouts = useRef(new Map());
   const open = activePanel === "cart";
@@ -216,19 +217,13 @@ function CartDrawer() {
               <Button
                 className="store-drawer__checkout"
                 appearance="primary"
-                onClick={() =>
-                  setCheckoutMessage(
-                    "El carrito está listo. El proceso de pago aún debe conectarse.",
-                  )
-                }
+                onClick={() => {
+                  closePanel();
+                  navigate("/cart");
+                }}
               >
-                Iniciar compra
+                Continuar al proceso de pago
               </Button>
-              {checkoutMessage && (
-                <p className="store-drawer__message" role="status">
-                  {checkoutMessage}
-                </p>
-              )}
               <button
                 className="store-drawer__continue"
                 type="button"
@@ -245,5 +240,8 @@ function CartDrawer() {
 }
 
 export default CartDrawer;
+
+
+
 
 

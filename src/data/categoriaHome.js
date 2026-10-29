@@ -31,8 +31,9 @@ const categoriaHome = [
     icon: HeartPulseRegular,
     target: "salud-y-medicamentos",
   },
-  { label: "Lista de deseos", icon: HeartRegular, panel: "wishlist" },
-  { label: "Carrito", icon: Cart24Regular, panel: "cart" },
+  { label: "Favoritos", icon: HeartRegular, panel: "wishlist" },
+  { label: "Carrito", icon: Cart24Regular, path: "/cart" },
 ];
 
 export default categoriaHome;
+

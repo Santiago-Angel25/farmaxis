@@ -43,7 +43,7 @@ function WishlistDrawer() {
     >
       <aside className="store-drawer" role="dialog" aria-modal="true" aria-labelledby="wishlist-drawer-title">
         <header className="store-drawer__header">
-          <h2 id="wishlist-drawer-title">Lista de deseos <span>({favorites.length})</span></h2>
+          <h2 id="wishlist-drawer-title">Favoritos <span>({favorites.length})</span></h2>
           <Button appearance="subtle" icon={<DismissRegular />} aria-label="Cerrar lista de deseos" onClick={closePanel} />
         </header>
         <div className="store-drawer__body">
