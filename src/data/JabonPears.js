@@ -8,7 +8,7 @@ const JabonPears = [[
     presentation: "Barra",
     manufacturer: "Pears",
     price: 8900,
-    image: "",
+    image: jabonPears,
     availability: "Envío disponible",
     discount: 10,
     previousPrice: 9900,

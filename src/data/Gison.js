@@ -1,6 +1,5 @@
 import gison from "../assets/gison.png";
 
-
 const Gison = [[
   {
     id: "gison-producto-belleza",
@@ -9,7 +8,7 @@ const Gison = [[
     presentation: "Consulta la presentación del producto en su empaque",
     manufacturer: "Gison",
     price: 29900,
-    image: "",
+    image: gison,
     availability: "Envío disponible",
     discount: 0,
     previousPrice: 29900,
