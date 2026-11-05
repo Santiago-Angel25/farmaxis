@@ -16,16 +16,17 @@ export function StoreProvider({ children }) {
     [cartItems],
   );
 
-  const addToCart = useCallback((product) => {
+  const addToCart = useCallback((product, quantity = 1) => {
+    const amount = Math.max(1, Number(quantity) || 1);
     setCartItems((current) => {
       const existing = current.find((item) => item.product.id === product.id);
       return existing
         ? current.map((item) =>
             item.product.id === product.id
-              ? { ...item, quantity: item.quantity + 1 }
+              ? { ...item, quantity: item.quantity + amount }
               : item,
           )
-        : [...current, { product, quantity: 1 }];
+        : [...current, { product, quantity: amount }];
     });
   }, []);
 

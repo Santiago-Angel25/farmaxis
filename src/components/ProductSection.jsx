@@ -18,7 +18,7 @@ const formatPrice = (price) =>
     maximumFractionDigits: 0,
   }).format(price);
 
-function ProductSection({ title, subtitle, products, onViewAll }) {
+function ProductSection({ title, subtitle, products, onViewAll, onProductClick }) {
   const trackRef = useRef(null);
   const addFeedbackTimeout = useRef(null);
   const [addedProductId, setAddedProductId] = useState(null);
@@ -80,11 +80,9 @@ function ProductSection({ title, subtitle, products, onViewAll }) {
             return (
               <article className="product-card" key={product.id}>
                 <div className="product-card__visual">
-                  {product.image ? (
-                    <img src={product.image} alt={product.name} />
-                  ) : (
-                    <span>IMAGEN</span>
-                  )}
+                  <button className="product-card__open" type="button" onClick={() => onProductClick?.(product)} aria-label={`Ver detalles de ${product.name}`}>
+                    {product.image ? <img src={product.image} alt={product.name} /> : <span>IMAGEN DEL PRODUCTO</span>}
+                  </button>
                   {product.discount && (
                     <span className="product-card__discount">
                       -{product.discount}%
@@ -108,7 +106,7 @@ function ProductSection({ title, subtitle, products, onViewAll }) {
                   />
                 </div>
                 <div className="product-card__details">
-                  <h3>{product.name}</h3>
+                  <h3><button type="button" onClick={() => onProductClick?.(product)}>{product.name}</button></h3>
                   <strong>{formatPrice(product.price)}</strong>
                   {product.previousPrice && (
                     <span className="product-card__previous-price">

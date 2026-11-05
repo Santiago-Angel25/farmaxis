@@ -1,8 +1,10 @@
 const featuredProducts = [
-  { id: "paracetamol-500", name: "Paracetamol 500 mg", price: 2500, previousPrice: 3000, availability: "Envío disponible", discount: 15 },
-  { id: "vitamina-c", name: "Vitamina C", price: 5000, previousPrice: 6000, availability: "Envío disponible" },
-  { id: "shampoo-anticaspa", name: "Shampoo anticaspa", price: 12000, previousPrice: 14000, availability: "Envío disponible" },
-  { id: "crema-hidratante", name: "Crema hidratante", price: 18000, previousPrice: 22000, availability: "Envío disponible" },
+  { id: "paracetamol-500", name: "Paracetamol 500 mg", price: 4250, previousPrice: 5000, availability: "Envío disponible", discount: 15, category: "Medicamentos", presentation: "Caja x 20 tabletas", activeIngredient: "Paracetamol 500 mg", rating: 4.8, reviewCount: 128, description: "Alivio eficaz del dolor y la fiebre.", details: "Uso según indicaciones del fabricante." },
+  { id: "vitamina-c", name: "Vitamina C", price: 5000, previousPrice: 6000, availability: "Envío disponible", category: "Vitaminas y suplementos", presentation: "Frasco x 30 tabletas", activeIngredient: "Vitamina C", rating: 4.7, reviewCount: 86, description: "Un apoyo diario para complementar tu bienestar.", details: "Usar según las indicaciones del envase." },
+  { id: "shampoo-anticaspa", name: "Shampoo anticaspa", price: 12000, previousPrice: 14000, availability: "Envío disponible", category: "Cuidado personal", presentation: "Frasco x 200 ml", activeIngredient: "Fórmula anticaspa", rating: 4.6, reviewCount: 54, description: "Limpieza y cuidado para uso diario.", details: "Evita el contacto con los ojos." },
+  { id: "crema-hidratante", name: "Crema hidratante", price: 18000, previousPrice: 22000, availability: "Envío disponible", category: "Cuidado de la piel", presentation: "Envase x 250 ml", activeIngredient: "Fórmula hidratante", rating: 4.9, reviewCount: 72, description: "Hidratación para el cuidado diario de la piel.", details: "Aplicar sobre la piel limpia." },
+  { id: "gel-antibacterial", name: "Gel antibacterial", price: 6500, previousPrice: 8000, availability: "Envío disponible", category: "Cuidado personal", presentation: "Frasco x 250 ml", activeIngredient: "Fórmula antibacterial", rating: 4.7, reviewCount: 41, description: "Una opción práctica para tu rutina diaria.", details: "Usar según las indicaciones del fabricante." },
+  { id: "protector-solar", name: "Protector solar FPS 50", price: 32000, previousPrice: 38000, availability: "Envío disponible", category: "Cuidado de la piel", presentation: "Tubo x 60 g", activeIngredient: "Protección solar FPS 50", rating: 4.8, reviewCount: 63, description: "Protección solar para incorporar a tu rutina de cuidado.", details: "Seguir las indicaciones del envase." },
 ];
 
 export default featuredProducts;
