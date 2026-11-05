@@ -6,7 +6,7 @@ import featuredProducts from "../data/featuredProducts";
 import HeadShoulders from "../data/HeadShoulders";
 import higene from "../data/higene";
 import RochePosay from "../data/RochePosay";
-
+import bebidasAlimentos from "../data/bebidasAlimentos";
 import useCatalogProducts from "../hooks/useCatalogProducts";
 import "../styles/Categories.css";
 
@@ -41,19 +41,19 @@ function getSectionProducts(section, apiProducts) {
   if (section === "featured") {
     return apiProducts.filter((product) => ["beauty", "skin-care"].includes(product.category));
   }
-  if (section === "food") return apiProducts.filter((product) => product.category === "groceries");
+  if (section === "food") return bebidasAlimentos;
   if (section === "health") return featuredProducts;
   if (section === "personal-care") {
     return apiProducts.filter((product) => ["beauty", "skin-care"].includes(product.category));
   }
-  return [...featuredProducts, ...apiProducts];
+  return [...featuredProducts, ...bebidasAlimentos, ...apiProducts];
 }
 
 function matchesCategory(product, category) {
   if (category === "all") return true;
   if (category === "cuidado-personal") return ["cuidado-personal", "beauty", "skin-care"].includes(product.category);
   if (category === "maquillaje") return product.category === "beauty";
-  if (category === "groceries") return product.category === "groceries";
+  if (category === "groceries") return ["groceries", "bebidas y alimentos"].includes(product.category);
   return product.category === category;
 }
 
@@ -78,7 +78,7 @@ function Categories() {
     : SECTION_TITLES[section] || "Todos los productos";
 
   const visibleProducts = useMemo(() => {
-    let result = category === "shampoo" ? HeadShoulders.flat() : category === "higiene" ? [...featuredProducts.filter((product) => product.category === "higiene"), ...hygieneProducts] : getSectionProducts(section, products).filter((product) => matchesCategory(product, category));
+    let result = category === "shampoo" ? HeadShoulders.flat() : category === "higiene" ? [...featuredProducts.filter((product) => product.category === "higiene"), ...hygieneProducts] : (category === "groceries" || section === "food" ? bebidasAlimentos : getSectionProducts(section, products)).filter((product) => matchesCategory(product, category));
     if (category === "cuidado-personal") result = [...result, ...HeadShoulders.flat()];
     if (brand && brand === "head-shoulders") result = HeadShoulders.flat();
     if (subcategory === "cuidado-facial") result = [...products.filter((product) => product.category === "skin-care"), ...featuredProducts.filter((product) => [6, 7].includes(product.id)), ...rochePosayProducts];

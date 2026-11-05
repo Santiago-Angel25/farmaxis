@@ -6,6 +6,7 @@ import { AddRegular, ArrowLeftRegular, Cart24Regular, Delete24Regular, SubtractR
 import { useStore } from "../context/StoreContext";
 import useCatalogProducts from "../hooks/useCatalogProducts";
 import HeadShoulders from "../data/HeadShoulders";
+import bebidasAlimentos from "../data/bebidasAlimentos";
 import "../styles/DetailProduct.css";
 
 const money = (value) => new Intl.NumberFormat("es-CO", { style: "currency", currency: "COP", maximumFractionDigits: 0 }).format(Number(value) || 0);
@@ -18,8 +19,8 @@ function DetailProduct() {
   const { cartItems, addToCart, updateCartQuantity, removeFromCart } = useStore();
   const [added, setAdded] = useState(false);
   const pageRef = useRef(null);
-  const product = state?.product || products.find((item) => String(item.id) === id) || HeadShoulders.flat().find((item) => String(item.id) === id) || cartItems.find((item) => String(item.product.id) === id)?.product;
-  const quantity = cartItems.find((item) => String(item.product.id) === id)?.quantity || 0;
+  const product = state?.product || products.find((item) => String(item.id) === id) || bebidasAlimentos.find((item) => String(item.id) === id) || HeadShoulders.flat().find((item) => String(item.id) === id) || cartItems.find((item) => String(item.product.id) === id)?.product;
+  const quantity = cartItems.find((item) => String(item.product.id) === id && (!product || item.product.category === product.category))?.quantity || 0;
   useEffect(() => {
     const page = pageRef.current;
     if (!page || !product || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
@@ -39,13 +40,13 @@ function DetailProduct() {
   if (!product) return <main className="detail-product detail-product--missing"><h1>Producto no encontrado</h1><Link to="/categories">Volver al catálogo</Link></main>;
 
   const add = () => { addToCart(product); setAdded(true); window.setTimeout(() => setAdded(false), 1100); };
-  const decrement = () => quantity <= 1 ? removeFromCart(product.id) : updateCartQuantity(product.id, quantity - 1);
+  const decrement = () => quantity <= 1 ? removeFromCart(product.id, product.category) : updateCartQuantity(product.id, quantity - 1, product.category);
 
   return <main className="detail-product" ref={pageRef}>
     <nav className="detail-product__crumbs" aria-label="Ruta de navegación"><Link to="/">Inicio</Link><span>/</span><Link to="/categories">Catálogo</Link><span>/</span><span>{product.name}</span></nav>
     <section className="detail-product__main">
       <div className="detail-product__gallery"><div className="detail-product__image">{product.image ? <img src={product.image} alt={product.name} /> : <span>Imagen del producto</span>}</div><div className="detail-product__thumbs">{product.image && <button type="button" aria-label="Ver imagen del producto"><img src={product.image} alt="" /></button>}</div></div>
-      <div className="detail-product__info"><h1>{product.name}</h1><p className="detail-product__availability">{product.availability || "Envío disponible"}</p><div className="detail-product__rating" aria-label="Calificación de demostración">★★★★★ <span>(Producto de demostración)</span></div><div className="detail-product__price">{money(product.price)} {product.previousPrice && <del>{money(product.previousPrice)}</del>}</div><label className="detail-product__quantity-label">Cantidad</label><div className="detail-product__quantity"><Button appearance="subtle" aria-label="Disminuir cantidad" icon={quantity <= 1 ? <Delete24Regular /> : <SubtractRegular />} onClick={decrement} disabled={quantity === 0} /><span>{quantity || 1}</span><Button appearance="subtle" aria-label="Aumentar cantidad" icon={<AddRegular />} disabled={quantity >= 15} onClick={() => quantity ? updateCartQuantity(product.id, quantity + 1) : addToCart(product)} /></div><div className="detail-product__actions"><Button appearance="primary" icon={<Cart24Regular />} onClick={add}>{added ? "Agregado al carrito" : "Agregar al carrito"}</Button><Button appearance="outline" onClick={() => navigate("/cart")}>Ver carrito</Button></div></div>
+      <div className="detail-product__info"><h1>{product.name}</h1><p className="detail-product__availability">{product.availability || "Envío disponible"}</p><div className="detail-product__rating" aria-label="Calificación de demostración">★★★★★ <span>(Producto de demostración)</span></div><div className="detail-product__price">{money(product.price)} {product.previousPrice && <del>{money(product.previousPrice)}</del>}</div><label className="detail-product__quantity-label">Cantidad</label><div className="detail-product__quantity"><Button appearance="subtle" aria-label="Disminuir cantidad" icon={quantity <= 1 ? <Delete24Regular /> : <SubtractRegular />} onClick={decrement} disabled={quantity === 0} /><span>{quantity || 1}</span><Button appearance="subtle" aria-label="Aumentar cantidad" icon={<AddRegular />} disabled={quantity >= 15} onClick={() => quantity ? updateCartQuantity(product.id, quantity + 1, product.category) : addToCart(product)} /></div><div className="detail-product__actions"><Button appearance="primary" icon={<Cart24Regular />} onClick={add}>{added ? "Agregado al carrito" : "Agregar al carrito"}</Button><Button appearance="outline" onClick={() => navigate("/cart")}>Ver carrito</Button></div></div>
     </section>
         <section className="detail-product__description">
       <h2>Detalles del producto</h2>

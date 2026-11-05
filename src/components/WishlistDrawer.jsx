@@ -56,7 +56,7 @@ function WishlistDrawer() {
           ) : (
             <ul className="store-drawer__items store-drawer__items--wishlist">
               {favorites.map((product) => (
-                <li className="store-drawer-item" key={product.id}>
+                <li className="store-drawer-item" key={`${product.category}:${product.id}`}>
                   <div className="store-drawer-item__image">
                     {product.image ? <img src={product.image} alt="" /> : <span>IMAGEN</span>}
                   </div>
@@ -70,13 +70,13 @@ function WishlistDrawer() {
                         icon={<ShoppingBagAddRegular />}
                         onClick={() => {
                           addToCart(product);
-                          removeFavorite(product.id);
+                          removeFavorite(product.id, product.category);
                           openPanel("cart");
                         }}
                       >
                         Agregar al carrito
                       </Button>
-                      <button className="store-drawer-item__remove" type="button" onClick={() => removeFavorite(product.id)}>Quitar</button>
+                      <button className="store-drawer-item__remove" type="button" onClick={() => removeFavorite(product.id, product.category)}>Quitar</button>
                     </div>
                   </div>
                 </li>

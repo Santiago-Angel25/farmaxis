@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const API_CATEGORIES = ["beauty", "skin-care", "groceries"];
+const API_CATEGORIES = ["beauty", "skin-care"];
 const DEMO_COP_PER_USD = 4000;
 
 function mapApiProduct(product) {
