@@ -39,3 +39,9 @@ button {
 #root {
   min-height: 100vh;
 }
+
+#root { display: flex; flex-direction: column; }
+.app-layout { display: flex; min-height: 100vh; flex: 1; flex-direction: column; }
+.app-layout__content { flex: 1 0 auto; }
+.route-not-found { min-height: 100%; padding: 20px 24px; }
+
