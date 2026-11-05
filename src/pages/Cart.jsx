@@ -29,12 +29,13 @@ function Cart() {
   const [removingIds, setRemovingIds] = useState([]);
   const [checkoutMessage, setCheckoutMessage] = useState("");
 
-  const removeWithAnimation = (productId) => {
-    if (removingIds.includes(productId)) return;
-    setRemovingIds((current) => [...current, productId]);
+  const removeWithAnimation = (product) => {
+    const productKey = `${product.category}:${product.id}`;
+    if (removingIds.includes(productKey)) return;
+    setRemovingIds((current) => [...current, productKey]);
     window.setTimeout(() => {
-      removeFromCart(productId);
-      setRemovingIds((current) => current.filter((id) => id !== productId));
+      removeFromCart(product.id, product.category);
+      setRemovingIds((current) => current.filter((key) => key !== productKey));
     }, 220);
   };
 
@@ -63,8 +64,8 @@ function Cart() {
             <ul className="cart-page__items">
               {cartItems.map(({ product, quantity }) => (
                 <li
-                  className={`cart-page__item${removingIds.includes(product.id) ? " is-removing" : ""}`}
-                  key={product.id}
+                  className={`cart-page__item${removingIds.includes(`${product.category}:${product.id}`) ? " is-removing" : ""}`}
+                  key={`${product.category}:${product.id}`}
                 >
                   <div className="cart-page__product">
                     <div className="cart-page__image">
@@ -81,7 +82,7 @@ function Cart() {
                       appearance="subtle"
                       icon={quantity === 1 ? <Delete24Regular /> : <SubtractRegular />}
                       aria-label={quantity === 1 ? `Quitar ${product.name}` : `Disminuir cantidad de ${product.name}`}
-                      onClick={() => quantity === 1 ? removeWithAnimation(product.id) : updateCartQuantity(product.id, quantity - 1)}
+                      onClick={() => quantity === 1 ? removeWithAnimation(product) : updateCartQuantity(product.id, quantity - 1, product.category)}
                     />
                     <span key={quantity} aria-live="polite">{quantity}</span>
                     <Button
@@ -89,7 +90,7 @@ function Cart() {
                       icon={<AddRegular />}
                       disabled={quantity >= 15}
                       aria-label={`Aumentar cantidad de ${product.name}`}
-                      onClick={() => updateCartQuantity(product.id, quantity + 1)}
+                      onClick={() => updateCartQuantity(product.id, quantity + 1, product.category)}
                     />
                   </div>
                   <strong className="cart-page__line-total" key={`${quantity}-${product.price}`}>

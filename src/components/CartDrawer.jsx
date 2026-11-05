@@ -39,16 +39,17 @@ function CartDrawer() {
     [],
   );
 
-  const animateRemove = (productId) => {
-    if (removeTimeouts.current.has(productId)) return;
+  const animateRemove = (product) => {
+    const productKey = `${product.category}:${product.id}`;
+    if (removeTimeouts.current.has(productKey)) return;
 
-    setRemovingIds((current) => [...current, productId]);
+    setRemovingIds((current) => [...current, productKey]);
     const timeout = window.setTimeout(() => {
-      removeFromCart(productId);
-      setRemovingIds((current) => current.filter((id) => id !== productId));
-      removeTimeouts.current.delete(productId);
+      removeFromCart(product.id, product.category);
+      setRemovingIds((current) => current.filter((key) => key !== productKey));
+      removeTimeouts.current.delete(productKey);
     }, 220);
-    removeTimeouts.current.set(productId, timeout);
+    removeTimeouts.current.set(productKey, timeout);
   };
 
   useEffect(() => {
@@ -118,9 +119,9 @@ function CartDrawer() {
                   <li
                     className={
                       "store-drawer-item" +
-                      (removingIds.includes(product.id) ? " is-removing" : "")
+                      (removingIds.includes(`${product.category}:${product.id}`) ? " is-removing" : "")
                     }
-                    key={product.id}
+                    key={`${product.category}:${product.id}`}
                   >
                     <div className="store-drawer-item__image">
                       {product.image ? (
@@ -154,8 +155,8 @@ function CartDrawer() {
                             }
                             onClick={() =>
                               quantity === 1
-                                ? animateRemove(product.id)
-                                : updateCartQuantity(product.id, quantity - 1)
+                                ? animateRemove(product)
+                                : updateCartQuantity(product.id, quantity - 1, product.category)
                             }
                           />
                           <span className="store-quantity__value" key={quantity} aria-live="polite">
@@ -169,7 +170,7 @@ function CartDrawer() {
                             disabled={quantity >= 15}
                             aria-label={"Agregar una unidad de " + product.name}
                             onClick={() =>
-                              updateCartQuantity(product.id, quantity + 1)
+                              updateCartQuantity(product.id, quantity + 1, product.category)
                             }
                           />
                         </div>

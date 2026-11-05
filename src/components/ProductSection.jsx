@@ -149,7 +149,7 @@ function ProductSection({
     };
   }, []);
 
-  const handleRemoveFromCard = (productId, event) => {
+  const handleRemoveFromCard = (productId, category, event) => {
     const quantityControl = event.currentTarget.closest(
       ".product-card__quantity",
     );
@@ -158,7 +158,7 @@ function ProductSection({
     ).matches;
 
     if (!quantityControl || reduceMotion) {
-      removeFromCart(productId);
+      removeFromCart(productId, category);
       return;
     }
 
@@ -167,7 +167,7 @@ function ProductSection({
       scale: 0.86,
       duration: 0.2,
       ease: "power2.in",
-      onComplete: () => removeFromCart(productId),
+      onComplete: () => removeFromCart(productId, category),
     });
   };
 
@@ -213,13 +213,13 @@ function ProductSection({
         />
         <div className={`product-section__track${layout === "grid" ? " product-section__track--grid" : ""}`} ref={trackRef}>
           {productsToDisplay.map((product) => {
-            const isFavorite = favorites.some((item) => item.id === product.id);
+            const isFavorite = favorites.some((item) => item.id === product.id && item.category === product.category);
             const quantity =
-              cartItems.find((item) => item.product.id === product.id)
+              cartItems.find((item) => item.product.id === product.id && item.product.category === product.category)
                 ?.quantity ?? 0;
 
             return (
-              <article className="product-card" key={product.id} role="link" tabIndex={0} onClick={(event) => { if (event.target.closest("button")) return; navigate(`/detailProduct/${encodeURIComponent(product.id)}`, { state: { product } }); }} onKeyDown={(event) => { if (event.target !== event.currentTarget) return; if (event.key === "Enter" || event.key === " ") { event.preventDefault(); navigate(`/detailProduct/${encodeURIComponent(product.id)}`, { state: { product } }); } }}>
+              <article className="product-card" key={`${product.category}:${product.id}`} role="link" tabIndex={0} onClick={(event) => { if (event.target.closest("button")) return; navigate(`/detailProduct/${encodeURIComponent(product.id)}`, { state: { product } }); }} onKeyDown={(event) => { if (event.target !== event.currentTarget) return; if (event.key === "Enter" || event.key === " ") { event.preventDefault(); navigate(`/detailProduct/${encodeURIComponent(product.id)}`, { state: { product } }); } }}>
                 <div className="product-card__visual">
                   {product.image ? (
                     <img src={product.image} alt={product.name} />
@@ -289,8 +289,8 @@ function ProductSection({
                         }
                         onClick={(event) =>
                           quantity === 1
-                            ? handleRemoveFromCard(product.id, event)
-                            : updateCartQuantity(product.id, quantity - 1)
+                            ? handleRemoveFromCard(product.id, product.category, event)
+                            : updateCartQuantity(product.id, quantity - 1, product.category)
                         }
                       />
                       <span
@@ -308,7 +308,7 @@ function ProductSection({
                         icon={<AddRegular />}
                         aria-label={`Agregar otra unidad de ${product.name}`}
                         onClick={() =>
-                          updateCartQuantity(product.id, quantity + 1)
+                          updateCartQuantity(product.id, quantity + 1, product.category)
                         }
                       />
                     </div>
