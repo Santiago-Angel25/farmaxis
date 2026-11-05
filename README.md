@@ -2,19 +2,7 @@
 
 Tienda de droguerías construida con **React 19 + Vite**, **Fluent UI React** (componentes e iconos), **GSAP** (animaciones) y **CSS puro** (todo el diseño vive en `src/styles/*.css`, sin estilos inline en el JSX).
 
-## Poner / cambiar tu logo (PNG)
 
-El navbar carga el logo desde `src/assets/logoFarmaxis.png`. Para usar el tuyo o cambiarlo:
-
-1. Copia tu archivo PNG a `C:\Users\Salma\farmaxis\src\assets\logoFarmaxis.png` (reemplaza el archivo actual).
-2. Listo: Vite recarga el navbar al instante, no hace falta reiniciar el servidor ni recargar con Ctrl + F5.
-
-Detalles:
-
-- El logo se muestra con `object-fit: contain`, así que se respeta la proporción de tu imagen (tu PNG actual mide 1570×672 px).
-- El `alt` y el enlace del logo ya están configurados; si la imagen no llegara a cargarse, el navbar muestra automáticamente el logo de texto "farmaxis droguerías" (no queda una imagen rota).
-
-## Comportamiento del navbar
 
 - **Navbar fijo**: el header está anclado arriba de la ventana (`position: fixed`) y **siempre visible** (nunca se desvanece al hacer scroll). Solo aparece una sombra suave al bajar para separar del contenido. Un bloque espaciador (`.navbar__spacer`) reserva el alto del navbar en el flujo de la página.
 - **Fila principal**: el **logo a la izquierda**, el **buscador en el centro** y el grupo de acciones (Iniciar sesión, Favoritos, Carrito) **a la derecha**.
