@@ -81,6 +81,8 @@ export function StoreProvider({ children }) {
   );
 }
 
+// StoreProvider and its consumer hook share this context module by design.
+// eslint-disable-next-line react-refresh/only-export-components
 export function useStore() {
   const store = useContext(StoreContext);
   if (!store) throw new Error("useStore debe usarse dentro de StoreProvider.");

@@ -5,7 +5,7 @@ import {
 import { useStore } from "../context/StoreContext";
 import "../styles/Navbar.css";
 
-function Navbar() {
+function Navbar({ onLoginClick }) {
   const { cartCount, favorites, openPanel } = useStore();
 
   return (
@@ -19,7 +19,7 @@ function Navbar() {
           <input aria-label="Buscar productos" type="search" placeholder="Buscar medicamentos, cuidado personal, higiene..." />
           <button className="search-button" type="submit" aria-label="Buscar"><Search24Regular /></button>
         </form>
-        <button className="login-button" type="button"><Person24Regular /><span>Iniciar sesión</span></button>
+        <button className="login-button" type="button" onClick={onLoginClick}><Person24Regular /><span>Iniciar sesión</span></button>
         <button className="navbar-icon" type="button" aria-label={"Favoritos, " + favorites.length + " productos"} onClick={() => openPanel("wishlist")}>
           <Heart24Regular />
           {favorites.length > 0 && <span className="cart-counter">{favorites.length}</span>}
