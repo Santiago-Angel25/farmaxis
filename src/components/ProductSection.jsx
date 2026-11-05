@@ -1,13 +1,17 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Button } from "@fluentui/react-components";
+import { useNavigate } from "react-router-dom";
 import {
   AddRegular,
   ArrowLeftRegular,
   ArrowRightRegular,
-  CheckmarkRegular,
+  Cart24Regular,
+  Delete24Regular,
+  SubtractRegular,
   HeartFilled,
   HeartRegular,
 } from "@fluentui/react-icons";
+import gsap from "gsap";
 import { useStore } from "../context/StoreContext";
 import "../styles/ProductSection.css";
 
@@ -18,37 +22,172 @@ const formatPrice = (price) =>
     maximumFractionDigits: 0,
   }).format(price);
 
-function ProductSection({ title, subtitle, products, onViewAll, onProductClick }) {
+function ProductSection({
+  id,
+  title,
+  subtitle,
+  products,
+  onViewAll,
+  showDiscount = false,
+  layout = "carousel",
+  hideHeader = false,
+}) {
+  const navigate = useNavigate();
+  const sectionRef = useRef(null);
   const trackRef = useRef(null);
-  const addFeedbackTimeout = useRef(null);
-  const [addedProductId, setAddedProductId] = useState(null);
-  const { favorites, addToCart, toggleFavorite } = useStore();
+  const {
+    favorites,
+    cartItems,
+    addToCart,
+    updateCartQuantity,
+    removeFromCart,
+    toggleFavorite,
+  } = useStore();
+  const productsToDisplay = products;
 
-  useEffect(() => () => window.clearTimeout(addFeedbackTimeout.current), []);
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return undefined;
 
-  const handleAddToCart = (product) => {
-    addToCart(product);
-    setAddedProductId(product.id);
-    window.clearTimeout(addFeedbackTimeout.current);
-    addFeedbackTimeout.current = window.setTimeout(
-      () => setAddedProductId(null),
-      1500,
+    let animationContext;
+    let hasPlayed = false;
+    let observer;
+
+    const playEntrance = () => {
+      if (hasPlayed) return;
+      hasPlayed = true;
+
+      section.classList.add("is-entering");
+      animationContext = gsap.context(() => {
+        const timeline = gsap.timeline({
+          onComplete: () => section.classList.remove("is-entering"),
+        });
+
+        timeline.fromTo(
+          ".product-section__header",
+          { autoAlpha: 0, y: 22, filter: "blur(7px)" },
+          {
+            autoAlpha: 1,
+            y: 0,
+            filter: "blur(0px)",
+            duration: 0.65,
+            ease: "power3.out",
+          },
+        );
+        timeline.fromTo(
+          ".product-section__carousel > button",
+          { autoAlpha: 0, scale: 0.78 },
+          {
+            autoAlpha: 1,
+            scale: 1,
+            duration: 0.45,
+            stagger: 0.1,
+            ease: "back.out(1.7)",
+          },
+          "-=0.3",
+        );
+        timeline.fromTo(
+          ".product-card",
+          {
+            autoAlpha: 0,
+            y: 34,
+            rotateX: 7,
+            scale: 0.96,
+            filter: "blur(7px)",
+          },
+          {
+            autoAlpha: 1,
+            y: 0,
+            rotateX: 0,
+            scale: 1,
+            filter: "blur(0px)",
+            duration: 0.72,
+            stagger: 0.11,
+            ease: "power3.out",
+            clearProps: "transform,opacity,visibility,filter",
+          },
+          "-=0.28",
+        );
+        timeline.fromTo(
+          ".product-card__visual img",
+          { scale: 1.07 },
+          {
+            scale: 1,
+            duration: 0.85,
+            stagger: 0.08,
+            ease: "power2.out",
+            clearProps: "transform",
+          },
+          "<",
+        );
+      }, section);
+    };
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return undefined;
+    }
+
+    if (!("IntersectionObserver" in window)) {
+      playEntrance();
+      return () => animationContext?.revert();
+    }
+
+    observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        observer.disconnect();
+        playEntrance();
+      },
+      { threshold: 0.18 },
     );
+    observer.observe(section);
+
+    return () => {
+      observer?.disconnect();
+      animationContext?.revert();
+      section.classList.remove("is-entering");
+    };
+  }, []);
+
+  const handleRemoveFromCard = (productId, event) => {
+    const quantityControl = event.currentTarget.closest(
+      ".product-card__quantity",
+    );
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (!quantityControl || reduceMotion) {
+      removeFromCart(productId);
+      return;
+    }
+
+    gsap.to(quantityControl, {
+      autoAlpha: 0,
+      scale: 0.86,
+      duration: 0.2,
+      ease: "power2.in",
+      onComplete: () => removeFromCart(productId),
+    });
   };
 
   const scrollTrack = (direction) => {
     const track = trackRef.current;
-    if (track) {
-      track.scrollBy({
-        left: direction * track.clientWidth * 0.85,
-        behavior: "smooth",
-      });
-    }
+    if (!track) return;
+    track.scrollBy({
+      left: direction * track.clientWidth,
+      behavior: "smooth",
+    });
   };
 
   return (
-    <section className="product-section" aria-label={title}>
-      <header className="product-section__header">
+    <section
+      id={id}
+      ref={sectionRef}
+      className="product-section"
+      aria-label={title}
+    >
+      {!hideHeader && <header className="product-section__header">
         <div>
           <h2>{title}</h2>
           {subtitle && <p>{subtitle}</p>}
@@ -62,28 +201,32 @@ function ProductSection({ title, subtitle, products, onViewAll, onProductClick }
         >
           Ver todos
         </Button>
-      </header>
+      </header>}
 
-      <div className="product-section__carousel">
+      <div className={`product-section__carousel${layout === "grid" ? " product-section__carousel--grid" : ""}`}>
         <Button
           appearance="subtle"
           shape="circular"
           icon={<ArrowLeftRegular />}
-          aria-label={"Productos anteriores de " + title}
+          aria-label={`Productos anteriores de ${title}`}
           onClick={() => scrollTrack(-1)}
         />
-        <div className="product-section__track" ref={trackRef}>
-          {products.map((product) => {
+        <div className={`product-section__track${layout === "grid" ? " product-section__track--grid" : ""}`} ref={trackRef}>
+          {productsToDisplay.map((product) => {
             const isFavorite = favorites.some((item) => item.id === product.id);
-            const wasAdded = addedProductId === product.id;
+            const quantity =
+              cartItems.find((item) => item.product.id === product.id)
+                ?.quantity ?? 0;
 
             return (
-              <article className="product-card" key={product.id}>
+              <article className="product-card" key={product.id} role="link" tabIndex={0} onClick={(event) => { if (event.target.closest("button")) return; navigate(`/detailProduct/${encodeURIComponent(product.id)}`, { state: { product } }); }} onKeyDown={(event) => { if (event.target !== event.currentTarget) return; if (event.key === "Enter" || event.key === " ") { event.preventDefault(); navigate(`/detailProduct/${encodeURIComponent(product.id)}`, { state: { product } }); } }}>
                 <div className="product-card__visual">
-                  <button className="product-card__open" type="button" onClick={() => onProductClick?.(product)} aria-label={`Ver detalles de ${product.name}`}>
-                    {product.image ? <img src={product.image} alt={product.name} /> : <span>IMAGEN DEL PRODUCTO</span>}
-                  </button>
-                  {product.discount && (
+                  {product.image ? (
+                    <img src={product.image} alt={product.name} />
+                  ) : (
+                    <span>IMAGEN</span>
+                  )}
+                  {showDiscount && product.discount && (
                     <span className="product-card__discount">
                       -{product.discount}%
                     </span>
@@ -98,17 +241,17 @@ function ProductSection({ title, subtitle, products, onViewAll, onProductClick }
                     icon={isFavorite ? <HeartFilled /> : <HeartRegular />}
                     aria-label={
                       isFavorite
-                        ? "Quitar " + product.name + " de favoritos"
-                        : "Agregar " + product.name + " a favoritos"
+                        ? `Quitar ${product.name} de favoritos`
+                        : `Agregar ${product.name} a favoritos`
                     }
                     aria-pressed={isFavorite}
-                    onClick={() => toggleFavorite(product)}
+                    onClick={(event) => { event.stopPropagation(); toggleFavorite(product); }}
                   />
                 </div>
                 <div className="product-card__details">
-                  <h3><button type="button" onClick={() => onProductClick?.(product)}>{product.name}</button></h3>
+                  <h3>{product.name}</h3>
                   <strong>{formatPrice(product.price)}</strong>
-                  {product.previousPrice && (
+                  {showDiscount && product.discount && product.previousPrice && (
                     <span className="product-card__previous-price">
                       {formatPrice(product.previousPrice)}
                     </span>
@@ -116,21 +259,60 @@ function ProductSection({ title, subtitle, products, onViewAll, onProductClick }
                   <span className="product-card__availability">
                     {product.availability ?? "Consulta disponibilidad"}
                   </span>
-                  <Button
-                    className={
-                      "product-card__add" + (wasAdded ? " is-added" : "")
-                    }
-                    appearance="primary"
-                    icon={wasAdded ? <CheckmarkRegular /> : <AddRegular />}
-                    aria-label={
-                      wasAdded
-                        ? product.name + " agregado al carrito"
-                        : "Agregar " + product.name + " al carrito"
-                    }
-                    onClick={() => handleAddToCart(product)}
-                  >
-                    {wasAdded ? "Agregado al carrito" : "Agregar"}
-                  </Button>
+
+                  {quantity === 0 ? (
+                    <Button
+                      className="product-card__add"
+                      appearance="primary"
+                      icon={<Cart24Regular />}
+                      aria-label={`Agregar ${product.name} al carrito`}
+                      onClick={(event) => { event.stopPropagation(); addToCart(product); }}
+                    >
+                      Agregar
+                    </Button>
+                  ) : (
+                    <div
+                      className="product-card__quantity"
+                      aria-label={`Cantidad de ${product.name}: ${quantity}`}
+                    >
+                      <Button
+                        className="product-card__quantity-button product-card__quantity-button--delete"
+                        appearance="subtle"
+                        shape="circular"
+                        icon={
+                          quantity === 1 ? <Delete24Regular /> : <SubtractRegular />
+                        }
+                        aria-label={
+                          quantity === 1
+                            ? `Quitar ${product.name} del carrito`
+                            : `Disminuir cantidad de ${product.name}`
+                        }
+                        onClick={(event) =>
+                          quantity === 1
+                            ? handleRemoveFromCard(product.id, event)
+                            : updateCartQuantity(product.id, quantity - 1)
+                        }
+                      />
+                      <span
+                        className="product-card__quantity-value"
+                        key={quantity}
+                        aria-live="polite"
+                      >
+                        {quantity}
+                      </span>
+                      <Button
+                        className="product-card__quantity-button product-card__quantity-button--add"
+                        disabled={quantity >= 15}
+                        appearance="primary"
+                        shape="circular"
+                        icon={<AddRegular />}
+                        aria-label={`Agregar otra unidad de ${product.name}`}
+                        onClick={() =>
+                          updateCartQuantity(product.id, quantity + 1)
+                        }
+                      />
+                    </div>
+                  )}
                 </div>
               </article>
             );
@@ -140,7 +322,7 @@ function ProductSection({ title, subtitle, products, onViewAll, onProductClick }
           appearance="subtle"
           shape="circular"
           icon={<ArrowRightRegular />}
-          aria-label={"Ver más productos de " + title}
+          aria-label={`Ver más productos de ${title}`}
           onClick={() => scrollTrack(1)}
         />
       </div>
@@ -149,3 +331,8 @@ function ProductSection({ title, subtitle, products, onViewAll, onProductClick }
 }
 
 export default ProductSection;
+
+
+
+
+

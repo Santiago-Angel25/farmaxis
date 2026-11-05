@@ -8,7 +8,14 @@ const formatPrice = (price) =>
   new Intl.NumberFormat("es-CO", { style: "currency", currency: "COP", maximumFractionDigits: 0 }).format(price);
 
 function WishlistDrawer() {
-  const { activePanel, closePanel, favorites, removeFavorite, addToCart } = useStore();
+  const {
+    activePanel,
+    closePanel,
+    openPanel,
+    favorites,
+    removeFavorite,
+    addToCart,
+  } = useStore();
   const open = activePanel === "wishlist";
 
   useEffect(() => {
@@ -36,7 +43,7 @@ function WishlistDrawer() {
     >
       <aside className="store-drawer" role="dialog" aria-modal="true" aria-labelledby="wishlist-drawer-title">
         <header className="store-drawer__header">
-          <h2 id="wishlist-drawer-title">Lista de deseos <span>({favorites.length})</span></h2>
+          <h2 id="wishlist-drawer-title">Favoritos <span>({favorites.length})</span></h2>
           <Button appearance="subtle" icon={<DismissRegular />} aria-label="Cerrar lista de deseos" onClick={closePanel} />
         </header>
         <div className="store-drawer__body">
@@ -57,7 +64,16 @@ function WishlistDrawer() {
                     <strong>{product.name}</strong>
                     <span className="store-drawer-item__price">{formatPrice(product.price)}</span>
                     <div className="store-drawer-item__wishlist-actions">
-                      <Button size="small" appearance="primary" icon={<ShoppingBagAddRegular />} onClick={() => addToCart(product)}>
+                      <Button
+                        size="small"
+                        appearance="primary"
+                        icon={<ShoppingBagAddRegular />}
+                        onClick={() => {
+                          addToCart(product);
+                          removeFavorite(product.id);
+                          openPanel("cart");
+                        }}
+                      >
                         Agregar al carrito
                       </Button>
                       <button className="store-drawer-item__remove" type="button" onClick={() => removeFavorite(product.id)}>Quitar</button>

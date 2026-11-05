@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@fluentui/react-components";
 import {
   AddRegular,
+  Delete24Regular,
   DismissRegular,
   SubtractRegular,
 } from "@fluentui/react-icons";
@@ -25,9 +27,9 @@ function CartDrawer() {
     updateCartQuantity,
     removeFromCart,
   } = useStore();
+  const navigate = useNavigate();
   const [postalCode, setPostalCode] = useState("");
   const [shippingMessage, setShippingMessage] = useState("");
-  const [checkoutMessage, setCheckoutMessage] = useState("");
   const [removingIds, setRemovingIds] = useState([]);
   const removeTimeouts = useRef(new Map());
   const open = activePanel === "cart";
@@ -134,37 +136,43 @@ function CartDrawer() {
                           className="store-quantity"
                           aria-label={"Cantidad: " + quantity}
                         >
-                          <button
-                            type="button"
-                            aria-label={"Quitar una unidad de " + product.name}
+                          <Button
+                            className="store-quantity__delete"
+                            appearance="subtle"
+                            shape="circular"
+                            icon={
+                              quantity === 1 ? (
+                                <Delete24Regular />
+                              ) : (
+                                <SubtractRegular />
+                              )
+                            }
+                            aria-label={
+                              quantity === 1
+                                ? "Quitar " + product.name + " del carrito"
+                                : "Disminuir cantidad de " + product.name
+                            }
                             onClick={() =>
                               quantity === 1
                                 ? animateRemove(product.id)
                                 : updateCartQuantity(product.id, quantity - 1)
                             }
-                          >
-                            <SubtractRegular />
-                          </button>
-                          <span className="store-quantity__value" key={quantity}>
+                          />
+                          <span className="store-quantity__value" key={quantity} aria-live="polite">
                             {quantity}
                           </span>
-                          <button
-                            type="button"
+                          <Button
+                            className="store-quantity__add"
+                            appearance="primary"
+                            shape="circular"
+                            icon={<AddRegular />}
+                            disabled={quantity >= 15}
                             aria-label={"Agregar una unidad de " + product.name}
                             onClick={() =>
                               updateCartQuantity(product.id, quantity + 1)
                             }
-                          >
-                            <AddRegular />
-                          </button>
+                          />
                         </div>
-                        <button
-                          className="store-drawer-item__remove"
-                          type="button"
-                          onClick={() => animateRemove(product.id)}
-                        >
-                          Eliminar
-                        </button>
                       </div>
                       <span className="store-drawer-item__price" key={quantity}>
                         {formatPrice(product.price * quantity)}
@@ -210,19 +218,13 @@ function CartDrawer() {
               <Button
                 className="store-drawer__checkout"
                 appearance="primary"
-                onClick={() =>
-                  setCheckoutMessage(
-                    "El carrito está listo. El proceso de pago aún debe conectarse.",
-                  )
-                }
+                onClick={() => {
+                  closePanel();
+                  navigate("/cart");
+                }}
               >
-                Iniciar compra
+                Continuar al proceso de pago
               </Button>
-              {checkoutMessage && (
-                <p className="store-drawer__message" role="status">
-                  {checkoutMessage}
-                </p>
-              )}
               <button
                 className="store-drawer__continue"
                 type="button"
@@ -239,3 +241,9 @@ function CartDrawer() {
 }
 
 export default CartDrawer;
+
+
+
+
+
+

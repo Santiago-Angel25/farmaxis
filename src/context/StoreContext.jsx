@@ -1,5 +1,7 @@
 import { createContext, useCallback, useContext, useMemo, useState } from "react";
 
+const MAX_PRODUCT_QUANTITY = 15;
+
 const StoreContext = createContext(null);
 
 export function StoreProvider({ children }) {
@@ -16,25 +18,25 @@ export function StoreProvider({ children }) {
     [cartItems],
   );
 
-  const addToCart = useCallback((product, quantity = 1) => {
-    const amount = Math.max(1, Number(quantity) || 1);
+  const addToCart = useCallback((product) => {
     setCartItems((current) => {
       const existing = current.find((item) => item.product.id === product.id);
       return existing
         ? current.map((item) =>
             item.product.id === product.id
-              ? { ...item, quantity: item.quantity + amount }
+              ? { ...item, quantity: Math.min(item.quantity + 1, MAX_PRODUCT_QUANTITY) }
               : item,
           )
-        : [...current, { product, quantity: amount }];
+        : [...current, { product, quantity: 1 }];
     });
   }, []);
 
   const updateCartQuantity = useCallback((productId, quantity) => {
     if (quantity < 1) return;
+    const cappedQuantity = Math.min(quantity, MAX_PRODUCT_QUANTITY);
     setCartItems((current) =>
       current.map((item) =>
-        item.product.id === productId ? { ...item, quantity } : item,
+        item.product.id === productId ? { ...item, quantity: cappedQuantity } : item,
       ),
     );
   }, []);
@@ -82,10 +84,9 @@ export function StoreProvider({ children }) {
   );
 }
 
-// StoreProvider and its consumer hook share this context module by design.
-// eslint-disable-next-line react-refresh/only-export-components
 export function useStore() {
   const store = useContext(StoreContext);
   if (!store) throw new Error("useStore debe usarse dentro de StoreProvider.");
   return store;
 }
+

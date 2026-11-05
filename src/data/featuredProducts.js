@@ -1,11 +1,139 @@
+import PARACETAMOL from "../assets/PARACETAMOl.png";
+import vitaminaC from "../assets/vitaminaC.png";
+import aspirinaefervescente from "../assets/aspirina-efervescente.png";
+import ibuprofeno from "../assets/ibuprofeno.png";
+import shampooAnticaspa from "../assets/shampooAnticaspa.png";
+import cremaHidratante from "../assets/cremaHidratante.png";
+import protectorSolar from "../assets/protectorSolar.png";
+import alcoholAntiseptico from "../assets/alcoholAntiseptico.png";
+import loratadina from "../assets/loratadina.png";
+import multivitaminico from "../assets/multivitaminico.png";
+import omeprazol from "../assets/omeprazol.png";
+import gelAntibacterial from "../assets/gelAntibacterial.png";
 const featuredProducts = [
-  { id: "paracetamol-500", name: "Paracetamol 500 mg", price: 4250, previousPrice: 5000, availability: "Envío disponible", discount: 15, category: "Medicamentos", presentation: "Caja x 20 tabletas", activeIngredient: "Paracetamol 500 mg", rating: 4.8, reviewCount: 128, description: "Alivio eficaz del dolor y la fiebre.", details: "Uso según indicaciones del fabricante." },
-  { id: "vitamina-c", name: "Vitamina C", price: 5000, previousPrice: 6000, availability: "Envío disponible", category: "Vitaminas y suplementos", presentation: "Frasco x 30 tabletas", activeIngredient: "Vitamina C", rating: 4.7, reviewCount: 86, description: "Un apoyo diario para complementar tu bienestar.", details: "Usar según las indicaciones del envase." },
-  { id: "shampoo-anticaspa", name: "Shampoo anticaspa", price: 12000, previousPrice: 14000, availability: "Envío disponible", category: "Cuidado personal", presentation: "Frasco x 200 ml", activeIngredient: "Fórmula anticaspa", rating: 4.6, reviewCount: 54, description: "Limpieza y cuidado para uso diario.", details: "Evita el contacto con los ojos." },
-  { id: "crema-hidratante", name: "Crema hidratante", price: 18000, previousPrice: 22000, availability: "Envío disponible", category: "Cuidado de la piel", presentation: "Envase x 250 ml", activeIngredient: "Fórmula hidratante", rating: 4.9, reviewCount: 72, description: "Hidratación para el cuidado diario de la piel.", details: "Aplicar sobre la piel limpia." },
-  { id: "gel-antibacterial", name: "Gel antibacterial", price: 6500, previousPrice: 8000, availability: "Envío disponible", category: "Cuidado personal", presentation: "Frasco x 250 ml", activeIngredient: "Fórmula antibacterial", rating: 4.7, reviewCount: 41, description: "Una opción práctica para tu rutina diaria.", details: "Usar según las indicaciones del fabricante." },
-  { id: "protector-solar", name: "Protector solar FPS 50", price: 32000, previousPrice: 38000, availability: "Envío disponible", category: "Cuidado de la piel", presentation: "Tubo x 60 g", activeIngredient: "Protección solar FPS 50", rating: 4.8, reviewCount: 63, description: "Protección solar para incorporar a tu rutina de cuidado.", details: "Seguir las indicaciones del envase." },
+  {
+    id: 1,
+    category: "medicamentos",
+    name: "Paracetamol 500mg",
+    price: 2500,
+    image: PARACETAMOL,
+    availability: "Envío disponible",
+    discount: 15,
+    previousPrice: 3000,
+  },
+  {
+    id: 2,
+    category: "vitaminas",
+    name: "Vitamina C",
+    price: 5000,
+    image: vitaminaC,
+    availability: "Envío disponible",
+    discount: 10,
+    previousPrice: 6000,
+  },
+  {
+    id: 3,
+    category: "medicamentos",
+    name: "aspirina 500mg",
+    price: 62000,
+    image: aspirinaefervescente,
+    availability: "Envío disponible",
+    discount: 10,
+    previousPrice: 55000,
+  },
+  {
+    id: 4,
+    category: "medicamentos",
+    name: "Ibuprofeno 400 mg",
+    price: 3200,
+    image: ibuprofeno,
+    availability: "Envío disponible",
+    discount: 20,
+    previousPrice: 4000,
+  },
+  {
+    id: 5,
+    category: "cuidado-personal",
+    name: "Shampoo Anticaspa 400ml",
+    price: 12000,
+    image: shampooAnticaspa,
+    availability: "Envío disponible",
+    discount: 15,
+    previousPrice: 14100,
+  },
+  {
+    id: 6,
+    category: "cuidado-personal",
+    name: "Crema Hidratante Facial",
+    price: 18000,
+    image: cremaHidratante,
+    availability: "Envío disponible",
+    discount: 10,
+    previousPrice: 20000,
+  },
+  {
+    id: 7,
+    category: "cuidado-personal",
+    name: "Protector Solar FPS 50+",
+    price: 25000,
+    image: protectorSolar,
+    availability: "Envío disponible",
+    discount: 25,
+    previousPrice: 33300,
+  },
+  {
+    id: 8,
+    category: "higiene",
+    name: "Alcohol Antiséptico 500ml",
+    price: 4500,
+    image: alcoholAntiseptico,
+    availability: "Envío disponible",
+    discount: 0,
+    previousPrice: 4500,
+  },
+  {
+    id: 9,
+    category: "medicamentos",
+    name: "Loratadina 10 mg",
+    price: 3800,
+    image: loratadina,
+    availability: "Envío disponible",
+    discount: 12,
+    previousPrice: 4300,
+  },
+  {
+    id: 10,
+    category: "vitaminas",
+    name: "Multivitamínico Completo",
+    price: 150000,
+    image: multivitaminico,
+    availability: "Envío disponible",
+    discount: 18,
+    previousPrice: 183000,
+  },
+  {
+    id: 11,
+    category: "medicamentos",
+    name: "Omeprazol 20 mg",
+    price: 4200,
+    image: omeprazol,
+    availability: "Envío disponible",
+    discount: 15,
+    previousPrice: 4900,
+  },
+  {
+    id: 12,
+    category: "higiene",
+    name: "Gel Antibacterial 250ml",
+    price: 3500,
+    image: gelAntibacterial,
+    availability: "Envío disponible",
+    discount: 10,
+    previousPrice: 3900,
+  }
+
 ];
+ 
 
 export default featuredProducts;
 
