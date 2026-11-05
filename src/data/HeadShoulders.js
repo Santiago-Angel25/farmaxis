@@ -7,6 +7,8 @@ const HeadShoulders = [
   {
     "id": 1,
     "category": "cuidado capilar",
+    "manufacturer": "Procter & Gamble",
+    "presentation": "Frasco x 375 ml",
     "name": "Head & Shoulders Anti-Caída con Romero",
     "price": 15900,
     "image": ChampuRomeroAnticaida,
@@ -17,6 +19,8 @@ const HeadShoulders = [
   {
     "id": 2,
     "category": "cuidado capilar",
+    "manufacturer": "Procter & Gamble",
+    "presentation": "Frasco x 375 ml",
     "name": "Head & Shoulders Limpieza Renovadora",
     "price": 16200,
     "image": Front_custom,
@@ -27,6 +31,8 @@ const HeadShoulders = [
   {
     "id": 3,
     "category": "cuidado capilar",
+    "manufacturer": "Procter & Gamble",
+    "presentation": "Frasco x 375 ml",
     "name": "Head & Shoulders Alivio Instantáneo",
     "price": 16500,
     "image": HeadAlivioInstantaneo,
@@ -37,6 +43,8 @@ const HeadShoulders = [
   {
     "id": 4,
     "category": "cuidado capilar",
+    "manufacturer": "Procter & Gamble",
+    "presentation": "Frasco x 180 ml",
     "name": "Head & Shoulders Hidratación Aceite de Coco",
     "price": 16900,
     "image": HIDRATACION_ACEITE,
@@ -48,3 +56,4 @@ const HeadShoulders = [
 ];
 
 export default HeadShoulders;
+

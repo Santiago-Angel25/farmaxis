@@ -4,8 +4,16 @@ import gsap from "gsap";
 import ProductSection from "../components/ProductSection";
 import featuredProducts from "../data/featuredProducts";
 import HeadShoulders from "../data/HeadShoulders";
+import higene from "../data/higene";
+import RochePosay from "../data/RochePosay";
+
 import useCatalogProducts from "../hooks/useCatalogProducts";
 import "../styles/Categories.css";
+
+const hygieneProducts = higene.flat().map((product) => ({ ...product, id: `higiene-${product.id}` }));
+const rochePosayProducts = RochePosay.flat().map((product) => ({ ...product, id: `roche-posay-${product.id}` }));
+
+
 
 const FILTERS = [
   { label: "Todos los productos", value: "all" },
@@ -55,27 +63,33 @@ function Categories() {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [sortBy, setSortBy] = useState("recommended");
-  const [personalOpen, setPersonalOpen] = useState(searchParams.get("category") === "shampoo" || searchParams.get("brand") === "head-shoulders");
+  const [personalOpen, setPersonalOpen] = useState(searchParams.get("category") === "shampoo" || searchParams.get("brand") === "head-shoulders" || searchParams.get("category") === "cuidado-personal" || ["cuidado-facial", "bloqueador"].includes(searchParams.get("subcategory")));
   const [shampooOpen, setShampooOpen] = useState(searchParams.get("category") === "shampoo" || searchParams.get("brand") === "head-shoulders");
+  const [hygieneOpen, setHygieneOpen] = useState(searchParams.get("category") === "higiene" || searchParams.get("subcategory") === "higiene-femenina");
+  const [facialOpen, setFacialOpen] = useState(["cuidado-facial", "bloqueador"].includes(searchParams.get("subcategory")));
   const resultsRef = useRef(null);
   const hasMountedRef = useRef(false);
   const section = searchParams.get("section");
   const brand = searchParams.get("brand");
   const category = searchParams.get("category") || "all";
-  const title = brand === "head-shoulders" ? "Shampoo · Head & Shoulders" : category !== "all"
+  const subcategory = searchParams.get("subcategory");
+  const title = brand === "head-shoulders" ? "Shampoo · Head & Shoulders" : subcategory === "higiene-femenina" ? "Higiene femenina" : subcategory === "bloqueador" ? "Bloqueador" : subcategory === "cuidado-facial" ? "Cuidado facial" : category !== "all"
     ? FILTERS.find((filter) => filter.value === category)?.label || "Categorías"
     : SECTION_TITLES[section] || "Todos los productos";
 
   const visibleProducts = useMemo(() => {
-    let result = category === "shampoo" ? HeadShoulders.flat() : getSectionProducts(section, products).filter((product) => matchesCategory(product, category));
+    let result = category === "shampoo" ? HeadShoulders.flat() : category === "higiene" ? [...featuredProducts.filter((product) => product.category === "higiene"), ...hygieneProducts] : getSectionProducts(section, products).filter((product) => matchesCategory(product, category));
     if (category === "cuidado-personal") result = [...result, ...HeadShoulders.flat()];
     if (brand && brand === "head-shoulders") result = HeadShoulders.flat();
+    if (subcategory === "cuidado-facial") result = [...products.filter((product) => product.category === "skin-care"), ...featuredProducts.filter((product) => [6, 7].includes(product.id)), ...rochePosayProducts];
+    if (subcategory === "bloqueador") result = [...featuredProducts.filter((product) => product.name === "Protector Solar FPS 50+"), ...rochePosayProducts, ...products.filter((product) => product.category === "skin-care" && /sunscreen|sunblock|sun protection|bloqueador|protector solar|spf/i.test(product.name))];
+    if (subcategory === "higiene-femenina") result = hygieneProducts;
     if (minPrice !== "") result = result.filter((product) => product.price >= Number(minPrice));
     if (maxPrice !== "") result = result.filter((product) => product.price <= Number(maxPrice));
     if (sortBy === "price-asc") result.sort((a, b) => a.price - b.price);
     if (sortBy === "price-desc") result.sort((a, b) => b.price - a.price);
     return result;
-  }, [products, section, category, brand, minPrice, maxPrice, sortBy]);
+  }, [products, section, category, brand, subcategory, minPrice, maxPrice, sortBy]);
 
   useEffect(() => {
     if (!hasMountedRef.current) {
@@ -105,7 +119,7 @@ function Categories() {
     }, resultsRef);
 
     return () => animation.revert();
-  }, [category, section, brand, minPrice, maxPrice, sortBy]);
+  }, [category, section, brand, subcategory, minPrice, maxPrice, sortBy]);
 
   const selectCategory = (value) => {
     const next = new URLSearchParams();
@@ -154,6 +168,27 @@ function Categories() {
                     </button>
                   </div>}
                   <button className={`category-catalog__tree-label${category === "maquillaje" ? " is-selected" : ""}`} type="button" onClick={() => { const next = new URLSearchParams(); next.set("category", "maquillaje"); setSearchParams(next); }}>Maquillaje</button>
+                  <div className="category-catalog__tree-row">
+                    <button className={`category-catalog__tree-label${subcategory === "cuidado-facial" || subcategory === "bloqueador" ? " is-selected" : ""}`} type="button" onClick={() => { const next = new URLSearchParams(); next.set("category", "cuidado-personal"); next.set("subcategory", "cuidado-facial"); setSearchParams(next); setFacialOpen(true); }}>Cuidado facial</button>
+                    <button className="category-catalog__tree-expander" type="button" aria-label={facialOpen ? "Contraer filtros de cuidado facial" : "Expandir filtros de cuidado facial"} aria-expanded={facialOpen} onClick={() => setFacialOpen((open) => !open)}>{facialOpen ? "−" : "+"}</button>
+                  </div>
+                  {facialOpen && <div className="category-catalog__tree-level category-catalog__tree-level--brands">
+                    <button className={subcategory === "bloqueador" ? "is-selected" : ""} type="button" onClick={() => { const next = new URLSearchParams(); next.set("category", "cuidado-personal"); next.set("subcategory", "bloqueador"); setSearchParams(next); }}>Bloqueador</button>
+                  </div>}
+                </div>}
+              </div>
+            ) : filter.value === "higiene" ? (
+              <div className="category-catalog__tree" key={filter.value}>
+                <div className="category-catalog__tree-row">
+                  <button className={`category-catalog__tree-label${category === filter.value || hygieneOpen ? " is-selected" : ""}`} type="button" onClick={() => { const next = new URLSearchParams(); next.set("category", "higiene"); setSearchParams(next); }}>
+                    {filter.label}
+                  </button>
+                  <button className="category-catalog__tree-expander" type="button" aria-label={hygieneOpen ? "Contraer subcategorías de higiene" : "Expandir subcategorías de higiene"} aria-expanded={hygieneOpen} onClick={() => setHygieneOpen((open) => !open)}>{hygieneOpen ? "−" : "+"}</button>
+                </div>
+                {hygieneOpen && <div className="category-catalog__tree-level category-catalog__tree-level--brands">
+                  <button className={subcategory === "higiene-femenina" ? "is-selected" : ""} type="button" onClick={() => { const next = new URLSearchParams(); next.set("category", "higiene"); next.set("subcategory", "higiene-femenina"); setSearchParams(next); }}>
+                    Higiene femenina
+                  </button>
                 </div>}
               </div>
             ) : (

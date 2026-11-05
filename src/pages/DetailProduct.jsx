@@ -47,11 +47,25 @@ function DetailProduct() {
       <div className="detail-product__gallery"><div className="detail-product__image">{product.image ? <img src={product.image} alt={product.name} /> : <span>Imagen del producto</span>}</div><div className="detail-product__thumbs">{product.image && <button type="button" aria-label="Ver imagen del producto"><img src={product.image} alt="" /></button>}</div></div>
       <div className="detail-product__info"><h1>{product.name}</h1><p className="detail-product__availability">{product.availability || "Envío disponible"}</p><div className="detail-product__rating" aria-label="Calificación de demostración">★★★★★ <span>(Producto de demostración)</span></div><div className="detail-product__price">{money(product.price)} {product.previousPrice && <del>{money(product.previousPrice)}</del>}</div><label className="detail-product__quantity-label">Cantidad</label><div className="detail-product__quantity"><Button appearance="subtle" aria-label="Disminuir cantidad" icon={quantity <= 1 ? <Delete24Regular /> : <SubtractRegular />} onClick={decrement} disabled={quantity === 0} /><span>{quantity || 1}</span><Button appearance="subtle" aria-label="Aumentar cantidad" icon={<AddRegular />} disabled={quantity >= 15} onClick={() => quantity ? updateCartQuantity(product.id, quantity + 1) : addToCart(product)} /></div><div className="detail-product__actions"><Button appearance="primary" icon={<Cart24Regular />} onClick={add}>{added ? "Agregado al carrito" : "Agregar al carrito"}</Button><Button appearance="outline" onClick={() => navigate("/cart")}>Ver carrito</Button></div></div>
     </section>
-    <section className="detail-product__description"><h2>Detalles del producto</h2><dl><div><dt>Producto</dt><dd>{product.name}</dd></div><div><dt>Presentación</dt><dd>{product.description || "Consulta la presentación del producto en su empaque."}</dd></div><div><dt>Información</dt><dd>Sigue las indicaciones del fabricante.</dd></div></dl></section>
+        <section className="detail-product__description">
+      <h2>Detalles del producto</h2>
+      <dl>
+        <div><dt>Producto</dt><dd>{product.name}</dd></div>
+        {(product.brand || product.manufacturer) && <div><dt>Marca / Fabricante</dt><dd>{product.brand || product.manufacturer}</dd></div>}
+        {product.manufacturedIn && <div><dt>Fabricado en</dt><dd>{product.manufacturedIn}</dd></div>}
+        {product.category && <div><dt>Categoría</dt><dd>{product.category}</dd></div>}
+        {product.presentation && <div><dt>Presentación</dt><dd>{product.presentation}</dd></div>}
+        {product.activeIngredient && <div><dt>Ingrediente activo</dt><dd>{product.activeIngredient}</dd></div>}
+        {product.description && <div><dt>Descripción</dt><dd>{product.description}</dd></div>}
+        {product.details && <div><dt>Información</dt><dd>{product.details}</dd></div>}
+      </dl>
+    </section>
     <Link className="detail-product__back" to="/categories"><ArrowLeftRegular /> Volver al catálogo</Link>
   </main>;
 }
 
 export default DetailProduct;
+
+
 
 

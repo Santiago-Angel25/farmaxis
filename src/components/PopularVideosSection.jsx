@@ -1,20 +1,18 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button, Dialog, DialogSurface } from "@fluentui/react-components";
 import {
-  AddRegular,
   ArrowLeftRegular,
   ArrowRightRegular,
-  Cart24Regular,
   DismissRegular,
   PlayRegular,
-  SubtractRegular,
 } from "@fluentui/react-icons";
 import gsap from "gsap";
 import POPULAR_VIDEOS from "../data/POPULAR_VIDEOS,js";
-import { useStore } from "../context/StoreContext";
 import "../styles/PopularVideosSection.css";
 
 function PopularVideosSection() {
+  const navigate = useNavigate();
   const sectionRef = useRef(null);
   const trackRef = useRef(null);
   const videoRef = useRef(null);
@@ -23,7 +21,6 @@ function PopularVideosSection() {
   const activeIndexRef = useRef(null);
   const carouselReadyRef = useRef(false);
   const [activeIndex, setActiveIndex] = useState(null);
-  const { cartItems, addToCart, updateCartQuantity, removeFromCart } = useStore();
   const activeVideo = activeIndex === null ? null : POPULAR_VIDEOS[activeIndex];
   const carouselVideos = [...POPULAR_VIDEOS, ...POPULAR_VIDEOS, ...POPULAR_VIDEOS];
 
@@ -197,30 +194,7 @@ function PopularVideosSection() {
     if (activeVideo?.videoSrc) videoRef.current?.play().catch(() => {});
   }, [activeVideo]);
 
-  const cartProduct = activeVideo
-    ? {
-        id: `popular-video-${activeVideo.id}`,
-        name: activeVideo.product,
-        price: Number(activeVideo.price) || 0,
-        image: activeVideo.productImage || "",
-        availability: "Producto promocionado",
-      }
-    : null;
-  const cartQuantity = cartProduct
-    ? cartItems.find((item) => item.product.id === cartProduct.id)?.quantity ?? 0
-    : 0;
 
-  const decreaseQuantity = () => {
-    if (!cartProduct || cartQuantity < 1) return;
-    if (cartQuantity === 1) removeFromCart(cartProduct.id);
-    else updateCartQuantity(cartProduct.id, cartQuantity - 1);
-  };
-
-  const increaseQuantity = () => {
-    if (!cartProduct) return;
-    if (cartQuantity === 0) addToCart(cartProduct);
-    else updateCartQuantity(cartProduct.id, cartQuantity + 1);
-  };
 
   return (
     <section ref={sectionRef} id="lo-mas-popular" className="popular-videos" aria-labelledby="popular-videos-title">
@@ -271,17 +245,9 @@ function PopularVideosSection() {
               <Button className="popular-video-dialog__close" appearance="subtle" icon={<DismissRegular />} aria-label="Cerrar video" onClick={() => setActiveIndex(null)} />
               <Button className="popular-video-dialog__story-arrow popular-video-dialog__story-arrow--previous" appearance="subtle" icon={<ArrowLeftRegular />} aria-label="Video anterior" onClick={() => moveStory(-1)} />
               <Button className="popular-video-dialog__story-arrow popular-video-dialog__story-arrow--next" appearance="subtle" icon={<ArrowRightRegular />} aria-label="Siguiente video" onClick={() => moveStory(1)} />
-              {cartQuantity === 0 ? (
-                <Button className="popular-video-dialog__add-cart" appearance="primary" icon={<Cart24Regular />} aria-label="Agregar al carrito" onClick={increaseQuantity}>
-                  Agregar al carrito
-                </Button>
-              ) : (
-                <div className="popular-video-dialog__quantity" aria-label={`${cartQuantity} unidades de ${activeVideo.product}`}>
-                  <Button appearance="transparent" icon={<SubtractRegular />} aria-label="Quitar una unidad" onClick={decreaseQuantity} />
-                  <span><strong>En el carrito</strong><b>{cartQuantity}</b></span>
-                  <Button appearance="transparent" icon={<AddRegular />} disabled={cartQuantity >= 15} aria-label="Agregar una unidad" onClick={increaseQuantity} />
-                </div>
-              )}
+              <Button className="popular-video-dialog__more" appearance="primary" icon={<ArrowRightRegular />} aria-label="Ver más productos" onClick={() => navigate(activeVideo.id === "nosotras" ? "/categories?category=higiene&subcategory=higiene-femenina&brand=nosotras" : activeVideo.id === "la-roche-posay" ? "/categories?category=cuidado-personal&subcategory=bloqueador" : "/categories")}>
+                Ver más
+              </Button>
             </div>
           )}
         </DialogSurface>

@@ -50,7 +50,7 @@ function PromoSection() {
             className="promo-feature promo-feature--nosotras"
             type="button"
             aria-label="Ver productos Nosotras"
-            onClick={() => navigate("/categories?brand=nosotras")}
+            onClick={() => navigate("/categories?category=higiene&subcategory=higiene-femenina")}
           >
             <img src={profuundaNosotras} alt="Promoción de productos Nosotras" />
           </button>

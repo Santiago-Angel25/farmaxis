@@ -4,7 +4,7 @@ import imagenBaner from "../assets/imagenBaner.jpg";
 const Banner = [
   {
     id: "promocion-1",
-    image: proteina,
+    image: imagenBaner,
     alt: "Promoción destacada de farmacia",
   },
   {
@@ -14,7 +14,7 @@ const Banner = [
   },
   {
     id: "promocion-4",
-    image: imagenBaner,
+    image: proteina,
     alt: "Otra promoción destacada de farmacia",
   }
 ];

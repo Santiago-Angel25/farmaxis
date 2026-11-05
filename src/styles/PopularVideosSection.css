@@ -219,7 +219,7 @@ body.popular-video-dialog-is-open {
   right: 8px;
 }
 
-.popular-video-dialog__add-cart {
+.popular-video-dialog__more {
   position: absolute;
   z-index: 1;
   right: auto;
@@ -239,7 +239,7 @@ body.popular-video-dialog-is-open {
   transition: background-color 180ms ease, color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
 }
 
-.popular-video-dialog__add-cart:hover {
+.popular-video-dialog__more:hover {
   background: #17233b !important;
   box-shadow: 0 9px 24px rgb(0 0 0 / 38%);
   color: #fff !important;

@@ -15,6 +15,7 @@ const featuredProducts = [
     id: 1,
     category: "medicamentos",
     name: "Paracetamol 500mg",
+    presentation: "Tableta de 500 mg",
     price: 2500,
     image: PARACETAMOL,
     availability: "Envío disponible",
@@ -35,16 +36,18 @@ const featuredProducts = [
     id: 3,
     category: "medicamentos",
     name: "aspirina 500mg",
-    price: 62000,
+    presentation: "Tableta efervescente de 500 mg",
+    price: 55000,
     image: aspirinaefervescente,
     availability: "Envío disponible",
     discount: 10,
-    previousPrice: 55000,
+    previousPrice: 61000,
   },
   {
     id: 4,
     category: "medicamentos",
     name: "Ibuprofeno 400 mg",
+    presentation: "Tableta de 400 mg",
     price: 3200,
     image: ibuprofeno,
     availability: "Envío disponible",
@@ -95,6 +98,7 @@ const featuredProducts = [
     id: 9,
     category: "medicamentos",
     name: "Loratadina 10 mg",
+    presentation: "Tableta de 10 mg",
     price: 3800,
     image: loratadina,
     availability: "Envío disponible",
@@ -115,6 +119,7 @@ const featuredProducts = [
     id: 11,
     category: "medicamentos",
     name: "Omeprazol 20 mg",
+    presentation: "Cápsula de 20 mg",
     price: 4200,
     image: omeprazol,
     availability: "Envío disponible",
@@ -136,4 +141,5 @@ const featuredProducts = [
  
 
 export default featuredProducts;
+
 
