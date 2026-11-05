@@ -376,3 +376,10 @@
   position: relative;
   display: flex;
 }
+
+.navbar__category-wrap { position: relative; display: inline-flex; }
+.navbar__subcategory-menu { position: absolute; z-index: 1200; top: calc(100% + 8px); left: 0; display: grid; min-width: 230px; padding: 7px; border: 1px solid #e3e7ec; border-radius: 10px; background: #fff; box-shadow: 0 12px 28px rgb(13 31 52 / 18%); animation: subcategory-in 150ms ease-out both; }
+.navbar__subcategory-menu button { display: grid; gap: 3px; padding: 10px 12px; border: 0; border-radius: 7px; background: transparent; color: #17233b; font: inherit; text-align: left; cursor: pointer; }
+.navbar__subcategory-menu button:hover, .navbar__subcategory-menu button:focus-visible { outline: 0; background: #eef6fc; color: #0f6cbd; }
+.navbar__subcategory-menu button span { color: #737b88; font-size: 11px; }
+@keyframes subcategory-in { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }

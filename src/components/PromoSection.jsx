@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
 import headShoulders from "../assets/head&shoulders.webp";
 import profuundaNosotras from "../assets/profuundaNosotras.webp";
@@ -7,6 +8,7 @@ import "../styles/PromoSection.css";
 
 function PromoSection() {
   const promoSectionRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const context = gsap.context(() => {
@@ -35,19 +37,23 @@ function PromoSection() {
         <PromoCarousel />
 
         <div className="promo-side-banners" aria-label="Promociones secundarias">
-          <aside className="promo-feature promo-feature--head-shoulders">
-            <img
-              src={headShoulders}
-              alt="Promoción de productos Head & Shoulders"
-            />
-          </aside>
+          <button
+            className="promo-feature promo-feature--head-shoulders"
+            type="button"
+            aria-label="Ver productos Head & Shoulders"
+            onClick={() => navigate("/categories?category=shampoo&brand=head-shoulders")}
+          >
+            <img src={headShoulders} alt="Promoción Head & Shoulders: productos para el cuidado capilar" />
+          </button>
 
-          <aside className="promo-feature promo-feature--nosotras">
-            <img
-              src={profuundaNosotras}
-              alt="Promoción de productos Nosotras"
-            />
-          </aside>
+          <button
+            className="promo-feature promo-feature--nosotras"
+            type="button"
+            aria-label="Ver productos Nosotras"
+            onClick={() => navigate("/categories?brand=nosotras")}
+          >
+            <img src={profuundaNosotras} alt="Promoción de productos Nosotras" />
+          </button>
         </div>
       </div>
     </section>
@@ -55,5 +61,7 @@ function PromoSection() {
 }
 
 export default PromoSection;
+
+
 
 

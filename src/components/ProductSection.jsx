@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Button } from "@fluentui/react-components";
+import { useNavigate } from "react-router-dom";
 import {
   AddRegular,
   ArrowLeftRegular,
@@ -31,6 +32,7 @@ function ProductSection({
   layout = "carousel",
   hideHeader = false,
 }) {
+  const navigate = useNavigate();
   const sectionRef = useRef(null);
   const trackRef = useRef(null);
   const {
@@ -217,7 +219,7 @@ function ProductSection({
                 ?.quantity ?? 0;
 
             return (
-              <article className="product-card" key={product.id}>
+              <article className="product-card" key={product.id} role="link" tabIndex={0} onClick={(event) => { if (event.target.closest("button")) return; navigate(`/detailProduct/${encodeURIComponent(product.id)}`, { state: { product } }); }} onKeyDown={(event) => { if (event.target !== event.currentTarget) return; if (event.key === "Enter" || event.key === " ") { event.preventDefault(); navigate(`/detailProduct/${encodeURIComponent(product.id)}`, { state: { product } }); } }}>
                 <div className="product-card__visual">
                   {product.image ? (
                     <img src={product.image} alt={product.name} />
@@ -243,7 +245,7 @@ function ProductSection({
                         : `Agregar ${product.name} a favoritos`
                     }
                     aria-pressed={isFavorite}
-                    onClick={() => toggleFavorite(product)}
+                    onClick={(event) => { event.stopPropagation(); toggleFavorite(product); }}
                   />
                 </div>
                 <div className="product-card__details">
@@ -264,7 +266,7 @@ function ProductSection({
                       appearance="primary"
                       icon={<Cart24Regular />}
                       aria-label={`Agregar ${product.name} al carrito`}
-                      onClick={() => addToCart(product)}
+                      onClick={(event) => { event.stopPropagation(); addToCart(product); }}
                     >
                       Agregar
                     </Button>
@@ -300,6 +302,7 @@ function ProductSection({
                       </span>
                       <Button
                         className="product-card__quantity-button product-card__quantity-button--add"
+                        disabled={quantity >= 15}
                         appearance="primary"
                         shape="circular"
                         icon={<AddRegular />}
@@ -328,3 +331,8 @@ function ProductSection({
 }
 
 export default ProductSection;
+
+
+
+
+

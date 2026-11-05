@@ -279,7 +279,7 @@ function PopularVideosSection() {
                 <div className="popular-video-dialog__quantity" aria-label={`${cartQuantity} unidades de ${activeVideo.product}`}>
                   <Button appearance="transparent" icon={<SubtractRegular />} aria-label="Quitar una unidad" onClick={decreaseQuantity} />
                   <span><strong>En el carrito</strong><b>{cartQuantity}</b></span>
-                  <Button appearance="transparent" icon={<AddRegular />} aria-label="Agregar una unidad" onClick={increaseQuantity} />
+                  <Button appearance="transparent" icon={<AddRegular />} disabled={cartQuantity >= 15} aria-label="Agregar una unidad" onClick={increaseQuantity} />
                 </div>
               )}
             </div>

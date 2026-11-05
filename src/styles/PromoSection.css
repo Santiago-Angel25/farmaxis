@@ -108,3 +108,7 @@
     aspect-ratio: 16 / 9;
   }
 }
+
+.promo-feature { padding: 0; border: 0; cursor: pointer; font: inherit; }
+.promo-feature:focus-visible { outline: 3px solid #0f6cbd; outline-offset: 3px; }
+

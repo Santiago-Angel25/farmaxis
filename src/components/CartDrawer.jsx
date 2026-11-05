@@ -166,6 +166,7 @@ function CartDrawer() {
                             appearance="primary"
                             shape="circular"
                             icon={<AddRegular />}
+                            disabled={quantity >= 15}
                             aria-label={"Agregar una unidad de " + product.name}
                             onClick={() =>
                               updateCartQuantity(product.id, quantity + 1)
@@ -240,6 +241,7 @@ function CartDrawer() {
 }
 
 export default CartDrawer;
+
 
 
 

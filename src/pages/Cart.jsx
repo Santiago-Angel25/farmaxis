@@ -87,6 +87,7 @@ function Cart() {
                     <Button
                       appearance="subtle"
                       icon={<AddRegular />}
+                      disabled={quantity >= 15}
                       aria-label={`Aumentar cantidad de ${product.name}`}
                       onClick={() => updateCartQuantity(product.id, quantity + 1)}
                     />
@@ -124,3 +125,4 @@ function Cart() {
 }
 
 export default Cart;
+

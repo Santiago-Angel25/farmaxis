@@ -1,5 +1,7 @@
 import { createContext, useCallback, useContext, useMemo, useState } from "react";
 
+const MAX_PRODUCT_QUANTITY = 15;
+
 const StoreContext = createContext(null);
 
 export function StoreProvider({ children }) {
@@ -22,7 +24,7 @@ export function StoreProvider({ children }) {
       return existing
         ? current.map((item) =>
             item.product.id === product.id
-              ? { ...item, quantity: item.quantity + 1 }
+              ? { ...item, quantity: Math.min(item.quantity + 1, MAX_PRODUCT_QUANTITY) }
               : item,
           )
         : [...current, { product, quantity: 1 }];
@@ -31,9 +33,10 @@ export function StoreProvider({ children }) {
 
   const updateCartQuantity = useCallback((productId, quantity) => {
     if (quantity < 1) return;
+    const cappedQuantity = Math.min(quantity, MAX_PRODUCT_QUANTITY);
     setCartItems((current) =>
       current.map((item) =>
-        item.product.id === productId ? { ...item, quantity } : item,
+        item.product.id === productId ? { ...item, quantity: cappedQuantity } : item,
       ),
     );
   }, []);
@@ -86,3 +89,4 @@ export function useStore() {
   if (!store) throw new Error("useStore debe usarse dentro de StoreProvider.");
   return store;
 }
+

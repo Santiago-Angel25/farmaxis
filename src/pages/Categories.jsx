@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import gsap from "gsap";
 import ProductSection from "../components/ProductSection";
 import featuredProducts from "../data/featuredProducts";
+import HeadShoulders from "../data/HeadShoulders";
 import useCatalogProducts from "../hooks/useCatalogProducts";
 import "../styles/Categories.css";
 
@@ -24,6 +25,8 @@ const SECTION_TITLES = {
   food: "Bebidas y alimentos",
   health: "Salud y medicamentos",
   "personal-care": "Cuidado personal",
+  shampoo: "Shampoo",
+  maquillaje: "Maquillaje",
 };
 
 function getSectionProducts(section, apiProducts) {
@@ -41,6 +44,7 @@ function getSectionProducts(section, apiProducts) {
 function matchesCategory(product, category) {
   if (category === "all") return true;
   if (category === "cuidado-personal") return ["cuidado-personal", "beauty", "skin-care"].includes(product.category);
+  if (category === "maquillaje") return product.category === "beauty";
   if (category === "groceries") return product.category === "groceries";
   return product.category === category;
 }
@@ -51,22 +55,27 @@ function Categories() {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [sortBy, setSortBy] = useState("recommended");
+  const [personalOpen, setPersonalOpen] = useState(searchParams.get("category") === "shampoo" || searchParams.get("brand") === "head-shoulders");
+  const [shampooOpen, setShampooOpen] = useState(searchParams.get("category") === "shampoo" || searchParams.get("brand") === "head-shoulders");
   const resultsRef = useRef(null);
   const hasMountedRef = useRef(false);
   const section = searchParams.get("section");
+  const brand = searchParams.get("brand");
   const category = searchParams.get("category") || "all";
-  const title = category !== "all"
+  const title = brand === "head-shoulders" ? "Shampoo · Head & Shoulders" : category !== "all"
     ? FILTERS.find((filter) => filter.value === category)?.label || "Categorías"
     : SECTION_TITLES[section] || "Todos los productos";
 
   const visibleProducts = useMemo(() => {
-    let result = getSectionProducts(section, products).filter((product) => matchesCategory(product, category));
+    let result = category === "shampoo" ? HeadShoulders.flat() : getSectionProducts(section, products).filter((product) => matchesCategory(product, category));
+    if (category === "cuidado-personal") result = [...result, ...HeadShoulders.flat()];
+    if (brand && brand === "head-shoulders") result = HeadShoulders.flat();
     if (minPrice !== "") result = result.filter((product) => product.price >= Number(minPrice));
     if (maxPrice !== "") result = result.filter((product) => product.price <= Number(maxPrice));
     if (sortBy === "price-asc") result.sort((a, b) => a.price - b.price);
     if (sortBy === "price-desc") result.sort((a, b) => b.price - a.price);
     return result;
-  }, [products, section, category, minPrice, maxPrice, sortBy]);
+  }, [products, section, category, brand, minPrice, maxPrice, sortBy]);
 
   useEffect(() => {
     if (!hasMountedRef.current) {
@@ -96,7 +105,7 @@ function Categories() {
     }, resultsRef);
 
     return () => animation.revert();
-  }, [category, section, minPrice, maxPrice, sortBy]);
+  }, [category, section, brand, minPrice, maxPrice, sortBy]);
 
   const selectCategory = (value) => {
     const next = new URLSearchParams();
@@ -126,13 +135,29 @@ function Categories() {
           <h2>Filtrar</h2>
           <fieldset>
             <legend>Categoría</legend>
-            {FILTERS.map((filter) => (
-              <button
-                className={category === filter.value ? "is-selected" : ""}
-                type="button"
-                key={filter.value}
-                onClick={() => selectCategory(filter.value)}
-              >
+            {FILTERS.map((filter) => filter.value === "cuidado-personal" ? (
+              <div className="category-catalog__tree" key={filter.value}>
+                <div className="category-catalog__tree-row">
+                  <button className={`category-catalog__tree-label${category === filter.value || personalOpen ? " is-selected" : ""}`} type="button" onClick={() => { const next = new URLSearchParams(); next.set("category", "cuidado-personal"); setSearchParams(next); }}>
+                    {filter.label}
+                  </button>
+                  <button className="category-catalog__tree-expander" type="button" aria-label={personalOpen ? "Contraer Cuidado personal" : "Expandir Cuidado personal"} aria-expanded={personalOpen} onClick={() => setPersonalOpen((open) => !open)}>{personalOpen ? "−" : "+"}</button>
+                </div>
+                {personalOpen && <div className="category-catalog__tree-level">
+                  <div className="category-catalog__tree-row">
+                    <button className={`category-catalog__tree-label${category === "shampoo" ? " is-selected" : ""}`} type="button" onClick={() => { const next = new URLSearchParams(); next.set("category", "shampoo"); setSearchParams(next); }}>{"Shampoo"}</button>
+                    <button className="category-catalog__tree-expander" type="button" aria-label={shampooOpen ? "Contraer marcas de shampoo" : "Expandir marcas de shampoo"} aria-expanded={shampooOpen} onClick={() => setShampooOpen((open) => !open)}>{shampooOpen ? "−" : "+"}</button>
+                  </div>
+                  {shampooOpen && <div className="category-catalog__tree-level category-catalog__tree-level--brands">
+                    <button className={brand === "head-shoulders" ? "is-selected" : ""} type="button" onClick={() => { const next = new URLSearchParams(); next.set("category", "shampoo"); next.set("brand", "head-shoulders"); setSearchParams(next); }}>
+                      Head &amp; Shoulders
+                    </button>
+                  </div>}
+                  <button className={`category-catalog__tree-label${category === "maquillaje" ? " is-selected" : ""}`} type="button" onClick={() => { const next = new URLSearchParams(); next.set("category", "maquillaje"); setSearchParams(next); }}>Maquillaje</button>
+                </div>}
+              </div>
+            ) : (
+              <button className={category === filter.value ? "is-selected" : ""} type="button" key={filter.value} onClick={() => selectCategory(filter.value)}>
                 {filter.label}
               </button>
             ))}
@@ -161,3 +186,10 @@ function Categories() {
 }
 
 export default Categories;
+
+
+
+
+
+
+

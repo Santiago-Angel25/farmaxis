@@ -47,6 +47,7 @@ function Navbar() {
   const hoverBarraRef = useRef(false);
   const [logoError, setLogoError] = useState(false);
   const [categoriasOpen, setCategoriasOpen] = useState(false);
+  const [categoriaMenuOpen, setCategoriaMenuOpen] = useState(null);
 
   const abrirCategorias = () => {
     if (menuTimerRef.current) {
@@ -689,6 +690,7 @@ function Navbar() {
 }
 
 export default Navbar;
+
 
 
 

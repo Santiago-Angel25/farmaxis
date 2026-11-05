@@ -311,3 +311,8 @@
 @media (max-width: 430px) {
   .product-section__track--grid { grid-template-columns: 1fr; }
 }
+
+
+.product-card[role=link] { cursor: pointer; }
+.product-card[role=link]:focus-visible { outline: 3px solid #0f6cbd; outline-offset: 3px; }
+
