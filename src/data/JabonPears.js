@@ -1,3 +1,5 @@
+import jabonPears from "../assets/jabonPears.png";
+
 const JabonPears = [[
   {
     id: "pears-jabon-transparente",

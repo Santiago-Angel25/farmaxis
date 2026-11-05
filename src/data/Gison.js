@@ -1,3 +1,6 @@
+import gison from "../assets/gison.png";
+
+
 const Gison = [[
   {
     id: "gison-producto-belleza",

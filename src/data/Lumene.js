@@ -1,3 +1,5 @@
+import lumene from "../assets/lumene.png";
+
 const Lumene = [[
   {
     id: "lumene-cuidado-facial",
@@ -6,7 +8,7 @@ const Lumene = [[
     presentation: "Consulta la presentación del producto en su empaque",
     manufacturer: "Lumene",
     price: 79900,
-    image: "",
+    image: lumene,
     availability: "Envío disponible",
     discount: 10,
     previousPrice: 88900,

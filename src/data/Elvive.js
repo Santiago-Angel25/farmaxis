@@ -1,3 +1,5 @@
+import elvive from "../assets/elvive.png";
+
 const Elvive = [[
   {
     id: "elvive-reparacion-shampoo",
@@ -6,7 +8,7 @@ const Elvive = [[
     presentation: "Frasco",
     manufacturer: "L'Oréal Paris",
     price: 24900,
-    image: "",
+    image: elvive,
     availability: "Envío disponible",
     discount: 10,
     previousPrice: 27900,
