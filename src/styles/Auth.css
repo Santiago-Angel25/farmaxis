@@ -1,0 +1,76 @@
+:root {
+  --auth-navy: #102A43;
+  --auth-white: #FFFFFF;
+  --auth-ice: #D6E8F5;
+  --auth-muted: #AFC5D8;
+}
+
+.auth-page {
+  min-height: min(620px, 72vh);
+  display: grid;
+  place-items: center;
+  padding: 44px 20px;
+  background: #fff;
+}
+
+.auth-card {
+  width: min(100%, 440px);
+  padding: 34px 38px 30px;
+  border: 1px solid #e3e8ec;
+  border-radius: 18px;
+  background: var(--auth-white);
+  box-shadow: 0 8px 24px rgb(16 42 67 / 10%);
+}
+
+.auth-card h1 {
+  margin: 0;
+  color: var(--auth-navy);
+  font-size: clamp(25px, 4vw, 30px);
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  text-align: center;
+}
+
+.auth-subtitle {
+  margin: 10px 0 26px;
+  color: #617486;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.auth-form { display: flex; flex-direction: column; gap: 16px; }
+.auth-form .fui-Field { gap: 6px; }
+.auth-form .fui-Field__label { color: var(--auth-navy); font-size: 13px; font-weight: 600; }
+.auth-form .fui-Input { min-height: 44px; border-radius: 9px; }
+.auth-form .fui-Input:focus-within { border-color: #597b98; }
+.auth-form .fui-Input__contentBefore { color: #71889c; }
+.auth-form .fui-Field__validationMessage { font-size: 12px; }
+.auth-reveal { display: grid; place-items: center; padding: 3px; border: 0; background: transparent; color: #62798b; cursor: pointer; }
+.auth-reveal svg { width: 18px; height: 18px; }
+.auth-forgot { align-self: flex-end; margin-top: -10px; padding: 0; border: 0; background: transparent; color: #486984; font-size: 12px; cursor: pointer; }
+.auth-forgot:hover, .auth-switch button:hover { text-decoration: underline; }
+.auth-submit.fui-Button { min-height: 46px; margin-top: 2px; border-color: var(--auth-navy); border-radius: 9px; background: var(--auth-navy); color: white; font-weight: 600; transition: transform .2s ease, background .2s ease; }
+.auth-submit.fui-Button:hover { transform: translateY(-1px); border-color: #183e5d; background: #183e5d; }
+.auth-google.fui-Button { min-height: 44px; border-radius: 9px; }
+.google-mark { margin-right: 9px; color: #4285f4; font-size: 17px; font-weight: 700; }
+.auth-switch { margin: 8px 0 0; color: #617486; font-size: 13px; text-align: center; }
+.auth-switch button { padding: 0 0 0 3px; border: 0; background: transparent; color: #355b78; font: inherit; font-weight: 600; cursor: pointer; }
+.auth-terms { display: flex; flex-direction: column; gap: 4px; margin-top: -3px; }
+.auth-terms .fui-Checkbox__label { color: #43586a; font-size: 12px; line-height: 1.5; }
+.auth-terms a { color: #355b78; }
+.auth-error { padding-left: 28px; color: #b42318; font-size: 12px; }
+.auth-success { display: flex; flex-direction: column; align-items: center; padding: 14px 0 4px; text-align: center; }
+.auth-success-icon { display: grid; width: 48px; height: 48px; place-items: center; border-radius: 50%; background: #e8f2f8; color: var(--auth-navy); font-size: 25px; }
+.auth-success h2 { margin: 15px 0 5px; color: var(--auth-navy); font-size: 20px; }
+.auth-success p { margin: 0 0 20px; color: #617486; font-size: 14px; line-height: 1.6; }
+.auth-success .fui-Button { background: var(--auth-navy); }
+
+@media (max-width: 520px) {
+  .auth-page { min-height: auto; padding: 28px 14px; }
+  .auth-card { padding: 31px 22px 25px; border-radius: 15px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-submit.fui-Button { transition: none; }
+}

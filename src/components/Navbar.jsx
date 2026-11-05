@@ -525,6 +525,7 @@ function Navbar() {
                 />
               }
               iconPosition="before"
+              onClick={() => navigate("/iniciar-sesion")}
             >
               <span>Iniciar sesión</span>
             </Button>
@@ -690,6 +691,7 @@ function Navbar() {
 }
 
 export default Navbar;
+
 
 
 

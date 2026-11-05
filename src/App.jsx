@@ -5,6 +5,7 @@ import Categories from "./pages/Categories";
 import NotFound from "./pages/NotFound";
 import Cart from "./pages/Cart";
 import DetailProduct from "./pages/DetailProduct";
+import AuthPage from "./pages/AuthPage";
 
 function App() {
   return (
@@ -14,6 +15,8 @@ function App() {
         <Route path="/categories" element={<Categories />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/detailProduct/:id" element={<DetailProduct />} />
+        <Route path="/iniciar-sesion" element={<AuthPage mode="login" />} />
+        <Route path="/crear-cuenta" element={<AuthPage mode="register" />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
@@ -21,6 +24,7 @@ function App() {
 }
 
 export default App;
+
 
 
 
