@@ -7,11 +7,44 @@ import HeadShoulders from "../data/HeadShoulders";
 import higene from "../data/higene";
 import RochePosay from "../data/RochePosay";
 import bebidasAlimentos from "../data/bebidasAlimentos";
+import BondiBoost from "../data/BondiBoost";
+import Elvive from "../data/Elvive";
+import Gison from "../data/Gison";
+import JabonPears from "../data/JabonPears";
+import Lumene from "../data/Lumene";
+import Pampers from "../data/Pampers";
+import ProzisOmega3 from "../data/ProzisOmega3";
+import Supergoop from "../data/Supergoop";
 import useCatalogProducts from "../hooks/useCatalogProducts";
 import "../styles/Categories.css";
 
 const hygieneProducts = higene.flat().map((product) => ({ ...product, id: `higiene-${product.id}` }));
 const rochePosayProducts = RochePosay.flat().map((product) => ({ ...product, id: `roche-posay-${product.id}` }));
+const videoBrandProducts = {
+  "bondi-boost": BondiBoost.flat(),
+  elvive: Elvive.flat(),
+  gison: Gison.flat(),
+  "jabon-pears": JabonPears.flat(),
+  "la-roche-posay": rochePosayProducts,
+  lumene: Lumene.flat(),
+  nosotras: hygieneProducts,
+  pampers: Pampers.flat(),
+  "prozis-omega-3": ProzisOmega3.flat(),
+  supergoop: Supergoop.flat(),
+};
+
+const videoBrandTitles = {
+  "bondi-boost": "Bondi Boost",
+  elvive: "Elvive",
+  gison: "Gison",
+  "jabon-pears": "Jabón Pears",
+  "la-roche-posay": "Bloqueador · La Roche-Posay",
+  lumene: "Lumene",
+  nosotras: "Higiene femenina · Nosotras",
+  pampers: "Pampers",
+  "prozis-omega-3": "Prozis Omega 3",
+  supergoop: "Bloqueador · Supergoop!",
+};
 
 
 
@@ -73,9 +106,11 @@ function Categories() {
   const brand = searchParams.get("brand");
   const category = searchParams.get("category") || "all";
   const subcategory = searchParams.get("subcategory");
-  const title = brand === "head-shoulders" ? "Shampoo · Head & Shoulders" : subcategory === "higiene-femenina" ? "Higiene femenina" : subcategory === "bloqueador" ? "Bloqueador" : subcategory === "cuidado-facial" ? "Cuidado facial" : category !== "all"
-    ? FILTERS.find((filter) => filter.value === category)?.label || "Categorías"
-    : SECTION_TITLES[section] || "Todos los productos";
+  const title =
+    videoBrandTitles[brand] ||
+    (brand === "head-shoulders" ? "Shampoo · Head & Shoulders" : subcategory === "higiene-femenina" ? "Higiene femenina" : subcategory === "bloqueador" ? "Bloqueador" : subcategory === "cuidado-facial" ? "Cuidado facial" : category !== "all"
+      ? FILTERS.find((filter) => filter.value === category)?.label || "Categorías"
+      : SECTION_TITLES[section] || "Todos los productos");
 
   const visibleProducts = useMemo(() => {
     let result = category === "shampoo" ? HeadShoulders.flat() : category === "higiene" ? [...featuredProducts.filter((product) => product.category === "higiene"), ...hygieneProducts] : (category === "groceries" || section === "food" ? bebidasAlimentos : getSectionProducts(section, products)).filter((product) => matchesCategory(product, category));
@@ -84,6 +119,7 @@ function Categories() {
     if (subcategory === "cuidado-facial") result = [...products.filter((product) => product.category === "skin-care"), ...featuredProducts.filter((product) => [6, 7].includes(product.id)), ...rochePosayProducts];
     if (subcategory === "bloqueador") result = [...featuredProducts.filter((product) => product.name === "Protector Solar FPS 50+"), ...rochePosayProducts, ...products.filter((product) => product.category === "skin-care" && /sunscreen|sunblock|sun protection|bloqueador|protector solar|spf/i.test(product.name))];
     if (subcategory === "higiene-femenina") result = hygieneProducts;
+    if (brand && videoBrandProducts[brand]) result = videoBrandProducts[brand];
     if (minPrice !== "") result = result.filter((product) => product.price >= Number(minPrice));
     if (maxPrice !== "") result = result.filter((product) => product.price <= Number(maxPrice));
     if (sortBy === "price-asc") result.sort((a, b) => a.price - b.price);
@@ -165,6 +201,9 @@ function Categories() {
                   {shampooOpen && <div className="category-catalog__tree-level category-catalog__tree-level--brands">
                     <button className={brand === "head-shoulders" ? "is-selected" : ""} type="button" onClick={() => { const next = new URLSearchParams(); next.set("category", "shampoo"); next.set("brand", "head-shoulders"); setSearchParams(next); }}>
                       Head &amp; Shoulders
+                    </button>
+                    <button className={brand === "bondi-boost" ? "is-selected" : ""} type="button" onClick={() => { const next = new URLSearchParams(); next.set("category", "shampoo"); next.set("brand", "bondi-boost"); setSearchParams(next); }}>
+                      Bondi Boost
                     </button>
                   </div>}
                   <button className={`category-catalog__tree-label${category === "maquillaje" ? " is-selected" : ""}`} type="button" onClick={() => { const next = new URLSearchParams(); next.set("category", "maquillaje"); setSearchParams(next); }}>Maquillaje</button>

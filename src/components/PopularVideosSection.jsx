@@ -9,6 +9,7 @@ import {
 } from "@fluentui/react-icons";
 import gsap from "gsap";
 import POPULAR_VIDEOS from "../data/POPULAR_VIDEOS,js";
+import videoCatalogRoutes from "../data/videoCatalogRoutes";
 import "../styles/PopularVideosSection.css";
 
 function PopularVideosSection() {
@@ -245,7 +246,7 @@ function PopularVideosSection() {
               <Button className="popular-video-dialog__close" appearance="subtle" icon={<DismissRegular />} aria-label="Cerrar video" onClick={() => setActiveIndex(null)} />
               <Button className="popular-video-dialog__story-arrow popular-video-dialog__story-arrow--previous" appearance="subtle" icon={<ArrowLeftRegular />} aria-label="Video anterior" onClick={() => moveStory(-1)} />
               <Button className="popular-video-dialog__story-arrow popular-video-dialog__story-arrow--next" appearance="subtle" icon={<ArrowRightRegular />} aria-label="Siguiente video" onClick={() => moveStory(1)} />
-              <Button className="popular-video-dialog__more" appearance="primary" icon={<ArrowRightRegular />} aria-label="Ver más productos" onClick={() => navigate(activeVideo.id === "nosotras" ? "/categories?category=higiene&subcategory=higiene-femenina&brand=nosotras" : activeVideo.id === "la-roche-posay" ? "/categories?category=cuidado-personal&subcategory=bloqueador" : "/categories")}>
+              <Button className="popular-video-dialog__more" appearance="primary" icon={<ArrowRightRegular />} aria-label="Ver más productos" onClick={() => navigate(videoCatalogRoutes[activeVideo.id] || "/categories")}>
                 Ver más
               </Button>
             </div>
