@@ -1,12 +1,7 @@
 
-import { useLayoutEffect, useRef } from "react";
 import { Text, Link } from "@fluentui/react-components";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "../styles/Footer.css";
 import logoFarmaxis from "../assets/logoFooter.png";
-
-gsap.registerPlugin(ScrollTrigger);
 
 // Icono de Facebook
 function FacebookIcon() {
@@ -46,42 +41,8 @@ function TikTokIcon() {
 }
 
 function Footer() {
-  const footerRef = useRef(null);
-
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from(".footer-column-animated", {
-        y: 30,
-        opacity: 0,
-        duration: 0.7,
-        stagger: 0.15,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: footerRef.current,
-          start: "top 90%",
-          once: true,
-        },
-      });
-
-      gsap.from(".footer-bottom", {
-        y: 15,
-        opacity: 0,
-        duration: 0.6,
-        delay: 0.3,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: footerRef.current,
-          start: "top 90%",
-          once: true,
-        },
-      });
-    }, footerRef);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <footer className="footer" ref={footerRef}>
+    <footer className="footer">
       <div className="footer-content">
         
 <section className="footer-brand footer-column-animated">
@@ -106,9 +67,9 @@ function Footer() {
         <section className="footer-column footer-column-animated">
           <h3>Farmaxis</h3>
           <Link href="/">Inicio</Link>
-          <Link href="/categorias">Categorías</Link>
-          <Link href="/ofertas">Ofertas</Link>
-          <Link href="/mi-cuenta">Mi cuenta</Link>
+          <Link href="/categories">Categorías</Link>
+          <Link href="/#promociones">Ofertas</Link>
+          <Link href="/iniciar-sesion">Mi cuenta</Link>
         </section>
 
         <section className="footer-column footer-column-animated">

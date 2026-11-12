@@ -4,6 +4,8 @@ const ProzisOmega3 = [[
   {
     id: "1",
     category: "vitaminas",
+    subcategory: "omega-3",
+    brand: "prozis-omega-3",
     name: "Prozis Omega 3",
     presentation: "Consulta la presentación y contenido en el empaque",
     manufacturer: "Prozis",

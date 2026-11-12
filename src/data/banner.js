@@ -1,27 +1,35 @@
-import proteina from "../assets/proteina.jpg";
-import promo from "../assets/promo.jpg";
-import imagenBaner from "../assets/imagenBaner.jpg";
-import promoPrimeraCompra from "../assets/promoPrimeraCompra.png";
+import bannerPrimeraCompra from "../assets/banner-primera-compra.png";
+import bannerElectrolit from "../assets/banner-electrolit.png";
+import bannerPediasure from "../assets/banner-pediasure.png";
+import bannerProteina from "../assets/banner-proteina.png";
 const Banner = [
   {
     id: "promocion-1",
-    image: promoPrimeraCompra,
+    image: bannerPrimeraCompra,
     alt: "Primera compra en Farmaxis con 20% de descuento",
+    target: "/categories",
+    fit: "cover",
   },
   {
     id: "promocion-2",
-    image: imagenBaner,
-    alt: "Otra promoción destacada de farmacia",
+    image: bannerElectrolit,
+    alt: "Electrolit: hidratación instantánea",
+    target: "/categories?category=groceries&subcategory=bebidas",
+    fit: "contain promo-carousel__slide--electrolit",
   },
   {
     id: "promocion-4",
-    image: promo,
-    alt: "Otra promoción destacada de farmacia",
+    image: bannerPediasure,
+    alt: "PediaSure: nutrición para el crecimiento",
+    target: "/categories?category=suplementos",
+    fit: "contain promo-carousel__slide--pediasure",
   },
   {
     id: "promocion-5",
-    image: proteina,
-    alt: "Promoción de productos de farmacia",
+    image: bannerProteina,
+    alt: "Proteína Whey Optimum Nutrition",
+    target: "/categories?category=suplementos",
+    fit: "contain promo-carousel__slide--proteina",
   },
 ];
 

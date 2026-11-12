@@ -45,3 +45,10 @@ button {
 .app-layout__content { flex: 1 0 auto; }
 .route-not-found { min-height: 100%; padding: 20px 24px; }
 
+.help-page { width: min(1120px, calc(100% - 48px)); margin: 0 auto; padding: 48px 0 72px; color: #172b4d; }
+.help-page__hero { padding: clamp(28px, 5vw, 54px); border-radius: 20px; background: #093969; color: #fff; box-shadow: 0 14px 32px rgb(15 58 98 / 18%); }
+.help-page__hero p { margin: 0 0 10px; color: #b9e5ff; font-size: 12px; font-weight: 800; letter-spacing: .13em; }.help-page__hero h1 { margin: 0; font-size: clamp(30px, 4vw, 45px); line-height: 1.1; }.help-page__hero span { display: block; max-width: 700px; margin-top: 15px; color: #e8f5ff; font-size: 16px; line-height: 1.6; }
+.help-page__content { display: grid; grid-template-columns: minmax(0, 1fr) 270px; gap: 28px; margin-top: 30px; align-items: start; }.help-page__cards { display: grid; gap: 14px; }.help-page__card { padding: 22px 24px; border: 1px solid #dce6ef; border-radius: 14px; background: #fff; box-shadow: 0 4px 14px rgb(15 58 98 / 6%); }.help-page__card h2, .help-page__contact h2 { margin: 0; color: #102a43; font-size: 18px; }.help-page__card p { margin: 10px 0 0; color: #5d6d7d; font-size: 14px; line-height: 1.6; }
+.help-page__contact { display: grid; gap: 12px; padding: 24px; border-radius: 14px; background: #eef7fc; }.help-page__contact p { margin: 0; color: #5d6d7d; font-size: 13px; line-height: 1.55; }.help-page__contact a { color: #0d68b8; font-size: 14px; font-weight: 600; text-decoration: none; }.help-page__contact a:hover { text-decoration: underline; }
+@media (max-width: 760px) { .help-page { width: min(100% - 28px, 620px); padding: 28px 0 48px; }.help-page__content { grid-template-columns: 1fr; } }
+

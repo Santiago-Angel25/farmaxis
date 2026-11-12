@@ -19,6 +19,7 @@ const bebidasAlimentos = [
   {
     "id": 1,
     "category": "bebidas y alimentos",
+    "subcategory": "bebidas",
     "name": "Electrolit Fresa 625 ml",
     "price": 6900,
     "image": electroliteFresa,
@@ -29,6 +30,7 @@ const bebidasAlimentos = [
   {
     "id": 2,
     "category": "bebidas y alimentos",
+    "subcategory": "bebidas",
     "name": "Electrolit Coco 625 ml",
     "price": 6900,
     "image": electroliteCoco,
@@ -39,6 +41,7 @@ const bebidasAlimentos = [
   {
     "id": 3,
     "category": "bebidas y alimentos",
+    "subcategory": "bebidas",
     "name": "Electrolit Mora Azul 625 ml",
     "price": 6900,
     "image": electroliteMora,
@@ -49,6 +52,7 @@ const bebidasAlimentos = [
   {
     "id": 4,
     "category": "bebidas y alimentos",
+    "subcategory": "bebidas",
     "name": "Pedialyte Manzana 500 ml",
     "price": 9800,
     "image": pedialyteManzana,
@@ -59,6 +63,7 @@ const bebidasAlimentos = [
   {
     "id": 5,
     "category": "bebidas y alimentos",
+    "subcategory": "alimentos",
     "name": "Detodito Paketón natural",
     "price": 9500,
     "image": detodito,
@@ -69,6 +74,7 @@ const bebidasAlimentos = [
   {
     "id": 6,
     "category": "bebidas y alimentos",
+    "subcategory": "alimentos",
     "name": "Papas Margarita Original",
     "price": 5200,
     "image": margarita,
@@ -79,6 +85,7 @@ const bebidasAlimentos = [
   {
     "id": 7,
     "category": "bebidas y alimentos",
+    "subcategory": "bebidas",
     "name": "Gatorade Naranja 500 ml",
     "price": 4200,
     "image": gatoradeNaranja,
@@ -89,6 +96,7 @@ const bebidasAlimentos = [
   {
     "id": 8,
     "category": "bebidas y alimentos",
+    "subcategory": "bebidas",
     "name": "Agua Cristal 600 ml",
     "price": 2200,
     "image": aguaCristal,
@@ -99,6 +107,7 @@ const bebidasAlimentos = [
   {
     "id": 9,
     "category": "bebidas y alimentos",
+    "subcategory": "bebidas",
     "name": "Ensure Advance Vainilla 220 ml",
     "price": 8900,
     "image": ensure,
@@ -109,6 +118,7 @@ const bebidasAlimentos = [
   {
     "id": 10,
     "category": "bebidas y alimentos",
+    "subcategory": "alimentos",
     "name": "Helado Jet de Crem Helado",
     "price": 4900,
     "image": heladoJet,
@@ -118,7 +128,7 @@ const bebidasAlimentos = [
   },
   {
     "id": 11,
-    "category": "bebidas y alimentos",
+    "category": "suplementos",
     "name": "PediaSure Vainilla 400 g",
     "price": 45900,
     "image": pediasure,
@@ -129,6 +139,7 @@ const bebidasAlimentos = [
   {
     "id": 12,
     "category": "bebidas y alimentos",
+    "subcategory": "bebidas",
     "name": "Glucerna Vainilla 220 ml",
     "price": 9200,
     "image": glucerna,
@@ -139,6 +150,7 @@ const bebidasAlimentos = [
   {
     "id": 13,
     "category": "bebidas y alimentos",
+    "subcategory": "alimentos",
     "name": "Galletas Tosh Miel",
     "price": 2600,
     "image": galletasTosh,
@@ -149,6 +161,7 @@ const bebidasAlimentos = [
   {
     "id": 14,
     "category": "bebidas y alimentos",
+    "subcategory": "alimentos",
     "name": "Compota de manzana 113 g",
     "price": 3500,
     "image": compota,
@@ -158,7 +171,7 @@ const bebidasAlimentos = [
   },
   {
     "id": 15,
-    "category": "bebidas y alimentos",
+    "category": "suplementos",
     "name": "Proteína Powder",
     "price": 45900,
     "image": proteinaWhey,

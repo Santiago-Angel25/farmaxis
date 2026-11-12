@@ -12,7 +12,6 @@ import "../styles/PromoCarousel.css";
 
 function PromoCarousel() {
   const navigate = useNavigate();
-  const goToCatalog = () => navigate("/categories");
 
   return (
     <Carousel
@@ -24,20 +23,20 @@ function PromoCarousel() {
       <CarouselViewport className="promo-carousel__viewport">
         <CarouselSlider className="promo-carousel__slider">
           {Banner.map((promo, index) => {
-            const linksToCatalog = promo.id === "promocion-1";
+            const isClickable = Boolean(promo.target);
 
             return (
               <CarouselCard
                 key={promo.id}
-                className={`promo-carousel__slide${linksToCatalog ? " promo-carousel__slide--clickable" : ""}`}
-                aria-label={linksToCatalog ? `${index + 1} de ${Banner.length}; ir a todos los productos` : `${index + 1} de ${Banner.length}`}
-                role={linksToCatalog ? "link" : undefined}
-                tabIndex={linksToCatalog ? 0 : undefined}
-                onClick={linksToCatalog ? goToCatalog : undefined}
-                onKeyDown={linksToCatalog ? (event) => {
+                className={`promo-carousel__slide promo-carousel__slide--${promo.fit}${isClickable ? " promo-carousel__slide--clickable" : ""}`}
+                aria-label={isClickable ? `${index + 1} de ${Banner.length}; ver promoción` : `${index + 1} de ${Banner.length}`}
+                role={isClickable ? "link" : undefined}
+                tabIndex={isClickable ? 0 : undefined}
+                onClick={isClickable ? () => navigate(promo.target) : undefined}
+                onKeyDown={isClickable ? (event) => {
                   if (event.key === "Enter" || event.key === " ") {
                     event.preventDefault();
-                    goToCatalog();
+                    navigate(promo.target);
                   }
                 } : undefined}
               >

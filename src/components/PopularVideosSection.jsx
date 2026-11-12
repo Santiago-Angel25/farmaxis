@@ -195,22 +195,6 @@ function PopularVideosSection() {
   }, []);
 
   useEffect(() => {
-    if (activeIndex !== null) return undefined;
-
-    const timer = window.setInterval(() => {
-      const track = trackRef.current;
-      if (!track) return;
-      const firstCard = track.querySelector(".popular-video-card");
-      const gap = Number.parseFloat(getComputedStyle(track).gap) || 0;
-      const cardStep = (firstCard?.clientWidth || track.clientWidth * 0.75) + gap;
-      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      track.scrollBy({ left: cardStep, behavior: reduceMotion ? "auto" : "smooth" });
-    }, 5000);
-
-    return () => window.clearInterval(timer);
-  }, [activeIndex]);
-
-  useEffect(() => {
     activeIndexRef.current = activeIndex;
     if (activeIndex !== null) {
       pauseCarouselVideos();

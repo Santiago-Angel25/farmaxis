@@ -28,6 +28,9 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/iniciar-sesion" element={<AuthPage mode="login" />} />
           <Route path="/crear-cuenta" element={<AuthPage mode="register" />} />
+          <Route path="/preguntas-frecuentes" element={<NotFound page="faq" />} />
+          <Route path="/envios" element={<NotFound page="shipping" />} />
+          <Route path="/terminos" element={<NotFound page="terms" />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

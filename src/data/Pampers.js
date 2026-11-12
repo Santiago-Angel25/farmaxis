@@ -4,6 +4,8 @@ const Pampers = [[
   {
     id: "1",
     category: "cuidado-del-bebe",
+    subcategory: "panales",
+    brand: "pampers",
     name: "Pañales Pampers",
     presentation: "Consulta la talla 1  y cantidad 44 pañales en su empaque",
     manufacturer: "Pampers",

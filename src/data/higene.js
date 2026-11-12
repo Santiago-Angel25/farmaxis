@@ -6,7 +6,9 @@ const higene= [
     [
   {
     "id": 1,
-    "category": "cuidado femenino",
+    "category": "higiene",
+    "subcategory": "higiene-femenina",
+    "brand": "nosotras",
     "name": "Nosotras Buenas Noches Invisible con Alas",
     "price": 14500,
     "image": nosotasNoches,
@@ -16,7 +18,9 @@ const higene= [
   },
   {
     "id": 2,
-    "category": "cuidado femenino",
+    "category": "higiene",
+    "subcategory": "higiene-femenina",
+    "brand": "nosotras",
     "name": "Nosotras Ultra Invisible Extra Larga",
     "price": 13200,
     "image": toallasnosotrasultra,
@@ -26,7 +30,9 @@ const higene= [
   },
   {
     "id": 3,
-    "category": "cuidado femenino",
+    "category": "higiene",
+    "subcategory": "higiene-femenina",
+    "brand": "nosotras",
     "name": "Nosotras Panties Zonas Neutras",
     "price": 18900,
     "image": PANTYBiKINIBLACK,
@@ -36,7 +42,9 @@ const higene= [
   },
   {
     "id": 4,
-    "category": "cuidado femenino",
+    "category": "higiene",
+    "subcategory": "higiene-femenina",
+    "brand": "nosotras",
     "name": "Nosotras Protectores Diario Normal Sin Perfume",
     "price": 8500,
     "image": protectoresdiarios,

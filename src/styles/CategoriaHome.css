@@ -66,6 +66,12 @@
   stroke-width: 1.45;
 }
 
+.quick-link__icon img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+}
+
 .quick-link__label {
   max-width: 100%;
   font-size: 14px;
@@ -106,7 +112,8 @@
   }
 
   .quick-link__icon,
-  .quick-link__icon svg {
+  .quick-link__icon svg,
+  .quick-link__icon img {
     width: 48px;
     height: 48px;
   }

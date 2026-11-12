@@ -16,7 +16,7 @@
   padding: 0;
   border: 0;
   border-radius: inherit;
-  background: transparent;
+  background: #fff;
   box-shadow: none;
 }
 
@@ -27,6 +27,10 @@
   object-fit: cover;
   object-position: center;
 }
+
+.promo-carousel__slide--electrolit { background: #007ad9; }
+.promo-carousel__slide--pediasure { background: #400075; }
+.promo-carousel__slide--proteina { background: #151515; }
 
 .promo-carousel__arrow {
   position: absolute;

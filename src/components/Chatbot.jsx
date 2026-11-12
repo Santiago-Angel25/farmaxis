@@ -96,10 +96,16 @@ function Chatbot() {
       setStep("medicine-search");
       return;
     }
+    if (option.key === "shipping") {
+      addExchange(option.label, "Te llevaré a la sección de Envíos y entregas, donde encontrarás la información de contacto y las condiciones de entrega.");
+      setStep("menu");
+      setIsOpen(false);
+      navigate("/envios");
+      return;
+    }
 
     const replies = {
       cart: "Puedes abrir tu carrito desde el ícono de carrito en la parte superior. Allí revisas productos y cantidades; el límite es de 15 unidades por producto. ¿Deseas volver al menú principal?",
-      shipping: "Por el momento no tenemos información disponible sobre envíos ni contacto. Disculpa las molestias. ¿Deseas volver al menú principal?",
     };
     if (option.key === "categories") {
       addExchange(option.label, "Elige la categoría que quieres consultar:");

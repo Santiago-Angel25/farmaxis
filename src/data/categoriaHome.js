@@ -1,17 +1,17 @@
 import {
   BriefcaseMedicalRegular,
-  Cart24Regular,
+  CartRegular,
   DrinkBottleRegular,
+  FireRegular,
   HeartRegular,
-  ShoppingBagRegular,
-  SparkleRegular,
+  ShowerheadRegular,
   StarRegular,
   TagPercentRegular,
 } from "@fluentui/react-icons";
 
 const categoriaHome = [
   { label: "Promociones", icon: TagPercentRegular, target: "promociones" },
-  { label: "Lo más popular", icon: SparkleRegular, target: "lo-mas-popular" },
+  { label: "Lo más popular", icon: FireRegular, target: "lo-mas-popular" },
   {
     label: "Productos destacados",
     icon: StarRegular,
@@ -19,12 +19,12 @@ const categoriaHome = [
   },
   {
     label: "Bebidas y alimentos",
-    icon: ShoppingBagRegular,
+    icon: DrinkBottleRegular,
     target: "bebidas-y-alimentos",
   },
   {
     label: "Cuidado personal",
-    icon: DrinkBottleRegular,
+    icon: ShowerheadRegular,
     target: "cuidado-personal",
   },
   {
@@ -33,7 +33,7 @@ const categoriaHome = [
     target: "salud-y-medicamentos",
   },
   { label: "Favoritos", icon: HeartRegular, panel: "wishlist" },
-  { label: "Carrito", icon: Cart24Regular, path: "/cart" },
+  { label: "Carrito", icon: CartRegular, path: "/cart" },
 ];
 
 export default categoriaHome;

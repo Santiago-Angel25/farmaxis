@@ -42,7 +42,7 @@ const videoBrandProducts = {
   "jabon-pears": JabonPears.flat(),
   "la-roche-posay": rochePosayProducts,
   lumene: Lumene.flat(),
-  nosotras: hygieneProducts,
+  nosotras: hygieneProducts.filter((product) => product.brand === "nosotras"),
   pampers: Pampers.flat(),
   "prozis-omega-3": ProzisOmega3.flat(),
   supergoop: Supergoop.flat(),
@@ -74,6 +74,7 @@ const FILTERS = [
   { label: "Hogar, mascotas y otros", value: "otros" },
   { label: "Higiene", value: "higiene" },
   { label: "Alimentos y bebidas", value: "groceries" },
+  { label: "Suplementos", value: "suplementos" },
 ];
 
 const SECTION_TITLES = {
@@ -84,6 +85,8 @@ const SECTION_TITLES = {
   shampoo: "Shampoo",
   jabones: "Jabones",
   maquillaje: "Maquillaje",
+  bebidas: "Bebidas",
+  alimentos: "Alimentos",
 };
 
 const formatCop = (value) => `$ ${new Intl.NumberFormat("es-CO").format(value)}`;
@@ -98,7 +101,7 @@ function getSectionProducts(section, apiProducts) {
   if (section === "featured") {
     return apiProducts.filter((product) => ["beauty", "skin-care"].includes(product.category));
   }
-  if (section === "food") return bebidasAlimentos;
+  if (section === "food") return bebidasAlimentos.filter((product) => product.category === "bebidas y alimentos");
   if (section === "health") return featuredProducts;
   if (section === "personal-care") {
     return apiProducts.filter((product) => ["beauty", "skin-care"].includes(product.category));
@@ -122,6 +125,7 @@ function Categories() {
   const [personalOpen, setPersonalOpen] = useState(searchParams.get("category") === "shampoo" || searchParams.get("brand") === "head-shoulders" || searchParams.get("category") === "cuidado-personal" || ["cuidado-facial", "bloqueador", "lumene"].includes(searchParams.get("subcategory")));
   const [shampooOpen, setShampooOpen] = useState(searchParams.get("category") === "shampoo" || ["head-shoulders", "bondi-boost", "gison", "elvive"].includes(searchParams.get("brand")));
   const [hygieneOpen, setHygieneOpen] = useState(searchParams.get("category") === "higiene" || ["higiene-femenina", "jabones"].includes(searchParams.get("subcategory")));
+  const [groceriesOpen, setGroceriesOpen] = useState(searchParams.get("category") === "groceries" || ["bebidas", "alimentos"].includes(searchParams.get("subcategory")));
   const [facialOpen, setFacialOpen] = useState(["cuidado-facial", "bloqueador", "lumene"].includes(searchParams.get("subcategory")));
   const [blockerOpen, setBlockerOpen] = useState(searchParams.get("subcategory") === "bloqueador" || ["supergoop", "la-roche-posay"].includes(searchParams.get("brand")));
   const resultsRef = useRef(null);
@@ -135,23 +139,24 @@ function Categories() {
     ? `Resultados para “${searchParams.get("search")?.trim()}”`
     :
     videoBrandTitles[brand] ||
-    (brand === "head-shoulders" ? "Shampoo · Head & Shoulders" : subcategory === "higiene-femenina" ? "Higiene femenina" : subcategory === "jabones" ? "Jabones" : subcategory === "elvive" ? "Elvive" : subcategory === "bloqueador" ? "Bloqueador" : subcategory === "cuidado-facial" ? "Cuidado facial" : category !== "all"
+    (brand === "head-shoulders" ? "Shampoo · Head & Shoulders" : subcategory === "higiene-femenina" ? "Higiene femenina" : subcategory === "jabones" ? "Jabones" : subcategory === "elvive" ? "Elvive" : subcategory === "bloqueador" ? "Bloqueador" : subcategory === "cuidado-facial" ? "Cuidado facial" : subcategory === "bebidas" ? "Bebidas" : subcategory === "alimentos" ? "Alimentos" : category !== "all"
       ? FILTERS.find((filter) => filter.value === category)?.label || "Categorías"
       : SECTION_TITLES[section] || "Todos los productos");
 
   const visibleProducts = useMemo(() => {
     let result = searchQuery
       ? [...new Map([...localCatalogProducts, ...products].map((product) => [normalizeSearch(product.name), product])).values()]
-      : category === "shampoo" ? [...HeadShoulders.flat(), ...BondiBoost.flat(), ...Gison.flat().filter((product) => product.category === "shampoo"), ...Elvive.flat()] : category === "higiene" ? [...featuredProducts.filter((product) => product.category === "higiene"), ...hygieneProducts] : category === "vitaminas" ? [...featuredProducts.filter((product) => product.category === "vitaminas"), ...ProzisOmega3.flat()] : (category === "groceries" || section === "food" ? bebidasAlimentos : getSectionProducts(section, products)).filter((product) => matchesCategory(product, category));
+      : category === "shampoo" ? [...HeadShoulders.flat(), ...BondiBoost.flat(), ...Gison.flat().filter((product) => product.category === "shampoo"), ...Elvive.flat()] : category === "higiene" ? [...featuredProducts.filter((product) => product.category === "higiene"), ...hygieneProducts] : category === "vitaminas" ? [...featuredProducts.filter((product) => product.category === "vitaminas"), ...ProzisOmega3.flat()] : category === "suplementos" ? bebidasAlimentos.filter((product) => product.category === "suplementos") : (category === "groceries" || section === "food" ? bebidasAlimentos.filter((product) => product.category === "bebidas y alimentos") : getSectionProducts(section, products)).filter((product) => matchesCategory(product, category));
     if (category === "skin-care") result = [...result, ...Gison.flat().filter((product) => product.category === "skin-care")];
     if (category === "cuidado-del-bebe") result = [...result, ...Pampers.flat()];
     if (category === "cuidado-personal") result = [...result, ...HeadShoulders.flat(), ...blockerProducts, ...BondiBoost.flat(), ...Elvive.flat(), ...Gison.flat()];
     if (brand && brand === "head-shoulders") result = HeadShoulders.flat();
     if (subcategory === "cuidado-facial") result = [...products.filter((product) => product.category === "skin-care"), ...featuredProducts.filter((product) => [6, 7].includes(product.id)), ...blockerProducts, ...Gison.flat().filter((product) => product.category === "skin-care")];
     if (subcategory === "bloqueador") result = [...featuredProducts.filter((product) => product.name === "Protector Solar FPS 50+"), ...blockerProducts, ...products.filter((product) => product.category === "skin-care" && /sunscreen|sunblock|sun protection|bloqueador|protector solar|spf/i.test(product.name))];
-    if (subcategory === "higiene-femenina") result = hygieneProducts.filter((product) => product.category === "cuidado femenino");
+    if (subcategory === "higiene-femenina") result = hygieneProducts.filter((product) => product.subcategory === "higiene-femenina");
     if (subcategory === "jabones") result = hygieneProducts.filter((product) => product.subcategory === "jabones");
     if (subcategory === "elvive") result = Elvive.flat();
+    if (["bebidas", "alimentos"].includes(subcategory)) result = bebidasAlimentos.filter((product) => product.category === "bebidas y alimentos" && product.subcategory === subcategory);
     if (brand && ["la-roche-posay", "supergoop"].includes(brand)) result = blockerProducts.filter((product) => product.brand === brand);
     else if (brand === "gison") result = category === "shampoo" ? Gison.flat().filter((product) => product.category === "shampoo") : videoBrandProducts[brand];
     else if (brand && videoBrandProducts[brand]) result = videoBrandProducts[brand];
@@ -274,6 +279,19 @@ function Categories() {
                   <button className={subcategory === "higiene-femenina" ? "is-selected" : ""} type="button" onClick={() => { const next = new URLSearchParams(); next.set("category", "higiene"); next.set("subcategory", "higiene-femenina"); setSearchParams(next); }}>
                     Cuidado femenino
                   </button>
+                </div>}
+              </div>
+            ) : filter.value === "groceries" ? (
+              <div className="category-catalog__tree" key={filter.value}>
+                <div className="category-catalog__tree-row">
+                  <button className={`category-catalog__tree-label${category === filter.value || groceriesOpen ? " is-selected" : ""}`} type="button" onClick={() => { const next = new URLSearchParams(); next.set("category", "groceries"); setSearchParams(next); }}>
+                    {filter.label}
+                  </button>
+                  <button className="category-catalog__tree-expander" type="button" aria-label={groceriesOpen ? "Contraer subcategorías de alimentos y bebidas" : "Expandir subcategorías de alimentos y bebidas"} aria-expanded={groceriesOpen} onClick={() => setGroceriesOpen((open) => !open)}>{groceriesOpen ? "−" : "+"}</button>
+                </div>
+                {groceriesOpen && <div className="category-catalog__tree-level category-catalog__tree-level--brands">
+                  <button className={subcategory === "bebidas" ? "is-selected" : ""} type="button" onClick={() => { const next = new URLSearchParams(); next.set("category", "groceries"); next.set("subcategory", "bebidas"); setSearchParams(next); }}>Bebidas</button>
+                  <button className={subcategory === "alimentos" ? "is-selected" : ""} type="button" onClick={() => { const next = new URLSearchParams(); next.set("category", "groceries"); next.set("subcategory", "alimentos"); setSearchParams(next); }}>Alimentos</button>
                 </div>}
               </div>
             ) : (
