@@ -5,7 +5,9 @@ import gisonAcondicionador from "../assets/gisonAcondicionador.png";
 const Gison = [[
   {
     id: "gison-shampoo",
-    category: "beauty",
+    category: "shampoo",
+    subcategory: "shampoo",
+    brand: "gison",
     name: "Shampoo Gison",
     presentation: "Consulta la presentación del producto en su empaque",
     manufacturer: "Gison",
@@ -18,7 +20,9 @@ const Gison = [[
 
   {
     id: "gison-mascarilla",
-    category: "beauty",
+    category: "skin-care",
+    subcategory: "cuidado-facial",
+    brand: "gison",
     name: "Mascarilla Gison",
     presentation: "Consulta la presentación del producto en su empaque",
     manufacturer: "Gison",
@@ -31,7 +35,9 @@ const Gison = [[
 
   {
     id: "gison-acondicionador",
-    category: "beauty",
+    category: "shampoo",
+    subcategory: "shampoo",
+    brand: "gison",
     name: "Acondicionador Gison",
     presentation: "Consulta la presentación del producto en su empaque",
     manufacturer: "Gison",

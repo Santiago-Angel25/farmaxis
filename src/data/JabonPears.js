@@ -4,6 +4,8 @@ const JabonPears = [[
   {
     id: "pears-jabon-transparente",
     category: "higiene",
+    subcategory: "jabones",
+    brand: "jabon-pears",
     name: "Jabón Transparente Pears",
     presentation: "Barra",
     manufacturer: "Pears",

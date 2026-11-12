@@ -46,8 +46,15 @@ function Navbar() {
   const hoverBotonRef = useRef(false);
   const hoverBarraRef = useRef(false);
   const [logoError, setLogoError] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const [categoriasOpen, setCategoriasOpen] = useState(false);
   const [categoriaMenuOpen, setCategoriaMenuOpen] = useState(null);
+
+  const buscarProductos = (event) => {
+    event.preventDefault();
+    const query = searchQuery.trim();
+    if (query) navigate(`/categories?search=${encodeURIComponent(query)}`);
+  };
 
   const abrirCategorias = () => {
     if (menuTimerRef.current) {
@@ -485,8 +492,9 @@ function Navbar() {
             )}
           </Link>
 
-          <div
+          <form
             className="navbar__search"
+            onSubmit={buscarProductos}
             onMouseEnter={hoverBuscador}
             onMouseLeave={salirBuscador}
           >
@@ -497,21 +505,22 @@ function Navbar() {
               appearance="outline"
               aria-label="Buscar productos"
               placeholder="Buscar medicamentos, cuidado personal, higiene..."
-              
+              value={searchQuery}
+              onChange={(_event, data) => setSearchQuery(data.value)}
               contentAfter={
                 <Button
                   className="navbar__search-submit"
                   appearance="primary"
                   shape="square"
                   icon={<Search24Regular />}
+                  type="submit"
                   aria-label="Buscar"
-                  onClick={() => {}}
                   onMouseEnter={hoverBotonBuscar}
                   onMouseLeave={salirBotonBuscar}
                 />
               }
             />
-          </div>
+          </form>
 
           <div className="navbar__actions">
             <Button
@@ -645,7 +654,9 @@ function Navbar() {
                   onClick={
                     label === "Favoritos"
                       ? () => openPanel("wishlist")
-                      : undefined
+                      : label === "Ofertas"
+                        ? () => navigate("/categories")
+                        : undefined
                   }
                 >
                   {label}

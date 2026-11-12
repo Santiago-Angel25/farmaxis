@@ -1,8 +1,9 @@
 import {
-  BookOpenRegular,
+  BriefcaseMedicalRegular,
   Cart24Regular,
-  HeartPulseRegular,
+  DrinkBottleRegular,
   HeartRegular,
+  ShoppingBagRegular,
   SparkleRegular,
   StarRegular,
   TagPercentRegular,
@@ -18,17 +19,17 @@ const categoriaHome = [
   },
   {
     label: "Bebidas y alimentos",
-    icon: BookOpenRegular,
+    icon: ShoppingBagRegular,
     target: "bebidas-y-alimentos",
   },
   {
     label: "Cuidado personal",
-    icon: SparkleRegular,
+    icon: DrinkBottleRegular,
     target: "cuidado-personal",
   },
   {
     label: "Salud y medicamentos",
-    icon: HeartPulseRegular,
+    icon: BriefcaseMedicalRegular,
     target: "salud-y-medicamentos",
   },
   { label: "Favoritos", icon: HeartRegular, panel: "wishlist" },

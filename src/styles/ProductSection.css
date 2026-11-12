@@ -313,6 +313,6 @@
 }
 
 
-.product-card[role=link] { cursor: pointer; }
-.product-card[role=link]:focus-visible { outline: 3px solid #0f6cbd; outline-offset: 3px; }
+.product-card[role=button] { cursor: pointer; }
+.product-card[role=button]:focus-visible { outline: 3px solid #0f6cbd; outline-offset: 3px; }
 

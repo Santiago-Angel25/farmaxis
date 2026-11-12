@@ -8,6 +8,8 @@ const RochePosay = [
   {
     "id": 1,
     "category": "cuidado facial",
+    "subcategory": "bloqueador",
+    "brand": "la-roche-posay",
     "name": "La Roche-Posay Anthelios UVMune 400 Oil Control Gel-Crème SPF 50+",
     "price": 115000,
     "image": PosayAntheliosUVMUNEOil,
@@ -18,6 +20,8 @@ const RochePosay = [
   {
     "id": 2,
     "category": "cuidado facial",
+    "subcategory": "bloqueador",
+    "brand": "la-roche-posay",
     "name": "La Roche-Posay Anthelios UVMune 400 Invisible Fluid SPF 50+",
     "price": 112000,
     "image": SunAnthelios400Fluid,
@@ -28,6 +32,8 @@ const RochePosay = [
   {
     "id": 3,
     "category": "cuidado facial",
+    "subcategory": "bloqueador",
+    "brand": "la-roche-posay",
     "name": "La Roche-Posay Anthelios Pigment Correct SPF 50+",
     "price": 125000,
     "image": SunAntheliosPigment,

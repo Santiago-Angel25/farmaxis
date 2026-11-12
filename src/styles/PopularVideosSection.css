@@ -78,7 +78,30 @@
   isolation: isolate;
   scroll-snap-align: center;
   transform-origin: center;
+  transform: scale(.96);
+  transition: transform 420ms cubic-bezier(.2, .75, .25, 1), filter 420ms ease;
   will-change: transform, opacity, filter;
+}
+
+.popular-video-card::after {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  border-radius: inherit;
+  background: rgb(150 150 150 / 68%);
+  content: "";
+  opacity: 1;
+  pointer-events: none;
+  transition: opacity 420ms ease;
+}
+
+.popular-video-card.is-centered {
+  z-index: 2;
+  transform: scale(1.035);
+}
+
+.popular-video-card.is-centered::after {
+  opacity: 0;
 }
 
 .popular-video-card__media {
@@ -223,7 +246,7 @@ body.popular-video-dialog-is-open {
   position: absolute;
   z-index: 1;
   right: auto;
-  bottom: 58px;
+  bottom: calc(58px + 0.7cm);
   left: 50%;
   width: auto;
   min-width: max-content;

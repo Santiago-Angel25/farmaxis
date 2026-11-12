@@ -18,6 +18,7 @@ function PopularVideosSection() {
   const trackRef = useRef(null);
   const videoRef = useRef(null);
   const autoPlayTimerRef = useRef(null);
+  const rebaseTimerRef = useRef(null);
   const focusFrameRef = useRef(null);
   const activeIndexRef = useRef(null);
   const carouselReadyRef = useRef(false);
@@ -137,13 +138,25 @@ function PopularVideosSection() {
     if (!track) return undefined;
 
     const keepInfinite = () => {
-      const segmentWidth = track.scrollWidth / 3;
-      if (track.scrollLeft < segmentWidth * 0.25) track.scrollLeft += segmentWidth;
-      else if (track.scrollLeft > segmentWidth * 1.75) track.scrollLeft -= segmentWidth;
+      const firstCard = track.querySelector(".popular-video-card");
+      const gap = Number.parseFloat(getComputedStyle(track).gap) || 0;
+      const segmentWidth = POPULAR_VIDEOS.length * ((firstCard?.clientWidth || 0) + gap);
+      let nextScrollLeft = track.scrollLeft;
+      if (track.scrollLeft < segmentWidth * 0.25) nextScrollLeft += segmentWidth;
+      else if (track.scrollLeft > segmentWidth * 1.75) nextScrollLeft -= segmentWidth;
+      if (nextScrollLeft !== track.scrollLeft) {
+        const previousScrollBehavior = track.style.scrollBehavior;
+        track.style.scrollBehavior = "auto";
+        track.scrollLeft = nextScrollLeft;
+        track.style.scrollBehavior = previousScrollBehavior;
+      }
+      updateCenteredCard();
     };
 
     const handleScroll = () => {
       pauseCarouselVideos();
+      window.clearTimeout(rebaseTimerRef.current);
+      rebaseTimerRef.current = window.setTimeout(keepInfinite, 700);
       if (focusFrameRef.current) cancelAnimationFrame(focusFrameRef.current);
       focusFrameRef.current = requestAnimationFrame(() => {
         focusFrameRef.current = null;
@@ -153,25 +166,49 @@ function PopularVideosSection() {
       autoPlayTimerRef.current = window.setTimeout(playCenteredVideo, 150);
     };
 
+    const handleScrollEnd = () => {
+      window.clearTimeout(rebaseTimerRef.current);
+      keepInfinite();
+    };
+
     const frame = requestAnimationFrame(() => {
-      track.scrollLeft = track.scrollWidth / 3;
+      const firstCard = track.querySelector(".popular-video-card");
+      const gap = Number.parseFloat(getComputedStyle(track).gap) || 0;
+      track.scrollLeft = POPULAR_VIDEOS.length * ((firstCard?.clientWidth || 0) + gap);
       updateCenteredCard();
       carouselReadyRef.current = true;
       autoPlayTimerRef.current = window.setTimeout(playCenteredVideo, 80);
     });
-    track.addEventListener("scroll", keepInfinite, { passive: true });
     track.addEventListener("scroll", handleScroll, { passive: true });
+    track.addEventListener("scrollend", handleScrollEnd, { passive: true });
 
     return () => {
       cancelAnimationFrame(frame);
       if (focusFrameRef.current) cancelAnimationFrame(focusFrameRef.current);
+      window.clearTimeout(rebaseTimerRef.current);
       window.clearTimeout(autoPlayTimerRef.current);
-      track.removeEventListener("scroll", keepInfinite);
       track.removeEventListener("scroll", handleScroll);
+      track.removeEventListener("scrollend", handleScrollEnd);
       pauseCarouselVideos();
       carouselReadyRef.current = false;
     };
   }, []);
+
+  useEffect(() => {
+    if (activeIndex !== null) return undefined;
+
+    const timer = window.setInterval(() => {
+      const track = trackRef.current;
+      if (!track) return;
+      const firstCard = track.querySelector(".popular-video-card");
+      const gap = Number.parseFloat(getComputedStyle(track).gap) || 0;
+      const cardStep = (firstCard?.clientWidth || track.clientWidth * 0.75) + gap;
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      track.scrollBy({ left: cardStep, behavior: reduceMotion ? "auto" : "smooth" });
+    }, 5000);
+
+    return () => window.clearInterval(timer);
+  }, [activeIndex]);
 
   useEffect(() => {
     activeIndexRef.current = activeIndex;

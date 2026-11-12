@@ -4,10 +4,10 @@ const videoCatalogRoutes = {
   gison: "/categories?category=beauty&brand=gison",
   "jabon-pears": "/categories?category=higiene&brand=jabon-pears",
   "la-roche-posay": "/categories?category=cuidado-personal&subcategory=bloqueador&brand=la-roche-posay",
-  lumene: "/categories?category=cuidado-personal&subcategory=cuidado-facial&brand=lumene",
+  lumene: "/categories?category=cuidado-personal&subcategory=lumene&brand=lumene",
   nosotras: "/categories?category=higiene&subcategory=higiene-femenina&brand=nosotras",
   pampers: "/categories?category=cuidado-del-bebe&brand=pampers",
-  "prozis-omega-3": "/categories?category=vitaminas&brand=prozis-omega-3",
+  "prozis-omega-3": "/categories?category=vitaminas",
   supergoop: "/categories?category=cuidado-personal&subcategory=bloqueador&brand=supergoop",
 };
 

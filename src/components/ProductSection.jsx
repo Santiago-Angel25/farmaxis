@@ -1,6 +1,5 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@fluentui/react-components";
-import { useNavigate } from "react-router-dom";
 import {
   AddRegular,
   ArrowLeftRegular,
@@ -13,6 +12,7 @@ import {
 } from "@fluentui/react-icons";
 import gsap from "gsap";
 import { useStore } from "../context/StoreContext";
+import ProductDetailsDialog from "./ProductDetailsDialog";
 import "../styles/ProductSection.css";
 
 const formatPrice = (price) =>
@@ -32,7 +32,7 @@ function ProductSection({
   layout = "carousel",
   hideHeader = false,
 }) {
-  const navigate = useNavigate();
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const sectionRef = useRef(null);
   const trackRef = useRef(null);
   const {
@@ -219,7 +219,7 @@ function ProductSection({
                 ?.quantity ?? 0;
 
             return (
-              <article className="product-card" key={`${product.category}:${product.id}`} role="link" tabIndex={0} onClick={(event) => { if (event.target.closest("button")) return; navigate(`/detailProduct/${encodeURIComponent(product.id)}`, { state: { product } }); }} onKeyDown={(event) => { if (event.target !== event.currentTarget) return; if (event.key === "Enter" || event.key === " ") { event.preventDefault(); navigate(`/detailProduct/${encodeURIComponent(product.id)}`, { state: { product } }); } }}>
+              <article className="product-card" key={`${product.category}:${product.id}`} role="button" aria-haspopup="dialog" tabIndex={0} onClick={(event) => { if (event.target.closest("button")) return; setSelectedProduct(product); }} onKeyDown={(event) => { if (event.target !== event.currentTarget) return; if (event.key === "Enter" || event.key === " ") { event.preventDefault(); setSelectedProduct(product); } }}>
                 <div className="product-card__visual">
                   {product.image ? (
                     <img src={product.image} alt={product.name} />
@@ -326,6 +326,7 @@ function ProductSection({
           onClick={() => scrollTrack(1)}
         />
       </div>
+      <ProductDetailsDialog product={selectedProduct} onClose={() => setSelectedProduct(null)} />
     </section>
   );
 }

@@ -134,18 +134,18 @@
 
 .navbar__action--login {
   gap: 6px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
 }
 
 .navbar__action--icon {
-  min-width: 40px;
-  height: 40px;
+  min-width: 42px;
+  height: 42px;
   border-radius: 12px;
 }
 
 .navbar__action-icon {
-  font-size: 22px;
+  font-size: 24px;
   transition: color 0.2s ease;
 }
 
@@ -160,8 +160,11 @@
 
 .navbar__cart-badge {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: -2px;
+  right: 2px;
+  min-width: 21px;
+  height: 21px;
+  font-size: 11px;
   transform: scale(1);
   pointer-events: none;
 }

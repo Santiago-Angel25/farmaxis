@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import CartDrawer from "./CartDrawer";
 import WishlistDrawer from "./WishlistDrawer";
+import Chatbot from "./Chatbot";
 
 function AppLayout() {
   return (
@@ -13,6 +14,7 @@ function AppLayout() {
       </main>
       <CartDrawer />
       <WishlistDrawer />
+      <Chatbot />
       <Footer />
     </>
   );
