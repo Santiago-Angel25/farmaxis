@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@fluentui/react-components";
 import { AddRegular, ArrowLeftRegular, Cart24Regular, CheckmarkCircle24Regular, Delete24Regular, SubtractRegular } from "@fluentui/react-icons";
 import { gsap } from "gsap";
@@ -20,12 +20,17 @@ function downloadInvoice(invoice) {
 }
 
 function Cart() {
-  const { cartItems, cartCount, cartSubtotal, updateCartQuantity, removeFromCart } = useStore();
+  const navigate = useNavigate();
+  const { cartItems, cartCount, cartSubtotal, updateCartQuantity, removeFromCart, clearCart } = useStore();
   const [removingIds, setRemovingIds] = useState([]);
   const [invoice, setInvoice] = useState(null);
   const [showInvoice, setShowInvoice] = useState(false);
   const modalRef = useRef(null);
   const contentRef = useRef(null);
+  const closeCheckout = useCallback(() => {
+    setInvoice(null);
+    navigate("/");
+  }, [navigate]);
   const removeWithAnimation = (product) => {
     const productKey = `${product.category}:${product.id}`;
     if (removingIds.includes(productKey)) return;
@@ -45,15 +50,16 @@ function Cart() {
 
   useEffect(() => {
     if (!invoice) return undefined;
-    const onKeyDown = (event) => { if (event.key === "Escape") setInvoice(null); };
+    const onKeyDown = (event) => { if (event.key === "Escape") closeCheckout(); };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [invoice]);
+  }, [invoice, closeCheckout]);
 
   const finishCheckout = () => {
     if (!cartItems.length) return;
     setShowInvoice(false);
     setInvoice({ items: cartItems.map(({ product, quantity }) => ({ product: { ...product }, quantity })), total: cartSubtotal, generatedAt: new Intl.DateTimeFormat("es-CO", { dateStyle: "long", timeStyle: "short" }).format(new Date()) });
+    clearCart();
   };
 
   return (
@@ -74,9 +80,9 @@ function Cart() {
           <aside className="cart-page__summary" aria-label="Resumen del pedido"><h2>Resumen del pedido</h2><div><span>Subtotal</span><strong>{formatPrice(cartSubtotal)}</strong></div><div><span>Envío</span><span className="cart-page__shipping">Se cotiza al finalizar</span></div><div className="cart-page__total"><strong>Total</strong><strong>{formatPrice(cartSubtotal)}</strong></div><p>El costo de envío se confirmará al iniciar la compra.</p><Button appearance="primary" className="cart-page__checkout" onClick={finishCheckout}>Finalizar compra</Button></aside>
         </div>
       )}
-      {invoice && <div className="checkout-modal" ref={modalRef} onMouseDown={(event) => { if (event.target === modalRef.current) setInvoice(null); }}>
+      {invoice && <div className="checkout-modal" ref={modalRef} onMouseDown={(event) => { if (event.target === modalRef.current) closeCheckout(); }}>
         <section className={`checkout-modal__content${showInvoice ? " is-invoice-view" : ""}`} ref={contentRef} role="dialog" aria-modal="true" aria-labelledby="checkout-modal-title">
-          <button className="checkout-modal__close" type="button" onClick={() => setInvoice(null)} aria-label="Cerrar">×</button>
+          <button className="checkout-modal__close" type="button" onClick={closeCheckout} aria-label="Cerrar">×</button>
           {!showInvoice ? <><div className="checkout-modal__success-mark"><CheckmarkCircle24Regular /></div><p className="checkout-modal__eyebrow">FARMAXIS · DROGUERÍAS</p><h2 id="checkout-modal-title">¡Compra exitosa!</h2><p className="checkout-modal__intro">Tu compra quedó registrada. Ya puedes consultar o descargar tu factura.</p><div className="checkout-modal__actions"><Button appearance="primary" onClick={() => downloadInvoice(invoice)}>Descargar factura</Button><Button appearance="secondary" onClick={() => setShowInvoice(true)}>Ver factura aquí</Button></div><small>Generada el {invoice.generatedAt}</small></> : <><div className="invoice-preview__brand"><span>farmaxis</span><small>DROGUERÍAS · SALUD Y BIENESTAR</small></div><div className="invoice-preview__meta"><span>COLOMBIA</span><span>{invoice.generatedAt}</span></div><div className="invoice-preview__heading"><div><p>DETALLE DE TU COMPRA</p><h2 id="checkout-modal-title">Gracias por tu compra</h2></div><span className="invoice-preview__badge">EXITOSA</span></div><div className="invoice-preview__table">{invoice.items.map(({ product, quantity }) => <div className="invoice-preview__row" key={`${product.category}:${product.id}`}><span><strong>{product.name}</strong><small>{quantity} {quantity === 1 ? "unidad" : "unidades"} · {formatPrice(product.price)} c/u</small></span><strong>{formatPrice(product.price * quantity)}</strong></div>)}</div><div className="invoice-preview__summary"><div><span>Subtotal</span><span>{formatPrice(invoice.total)}</span></div><div><span>Envío</span><span>Por confirmar</span></div><div className="invoice-preview__total"><span>TOTAL</span><strong>{formatPrice(invoice.total)}</strong></div></div><div className="invoice-preview__seal">FARMAXIS<br />COMPRA<br />EXITOSA</div><p className="invoice-preview__thanks">Gracias por confiar en Farmaxis.<br />Cuidamos de ti y de tu familia.</p><div className="checkout-modal__actions"><Button appearance="primary" onClick={() => downloadInvoice(invoice)}>Descargar factura</Button><Button appearance="secondary" onClick={() => setShowInvoice(false)}>Volver</Button></div></>}
         </section>
       </div>}

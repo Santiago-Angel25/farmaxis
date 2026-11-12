@@ -51,6 +51,8 @@ export function StoreProvider({ children }) {
     );
   }, []);
 
+  const clearCart = useCallback(() => setCartItems([]), []);
+
   const toggleFavorite = useCallback((product) => {
     setFavorites((current) =>
       current.some((item) => item.id === product.id && item.category === product.category)
@@ -77,6 +79,7 @@ export function StoreProvider({ children }) {
         addToCart,
         updateCartQuantity,
         removeFromCart,
+        clearCart,
         toggleFavorite,
         removeFavorite,
         openPanel,
