@@ -49,6 +49,7 @@ function Navbar() {
   const navigate = useNavigate();
   const { cartCount, favorites, openPanel } = useStore();
   const headerRef = useRef(null);
+  const announcementTrackRef = useRef(null);
   const spacerRef = useRef(null);
   const categoriesRef = useRef(null);
   const categoriesTrackRef = useRef(null);
@@ -127,6 +128,24 @@ function Navbar() {
   );
 
   useEffect(() => {
+    const track = announcementTrackRef.current;
+    if (!track) return undefined;
+
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    if (reduceMotion) return undefined;
+
+    const tween = gsap.fromTo(
+      track,
+      { xPercent: 0 },
+      { xPercent: -33.333, duration: 24, ease: "none", repeat: -1 },
+    );
+
+    return () => tween.kill();
+  }, []);
+
+  useEffect(() => {
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
@@ -136,9 +155,15 @@ function Navbar() {
       gsap
         .timeline({ defaults: { ease: "power3.out" } })
         .fromTo(
+          ".navbar__announcement",
+          { autoAlpha: 0, y: -14 },
+          { autoAlpha: 1, y: 0, duration: 0.45 },
+        )
+        .fromTo(
           ".navbar__brand",
           { autoAlpha: 0, y: -22 },
           { autoAlpha: 1, y: 0, duration: 0.55 },
+          "-=0.24",
         )
         .fromTo(
           ".navbar__search",
@@ -492,7 +517,7 @@ function Navbar() {
     <>
       <header className="navbar" ref={headerRef}>
         <div className="navbar__announcement" aria-label="Beneficios de Farmaxis">
-          <div className="navbar__announcement-track">
+          <div className="navbar__announcement-track" ref={announcementTrackRef}>
             {[...ANNOUNCEMENTS, ...ANNOUNCEMENTS, ...ANNOUNCEMENTS].map((item, index) => {
               const AnnouncementIcon = item.icon;
               return <span key={`${item.text}-${index}`} className="navbar__announcement-message"><AnnouncementIcon aria-hidden="true" />{item.text}<b aria-hidden="true">•</b></span>;

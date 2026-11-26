@@ -7,16 +7,16 @@ import Chatbot from "./Chatbot";
 
 function AppLayout() {
   return (
-    <>
+    <div className="app-layout">
       <Navbar />
-      <main>
+      <main className="app-layout__content">
         <Outlet />
       </main>
       <CartDrawer />
       <WishlistDrawer />
       <Chatbot />
       <Footer />
-    </>
+    </div>
   );
 }
 

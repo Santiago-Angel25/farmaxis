@@ -49,7 +49,6 @@
   width: max-content;
   min-width: 100%;
   align-items: center;
-  animation: navbar-announcement-marquee 24s linear infinite;
   will-change: transform;
 }
 
@@ -64,11 +63,6 @@
 
 .navbar__announcement-message svg { color: #0873c9; }
 .navbar__announcement-message b { color: #075fae; font-size: 16px; }
-
-@keyframes navbar-announcement-marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-33.333%); }
-}
 
 /* ---------- Fila principal ---------- */
 

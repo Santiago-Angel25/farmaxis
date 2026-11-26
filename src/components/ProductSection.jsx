@@ -226,7 +226,7 @@ function ProductSection({
                   ) : (
                     <span>IMAGEN</span>
                   )}
-                  {showDiscount && product.discount && (
+                  {showDiscount && Number(product.discount) > 0 && (
                     <span className="product-card__discount">
                       -{product.discount}%
                     </span>
@@ -251,7 +251,7 @@ function ProductSection({
                 <div className="product-card__details">
                   <h3>{product.name}</h3>
                   <strong>{formatPrice(product.price)}</strong>
-                  {showDiscount && product.discount && product.previousPrice && (
+                  {showDiscount && Number(product.discount) > 0 && Number(product.previousPrice) > 0 && (
                     <span className="product-card__previous-price">
                       {formatPrice(product.previousPrice)}
                     </span>

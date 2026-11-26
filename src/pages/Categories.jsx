@@ -128,6 +128,7 @@ function Categories() {
   const [groceriesOpen, setGroceriesOpen] = useState(searchParams.get("category") === "groceries" || ["bebidas", "alimentos"].includes(searchParams.get("subcategory")));
   const [facialOpen, setFacialOpen] = useState(["cuidado-facial", "bloqueador", "lumene"].includes(searchParams.get("subcategory")));
   const [blockerOpen, setBlockerOpen] = useState(searchParams.get("subcategory") === "bloqueador" || ["supergoop", "la-roche-posay"].includes(searchParams.get("brand")));
+  const catalogRef = useRef(null);
   const resultsRef = useRef(null);
   const hasMountedRef = useRef(false);
   const section = searchParams.get("section");
@@ -168,6 +169,25 @@ function Categories() {
   }, [products, section, category, brand, subcategory, maxPrice, sortBy, searchQuery]);
 
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
+
+    const animation = gsap.context(() => {
+      gsap.fromTo(
+        ".category-catalog__heading",
+        { autoAlpha: 0, y: 16 },
+        { autoAlpha: 1, y: 0, duration: 0.42, ease: "power2.out" },
+      );
+      gsap.fromTo(
+        ".category-catalog__filters",
+        { autoAlpha: 0, x: -18 },
+        { autoAlpha: 1, x: 0, duration: 0.45, delay: 0.08, ease: "power2.out" },
+      );
+    }, catalogRef);
+
+    return () => animation.revert();
+  }, []);
+
+  useEffect(() => {
     if (!hasMountedRef.current) {
       hasMountedRef.current = true;
       return undefined;
@@ -204,7 +224,7 @@ function Categories() {
   };
 
   return (
-    <div className="category-catalog">
+    <div className="category-catalog" ref={catalogRef}>
       <div className="category-catalog__heading">
         <div>
           <h1>{title}</h1>
