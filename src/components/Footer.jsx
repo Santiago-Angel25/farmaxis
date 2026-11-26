@@ -57,7 +57,7 @@ function Footer() {
 
 
   <p className="footer-description">
-    Cuidados de ti y de tu familia
+    Cuidamos de ti y de tu familia
     <br />
     con productos de calidad.
   </p>

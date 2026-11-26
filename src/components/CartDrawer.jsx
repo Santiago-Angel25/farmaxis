@@ -28,8 +28,6 @@ function CartDrawer() {
     removeFromCart,
   } = useStore();
   const navigate = useNavigate();
-  const [postalCode, setPostalCode] = useState("");
-  const [shippingMessage, setShippingMessage] = useState("");
   const [removingIds, setRemovingIds] = useState([]);
   const removeTimeouts = useRef(new Map());
   const open = activePanel === "cart";
@@ -65,17 +63,6 @@ function CartDrawer() {
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [open, closePanel]);
-
-  const calculateShipping = (event) => {
-    event.preventDefault();
-    if (!/^\d{6}$/.test(postalCode)) {
-      setShippingMessage("Escribe un código postal colombiano de 6 dígitos.");
-      return;
-    }
-    setShippingMessage(
-      "Código guardado. El valor del envío se confirmará al finalizar la compra.",
-    );
-  };
 
   if (!open) return null;
 
@@ -188,25 +175,6 @@ function CartDrawer() {
                   <span>Subtotal (sin envío):</span>
                   <strong>{formatPrice(cartSubtotal)}</strong>
                 </div>
-                <form className="store-shipping" onSubmit={calculateShipping}>
-                  <label htmlFor="postal-code">Medios de envío</label>
-                  <div>
-                    <input
-                      id="postal-code"
-                      inputMode="numeric"
-                      maxLength={6}
-                      value={postalCode}
-                      onChange={(event) =>
-                        setPostalCode(event.target.value.replace(/\D/g, ""))
-                      }
-                      placeholder="Tu código postal"
-                    />
-                    <Button type="submit" appearance="outline" size="small">
-                      Calcular
-                    </Button>
-                  </div>
-                  {shippingMessage && <small role="status">{shippingMessage}</small>}
-                </form>
                 <div className="store-drawer__grand-total">
                   <span>Total:</span>
                   <strong>{formatPrice(cartSubtotal)}</strong>

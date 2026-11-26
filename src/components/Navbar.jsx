@@ -564,6 +564,7 @@ function Navbar() {
                   shape="circular"
                   size="small"
                   aria-hidden="true"
+                  onClick={() => openPanel("wishlist")}
                 >
                   {favorites.length}
                 </Badge>
@@ -598,6 +599,10 @@ function Navbar() {
                   shape="circular"
                   size="small"
                   aria-hidden="true"
+                  onClick={() => {
+                    bumpCartBadge();
+                    openPanel("cart");
+                  }}
                 >
                   {cartCount}
                 </Badge>

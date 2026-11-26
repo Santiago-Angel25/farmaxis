@@ -65,11 +65,6 @@ function ProductDetailsDialog({ product, onClose }) {
                 <div className="product-details-dialog__image">
                   {product.image ? <img src={product.image} alt={product.name} /> : <span>Imagen del producto</span>}
                 </div>
-                {product.image && (
-                  <div className="product-details-dialog__thumbs">
-                    <img src={product.image} alt="" />
-                  </div>
-                )}
               </div>
 
               <div className="product-details-dialog__info">
@@ -116,19 +111,6 @@ function ProductDetailsDialog({ product, onClose }) {
               </div>
             </section>
 
-            <section className="product-details-dialog__description">
-              <h3>Detalles del producto</h3>
-              <dl>
-                <div><dt>Producto</dt><dd>{product.name}</dd></div>
-                {(product.brand || product.manufacturer) && <div><dt>Marca / Fabricante</dt><dd>{product.brand || product.manufacturer}</dd></div>}
-                {product.manufacturedIn && <div><dt>Fabricado en</dt><dd>{product.manufacturedIn}</dd></div>}
-                {product.category && <div><dt>Categoría</dt><dd>{product.category}</dd></div>}
-                {product.presentation && <div><dt>Presentación</dt><dd>{product.presentation}</dd></div>}
-                {product.activeIngredient && <div><dt>Ingrediente activo</dt><dd>{product.activeIngredient}</dd></div>}
-                {product.description && <div><dt>Descripción</dt><dd>{product.description}</dd></div>}
-                {product.details && <div><dt>Información</dt><dd>{product.details}</dd></div>}
-              </dl>
-            </section>
           </div>
         )}
       </DialogSurface>

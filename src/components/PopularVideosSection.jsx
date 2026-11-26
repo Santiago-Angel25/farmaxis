@@ -181,12 +181,21 @@ function PopularVideosSection() {
     });
     track.addEventListener("scroll", handleScroll, { passive: true });
     track.addEventListener("scrollend", handleScrollEnd, { passive: true });
+    const autoAdvanceTimer = window.setInterval(() => {
+      if (document.hidden || activeIndexRef.current !== null) return;
+      const firstCard = track.querySelector(".popular-video-card");
+      const gap = Number.parseFloat(getComputedStyle(track).gap) || 0;
+      const step = (firstCard?.clientWidth || track.clientWidth * 0.75) + gap;
+      const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+      track.scrollBy({ left: step, behavior });
+    }, 5000);
 
     return () => {
       cancelAnimationFrame(frame);
       if (focusFrameRef.current) cancelAnimationFrame(focusFrameRef.current);
       window.clearTimeout(rebaseTimerRef.current);
       window.clearTimeout(autoPlayTimerRef.current);
+      window.clearInterval(autoAdvanceTimer);
       track.removeEventListener("scroll", handleScroll);
       track.removeEventListener("scrollend", handleScrollEnd);
       pauseCarouselVideos();

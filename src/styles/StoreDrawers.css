@@ -31,7 +31,7 @@
 .store-drawer__empty svg { width: 32px; height: 32px; }
 .store-drawer__items { display: flex; flex-direction: column; gap: 14px; margin: 0; padding: 0; list-style: none; }
 .store-drawer-item { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; }
-.store-drawer-item__image { display: grid; width: 64px; height: 72px; place-items: center; overflow: hidden; border-radius: 6px; background: #f4f5f6; color: #888; font-size: 9px; }
+.store-drawer-item__image { display: grid; width: 64px; height: 72px; place-items: center; overflow: hidden; border-radius: 6px; background: #eef7fb; color: #888; font-size: 9px; }
 .store-drawer-item__image img { width: 100%; height: 100%; padding: 4px; object-fit: contain; }
 .store-drawer-item__content { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-content: start; gap: 8px; min-width: 0; }
 .store-drawer-item__content > strong { grid-column: 1 / -1; font-size: 13px; font-weight: 500; }
@@ -45,12 +45,6 @@
 .store-drawer__totals { display: grid; gap: 16px; margin-top: 28px; }
 .store-drawer__totals > div { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; }
 .store-drawer__totals > div strong { font-weight: 500; }
-.store-shipping { display: grid; gap: 8px; }
-.store-shipping label { font-size: 12px; }
-.store-shipping > div { display: flex; min-height: 38px; }
-.store-shipping input { flex: 1; min-width: 0; padding: 8px 10px; border: 1px solid #d3d6db; border-radius: 5px 0 0 5px; font: inherit; font-size: 12px; }
-.store-shipping > div button { border-radius: 0 5px 5px 0; }
-.store-shipping small { color: #657080; font-size: 11px; line-height: 1.4; }
 .store-drawer__grand-total { margin-top: 4px; font-size: 16px !important; }
 .store-drawer__shipping-note { margin: -10px 0 0; color: #777f8b; font-size: 11px; }
 .store-drawer__checkout { width: 100%; margin-top: 18px; background: #111 !important; color: #fff !important; }

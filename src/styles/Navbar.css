@@ -160,13 +160,14 @@
 
 .navbar__cart-badge {
   position: absolute;
-  top: -2px;
-  right: 2px;
-  min-width: 21px;
-  height: 21px;
-  font-size: 11px;
+  top: -1px;
+  right: 5px;
+  min-width: 24px;
+  height: 24px;
+  padding-inline: 4px;
+  font-size: 13px;
   transform: scale(1);
-  pointer-events: none;
+  cursor: pointer;
 }
 
 /* ---------- Barra de accesos rápidos ---------- */
