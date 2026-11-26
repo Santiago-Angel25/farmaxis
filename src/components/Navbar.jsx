@@ -18,7 +18,7 @@ import { useStore } from "../context/StoreContext";
 import "../styles/Navbar.css";
 
 const CATEGORIAS = [
-  "Salud y medicamentos",
+  "Salud y medicinas",
   "Belleza",
   "Cuidado del bebé",
   "Cuidado personal",
@@ -100,6 +100,23 @@ function Navbar() {
   const salirBarra = () => {
     hoverBarraRef.current = false;
     cerrarCategorias();
+  };
+
+  const irACategoria = (categoria) => {
+    if (categoria === "Salud y medicinas") {
+      navigate("/categories?section=health");
+      return;
+    }
+
+    const categoriaId = {
+      Belleza: "beauty",
+      "Cuidado del bebé": "cuidado-del-bebe",
+      "Cuidado personal": "cuidado-personal",
+      Dermocosmética: "skin-care",
+      "Alimentos y bebidas": "groceries",
+      "Hogar, mascotas y otros": "otros",
+    }[categoria];
+    navigate(`/categories?category=${categoriaId}`);
   };
 
   useEffect(
@@ -700,7 +717,7 @@ function Navbar() {
                   key={categoria}
                   className="navbar__category"
                   appearance="subtle"
-                  onClick={() => navigate("/categories?category=" + ({ "Salud y medicamentos": "medicamentos", Belleza: "beauty", "Cuidado del bebé": "cuidado-del-bebe", "Cuidado personal": "cuidado-personal", Dermocosmética: "skin-care", "Alimentos y bebidas": "groceries", "Hogar, mascotas y otros": "otros" })[categoria])}
+                  onClick={() => irACategoria(categoria)}
                   onMouseEnter={hoverCategoria}
                   onMouseLeave={salirCategoria}
                 >

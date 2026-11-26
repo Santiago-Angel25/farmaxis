@@ -31,6 +31,8 @@ function ProductDetailsDialog({ product, onClose }) {
   )?.quantity ?? 0;
   const remainingQuantity = Math.max(0, 15 - cartQuantity);
   const limitReached = remainingQuantity === 0;
+  // El resumen bajo el precio ya muestra esto; no se repite en "Detalles del producto".
+  const summary = product?.description || product?.details || "";
 
   useEffect(() => {
     setSelectedQuantity(1);
@@ -96,7 +98,7 @@ function ProductDetailsDialog({ product, onClose }) {
                   {formatPrice(product.price)}
                   {product.previousPrice && <del>{formatPrice(product.previousPrice)}</del>}
                 </p>
-                {(product.description || product.details) && <p className="product-details-dialog__summary">{product.description || product.details}</p>}
+                {summary && <p className="product-details-dialog__summary">{summary}</p>}
                 <div className="product-details-dialog__benefits" aria-label="Beneficios de compra">
                   <span><CheckmarkCircleRegular />Producto original</span>
                   <span><VehicleTruckRegular />Envío disponible</span>
@@ -125,19 +127,6 @@ function ProductDetailsDialog({ product, onClose }) {
                     Has alcanzado el máximo de 15 unidades de este producto. No puedes agregar más al carrito.
                   </p>
                 )}
-                <section className="product-details-dialog__description">
-                  <h3>Detalles del producto</h3>
-                  <dl>
-                    <div><dt>Producto</dt><dd>{product.name}</dd></div>
-                    {(product.brand || product.manufacturer) && <div><dt>Marca / Fabricante</dt><dd>{product.brand || product.manufacturer}</dd></div>}
-                    {product.manufacturedIn && <div><dt>Fabricado en</dt><dd>{product.manufacturedIn}</dd></div>}
-                    {product.category && <div><dt>Categoría</dt><dd>{product.category}</dd></div>}
-                    {product.presentation && <div><dt>Presentación</dt><dd>{product.presentation}</dd></div>}
-                    {product.activeIngredient && <div><dt>Ingrediente activo</dt><dd>{product.activeIngredient}</dd></div>}
-                    {product.description && <div><dt>Descripción</dt><dd>{product.description}</dd></div>}
-                    {product.details && <div><dt>Información</dt><dd>{product.details}</dd></div>}
-                  </dl>
-                </section>
                 <div className="product-details-dialog__actions">
                   <Button appearance="primary" icon={<Cart24Regular />} onClick={add}>
                     {added ? "Agregado al carrito" : "Agregar al carrito"}

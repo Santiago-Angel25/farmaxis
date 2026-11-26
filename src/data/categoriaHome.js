@@ -10,10 +10,10 @@ import {
 } from "@fluentui/react-icons";
 
 const categoriaHome = [
-  { label: "Promociones", icon: TagPercentRegular, target: "promociones" },
+  { label: "Ofertas", icon: TagPercentRegular, path: "/categories" },
   { label: "Lo más popular", icon: FireRegular, target: "lo-mas-popular" },
   {
-    label: "Productos destacados",
+    label: "Destacados",
     icon: StarRegular,
     target: "productos-destacados",
   },
@@ -28,7 +28,7 @@ const categoriaHome = [
     target: "cuidado-personal",
   },
   {
-    label: "Salud y medicamentos",
+    label: "Salud y medicinas",
     icon: BriefcaseMedicalRegular,
     target: "salud-y-medicamentos",
   },

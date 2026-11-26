@@ -65,7 +65,7 @@ const videoBrandTitles = {
 
 const FILTERS = [
   { label: "Todos los productos", value: "all" },
-  { label: "Medicamentos", value: "medicamentos" },
+  { label: "Medicinas", value: "medicamentos" },
   { label: "Vitaminas", value: "vitaminas" },
   { label: "Belleza", value: "beauty" },
   { label: "Dermocosmética", value: "skin-care" },
@@ -80,7 +80,7 @@ const FILTERS = [
 const SECTION_TITLES = {
   featured: "Productos destacados",
   food: "Bebidas y alimentos",
-  health: "Salud y medicamentos",
+  health: "Salud y medicinas",
   "personal-care": "Cuidado personal",
   shampoo: "Shampoo",
   jabones: "Jabones",
