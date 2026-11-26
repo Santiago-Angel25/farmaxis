@@ -43,7 +43,7 @@
 .product-details-dialog__quantity-label { margin-bottom: 6px; font-size: 12px; }
 .product-details-dialog__quantity { display: inline-flex; align-items: center; gap: 8px; padding: 3px 7px; border: 1px solid #dfe3e8; border-radius: 8px; }
 .product-details-dialog__quantity span { min-width: 24px; text-align: center; }
-.product-details-dialog__limit { margin: 8px 0 0; color: #b42318; font-size: 12px; line-height: 1.4; }
+.product-details-dialog__limit { margin: 8px 0 0; color: #ffffff; font-size: 12px; line-height: 1.4; }
 .product-details-dialog__actions { display: flex; flex-wrap: wrap; gap: 10px; width: 100%; margin-top: 20px; margin-bottom: 0; padding-top: 0; }
 .product-details-dialog__actions > button { min-height: 46px; }
 .product-details-dialog__actions > button:first-child { flex: 1 1 180px; }
