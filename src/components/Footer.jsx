@@ -48,11 +48,13 @@ function Footer() {
 <section className="footer-brand footer-column-animated">
   
 <div className="footer-brand-logo">
-  <img
-    src={logoFarmaxis}
-    alt="Logo de Farmaxis"
-    className="footer-logo-image"
-  />
+  <a href="/" aria-label="Ir al inicio de Farmaxis" onClick={() => window.scrollTo({ top: 0, left: 0, behavior: "auto" })}>
+    <img
+      src={logoFarmaxis}
+      alt="Logo de Farmaxis"
+      className="footer-logo-image"
+    />
+  </a>
 </div>
 
 
@@ -68,7 +70,7 @@ function Footer() {
           <h3>Farmaxis</h3>
           <Link href="/">Inicio</Link>
           <Link href="/categories">Categorías</Link>
-          <Link href="/#promociones">Ofertas</Link>
+          <Link href="/categories">Ofertas</Link>
           <Link href="/iniciar-sesion">Mi cuenta</Link>
         </section>
 

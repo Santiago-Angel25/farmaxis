@@ -24,7 +24,7 @@ function Home() {
       {error && <p role="alert">No se pudo cargar el catálogo externo: {error}</p>}
       <ProductSection id="productos-destacados" title="Productos destacados" subtitle="Selección para ti" products={featuredApiProducts} showDiscount onViewAll={() => navigate("/categories?section=featured")} />
       <ProductSection id="bebidas-y-alimentos" title="Bebidas y alimentos" subtitle="Encuentra lo que necesitas" products={bebidasAlimentos} onViewAll={() => navigate("/categories?section=food")} />
-      <ProductSection id="salud-y-medicamentos" title="Salud y medicamentos" subtitle="Productos de demostración del catálogo local" products={featuredProducts} onViewAll={() => navigate("/categories?section=health")} />
+      <ProductSection id="salud-y-medicamentos" title="Salud y medicinas" subtitle="Productos de demostración del catálogo local" products={featuredProducts} onViewAll={() => navigate("/categories?section=health")} />
       <ProductSection id="cuidado-personal" title="Cuidado personal" subtitle="Belleza y cuidado de la piel" products={personalCareProducts} onViewAll={() => navigate("/categories?section=personal-care")} />
     </>
   );
