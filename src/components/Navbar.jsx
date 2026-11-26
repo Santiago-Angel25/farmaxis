@@ -10,6 +10,7 @@ import {
   Search24Regular,
   Tag24Regular,
   TicketDiagonal24Regular,
+  VehicleTruck24Regular,
 } from "@fluentui/react-icons";
 import gsap from "gsap";
 import logoFarmaxis from "../assets/logoFarmaxis.png";
@@ -26,11 +27,20 @@ const CATEGORIAS = [
   "Hogar, mascotas y otros",
 ];
 
+// El badge es circular: se limita a 2 cifras para no deformarse ni salirse del icono.
+const formatearContador = (count) => (count > 99 ? "99" : count);
+
 const ACCESOS_RAPIDOS = [
   { label: "Favoritos", icon: Heart24Regular },
   { label: "Ofertas", icon: Tag24Regular },
   { label: "Volver a comprar", icon: History24Regular },
   { label: "Cupones", icon: TicketDiagonal24Regular },
+];
+
+const ANNOUNCEMENTS = [
+  { icon: VehicleTruck24Regular, text: "Envíos gratis desde $49.900" },
+  { icon: Tag24Regular, text: "Ofertas semanales para cuidarte más" },
+  { icon: Cart24Regular, text: "Domicilios rápidos y compras seguras" },
 ];
 
 const ESPACIO_PROMOCIONES = 24;
@@ -49,7 +59,6 @@ function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
   const [categoriasOpen, setCategoriasOpen] = useState(false);
   const [categoriaMenuOpen, setCategoriaMenuOpen] = useState(null);
-
   const buscarProductos = (event) => {
     event.preventDefault();
     const query = searchQuery.trim();
@@ -152,7 +161,7 @@ function Navbar() {
           "-=0.42",
         )
         .fromTo(
-          ".navbar__cart-badge",
+          ".navbar__icon-badge",
           { scale: 0, autoAlpha: 0 },
           { scale: 1, autoAlpha: 1, duration: 0.35, ease: "back.out(2.6)" },
           "-=0.3",
@@ -285,7 +294,7 @@ function Navbar() {
   const bumpCartBadge = () => {
     if (cartCount === 0) return;
     gsap.fromTo(
-      ".navbar__cart-badge",
+      ".navbar__icon-badge",
       { scale: 1 },
       {
         scale: 1.3,
@@ -328,7 +337,6 @@ function Navbar() {
     if (!input) return;
     gsap.to(input, {
       y: -2,
-      boxShadow: "0 8px 20px rgba(8, 30, 53, 0.14)",
       duration: 0.3,
       ease: "power2.out",
       overwrite: "auto",
@@ -341,7 +349,6 @@ function Navbar() {
     if (!input) return;
     gsap.to(input, {
       y: 0,
-      boxShadow: "0 0 0 rgba(8, 30, 53, 0)",
       duration: 0.35,
       ease: "power2.out",
       overwrite: "auto",
@@ -467,11 +474,20 @@ function Navbar() {
   return (
     <>
       <header className="navbar" ref={headerRef}>
+        <div className="navbar__announcement" aria-label="Beneficios de Farmaxis">
+          <div className="navbar__announcement-track">
+            {[...ANNOUNCEMENTS, ...ANNOUNCEMENTS, ...ANNOUNCEMENTS].map((item, index) => {
+              const AnnouncementIcon = item.icon;
+              return <span key={`${item.text}-${index}`} className="navbar__announcement-message"><AnnouncementIcon aria-hidden="true" />{item.text}<b aria-hidden="true">•</b></span>;
+            })}
+          </div>
+        </div>
         <div className="navbar__main">
           <Link
             className="navbar__brand"
             to="/"
             aria-label="Farmaxis droguerías, inicio"
+            onClick={() => window.scrollTo({ top: 0, left: 0, behavior: "auto" })}
             onMouseEnter={hoverLogo}
             onMouseLeave={salirLogo}
           >
@@ -558,14 +574,14 @@ function Navbar() {
               </Tooltip>
               {favorites.length > 0 && (
                 <Badge
-                  className="navbar__cart-badge"
+                  className="navbar__icon-badge"
                   appearance="filled"
                   color="danger"
                   shape="circular"
                   size="small"
                   aria-hidden="true"
                 >
-                  {favorites.length}
+                  {formatearContador(favorites.length)}
                 </Badge>
               )}
             </div>
@@ -592,14 +608,14 @@ function Navbar() {
               </Tooltip>
               {cartCount > 0 && (
                 <Badge
-                  className="navbar__cart-badge"
+                  className="navbar__icon-badge"
                   appearance="filled"
                   color="danger"
                   shape="circular"
                   size="small"
                   aria-hidden="true"
                 >
-                  {cartCount}
+                  {formatearContador(cartCount)}
                 </Badge>
               )}
             </div>

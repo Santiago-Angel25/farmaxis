@@ -5,6 +5,7 @@
 
 :root {
   /* Alturas del navbar (para el espacio que deja en la página) */
+  --navbar-alto-anuncios: 38px;
   --navbar-alto-principal: 78px;
   --navbar-alto-accesos: 46px;
 }
@@ -30,7 +31,43 @@
    contenido, dejando un hueco en blanco sobre las promociones */
 .navbar__spacer {
   box-sizing: content-box;
-  height: calc(var(--navbar-alto-principal) + var(--navbar-alto-accesos));
+  height: calc(var(--navbar-alto-anuncios) + var(--navbar-alto-principal) + var(--navbar-alto-accesos));
+}
+
+.navbar__announcement {
+  display: flex;
+  min-height: var(--navbar-alto-anuncios);
+  overflow: hidden;
+  background: linear-gradient(90deg, #e9f5ff, #d9edff);
+  color: #173c67;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.navbar__announcement-track {
+  display: flex;
+  width: max-content;
+  min-width: 100%;
+  align-items: center;
+  animation: navbar-announcement-marquee 24s linear infinite;
+  will-change: transform;
+}
+
+.navbar__announcement-message {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 9px;
+  padding: 0 26px;
+  white-space: nowrap;
+}
+
+.navbar__announcement-message svg { color: #0873c9; }
+.navbar__announcement-message b { color: #075fae; font-size: 16px; }
+
+@keyframes navbar-announcement-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-33.333%); }
 }
 
 /* ---------- Fila principal ---------- */
@@ -41,7 +78,7 @@
   align-items: center;
   gap: clamp(14px, 2.4vw, 28px);
   padding: 12px clamp(16px, 4vw, 48px);
-  border-bottom: 1px solid #e4e4e4;
+  border-bottom: 1px solid #edf0f3;
 }
 
 /* ---------- Logo ---------- */
@@ -98,23 +135,54 @@
 }
 
 .navbar__search-input {
-  width: min(520px, 100%);
-  /* Sombra base: GSAP la interpola al pasar el ratón por el buscador */
-  box-shadow: 0 0 0 rgba(8, 30, 53, 0);
+  width: min(710px, 100%);
+  min-height: 48px;
+  overflow: hidden;
+  border: 1px solid #dbe5ee;
+  border-radius: 999px !important;
+  background: #fff;
+  box-shadow: none !important;
+  --borderRadiusMedium: 999px;
+  --borderRadiusSmall: 999px;
+  transition: border-color .2s ease, box-shadow .2s ease;
 }
+
+.navbar__search-input::after { display: none; }
 
 .navbar__search-input input {
-  font-size: 13px;
+  color: #31465d;
+  font-size: 15px;
 }
 
+.navbar__search-input:focus-within { border-color: #0873c9; box-shadow: none !important; }
+.navbar__search-input .fui-Input__contentAfter { display: flex; align-self: auto; align-items: center; margin-right: 3px; }
+
 .navbar__search-icon {
-  color: #666;
+  margin-left: 5px;
+  color: #657487;
   font-size: 20px;
 }
 
 .navbar__search-submit {
-  min-width: 42px;
+  display: inline-grid;
+  flex: 0 0 32px;
+  width: 32px !important;
+  min-width: 32px !important;
+  max-width: 32px !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  max-height: 32px !important;
+  padding: 0;
+  place-items: center;
+  box-sizing: border-box;
+  align-self: center;
+  margin: 0;
+  border-radius: 50% !important;
+  background: linear-gradient(135deg, #168be3, #0768bd) !important;
+  box-shadow: none !important;
 }
+
+.navbar__search-submit::after { inset: 0 !important; border-radius: 50% !important; }
 
 /* ---------- Acciones (inicio de sesión, favoritos y carrito) ---------- */
 
@@ -149,24 +217,59 @@
   transition: color 0.2s ease;
 }
 
+/* El trazo del corazón es más ancho que el del carrito; se compensa el
+   tamaño del icono para que ambos se vean iguales */
+.navbar__action--cart .navbar__action-icon {
+  width: 22px !important;
+  height: 26px !important;
+  flex-shrink: 0;
+}
+
 .navbar__action:hover .navbar__action-icon {
-  color: #1f7a3f;
+  color: #0873c9 !important;
 }
 
 .navbar__cart {
   position: relative;
   display: flex;
+  width: 42px;
+  height: 42px;
 }
 
-.navbar__cart-badge {
-  position: absolute;
-  top: -2px;
-  right: 2px;
-  min-width: 21px;
-  height: 21px;
-  font-size: 11px;
+/* Insignia tipo Instagram: el círculo rojo cae dentro del trazo del icono.
+   Fluent impone sus propios tamaños y position: relative, por eso las
+   propiedades que sobrescribe llevan !important. */
+.navbar__icon-badge {
+  position: absolute !important;
+  z-index: 2;
+  /* Esquina superior derecha del icono: asoma un poco, sin irse lejos */
+  top: 8px;
+  right: 7px;
+  bottom: auto;
+  left: auto;
+  display: grid !important;
+  box-sizing: border-box !important;
+  width: 16px !important;
+  min-width: 16px !important;
+  height: 16px !important;
+  /* Sin padding: con 8 px de fuente la grid centra la cifra en el círculo */
+  padding: 0 !important;
+  place-items: center;
+  text-align: center !important;
+  border: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+  border-radius: 50% !important;
+  font-size: 8px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
   transform: scale(1);
   pointer-events: none;
+}
+
+/* El SVG del carrito es 2 px más ancho: se corre el badge para que asome igual */
+.navbar__cart .navbar__icon-badge {
+  right: 6px;
 }
 
 /* ---------- Barra de accesos rápidos ---------- */
@@ -378,6 +481,8 @@
 .navbar__favorite {
   position: relative;
   display: flex;
+  width: 42px;
+  height: 42px;
 }
 
 .navbar__category-wrap { position: relative; display: inline-flex; }

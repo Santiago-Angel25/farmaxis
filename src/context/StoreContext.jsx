@@ -18,7 +18,8 @@ export function StoreProvider({ children }) {
     [cartItems],
   );
 
-  const addToCart = useCallback((product) => {
+  const addToCart = useCallback((product, amount = 1) => {
+    const unitsToAdd = Math.max(1, Number.parseInt(amount, 10) || 1);
     setCartItems((current) => {
       const existing = current.find((item) =>
         item.product.id === product.id && item.product.category === product.category,
@@ -26,10 +27,10 @@ export function StoreProvider({ children }) {
       return existing
         ? current.map((item) =>
             item.product.id === product.id && item.product.category === product.category
-              ? { ...item, quantity: Math.min(item.quantity + 1, MAX_PRODUCT_QUANTITY) }
+              ? { ...item, quantity: Math.min(item.quantity + unitsToAdd, MAX_PRODUCT_QUANTITY) }
               : item,
           )
-        : [...current, { product, quantity: 1 }];
+        : [...current, { product, quantity: Math.min(unitsToAdd, MAX_PRODUCT_QUANTITY) }];
     });
   }, []);
 
